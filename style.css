@@ -1,0 +1,67 @@
+body {
+    background-color: #589db0;
+}
+.darkred-text {
+    color: darkred;
+}
+.white {
+    background-color: whitesmoke;
+}
+.gray {
+    background-color: #f0f0f0;
+}
+.yellow {
+    background-color: #f3f2c6;
+}
+.split-td {
+    display: flex;
+    justify-content: space-around;
+}
+.button {
+    position: relative;
+    height: 40px;
+    width: 30%;
+    background: #fff;
+    border: 2px solid #333d47;
+    border-radius: 10px;
+    color: #333d47;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+}
+.button:hover {
+    background: #333d47;
+    color: #fff;
+    border: none;
+}
+.d-flex {
+    display: flex;
+    justify-content: space-around;
+}
+.file-input-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.file-input-label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 12px;
+    background-color: #1584ec;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+}
+.file-input-label svg {
+    width: 30%;
+    height: 16px;
+    margin-right: 4px;
+}
