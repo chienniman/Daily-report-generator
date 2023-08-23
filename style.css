@@ -1,5 +1,106 @@
+html {
+    height: 100%;
+}
+.bg {
+    animation: slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(
+        -120deg,
+        rgb(51, 186, 204) 50%,
+        rgb(0, 110, 255) 50%
+    );
+    bottom: 0;
+    left: -50%;
+    opacity: 0.5;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    z-index: -1;
+}
+.hidden {
+    display: none;
+}
+
+.spinner {
+    border: 10px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #000;
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    z-index: 500;
+    top: 45%;
+    left: 45%;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.bg2 {
+    animation-direction: alternate-reverse;
+    animation-duration: 4s;
+}
+
+.bg3 {
+    animation-duration: 5s;
+}
+
+.content {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.25em;
+    box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    left: 50%;
+    padding: 10vmin;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    font-family: monospace;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-25%);
+    }
+    100% {
+        transform: translateX(25%);
+    }
+}
 body {
-    background-color: #589db0;
+    margin: 0;
+    text-align: center;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(9, 9, 121, 1) 8%,
+        rgba(0, 212, 255, 1) 100%
+    );
+}
+#fileNameDisplay {
+    font-size: 2rem;
+    color: white;
+    line-height: 1.5;
+}
+#resultTable {
+    width: 100%;
+    position: absolute;
+    z-index: 100;
+    margin: 0 auto;
+    background: white;
+}
+#resultTable tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 .darkred-text {
     color: darkred;
@@ -35,7 +136,8 @@ body {
     color: #fff;
     border: none;
 }
-.d-flex {
+.top-row {
+	margin: 20px 0;
     display: flex;
     justify-content: space-around;
 }
@@ -57,7 +159,7 @@ body {
     color: #fff;
     font-size: 14px;
     padding: 10px 12px;
-    background-color: #1584ec;
+    background-color: #f99406;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 }
 .file-input-label svg {
