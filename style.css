@@ -108,6 +108,9 @@ body {
 .darkred-text {
     color: darkred;
 }
+.table-row:hover {
+    background: antiquewhite !important;
+}
 .white {
     background-color: whitesmoke;
 }

@@ -150,7 +150,7 @@ function appendHeaderRows() {
 function appendTableRows(targetPxMarts, targetProductName, jsonData) {
     for (const i in targetPxMarts) {
         const store = targetPxMarts[i];
-        var row = "<tr class='white'><td class='yellow'>" + store + "</td>";
+        var row = "<tr class='table-row'><td class='yellow'>" + store + "</td>";
         for (const e of targetProductName) {
             row += `<td>
                     <div class="split-td">
