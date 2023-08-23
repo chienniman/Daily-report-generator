@@ -1,8 +1,4 @@
-const targetPrdtCodes = [
-    "61010953",
-    "61010830",
-    "61010960",
-];
+const targetPrdtCodes = ["61010953", "61010830", "61010960"];
 
 const targetProductName = [
     "華強　南僑水晶肥皂 / ２００ｇ＊３塊",
@@ -66,6 +62,14 @@ $(document).ready(function () {
     });
     $("#generateBtn").on("click", function () {
         if ($("#file-input").val()) {
+            var fileName = $("#file-input")[0].files[0].name;
+            var fileExtension = fileName.split(".").pop().toLowerCase();
+
+            if (fileExtension !== "csv") {
+                alert("Invalid file type. Please select a CSV file.");
+                return;
+            }
+
             $("#loading").removeClass("hidden");
             generateStockReport().then(() => {
                 $("#loading").addClass("hidden");
