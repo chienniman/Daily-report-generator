@@ -20,6 +20,13 @@ html {
     display: none;
 }
 
+#loading {
+    position: absolute;
+    z-index: 500;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .spinner {
     border: 10px solid rgba(0, 0, 0, 0.1);
     border-left-color: #000;
@@ -27,10 +34,6 @@ html {
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    position: absolute;
-    z-index: 500;
-    top: 45%;
-    left: 45%;
 }
 
 @keyframes spin {
@@ -137,7 +140,7 @@ body {
     border: none;
 }
 .top-row {
-	margin: 20px 0;
+    margin: 20px 0;
     display: flex;
     justify-content: space-around;
 }
