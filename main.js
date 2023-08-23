@@ -95,21 +95,17 @@ function convertToJson(array) {
     array.forEach((e) => {
         const store = e[4];
         const product = e[7];
-        const purchaseQty = Number(e[9]);
         const stockQty = Number(e[12]);
-        const totalQty = purchaseQty + stockQty;
 
         if (!jsonData[store]) {
             jsonData[store] = {};
         }
         if (!jsonData[store][product]) {
             jsonData[store][product] = {
-                purchaseQty: 0,
                 totalQty: 0,
             };
         }
-        jsonData[store][product].purchaseQty = purchaseQty;
-        jsonData[store][product].totalQty = totalQty;
+        jsonData[store][product].stockQty = stockQty;
     });
     return jsonData;
 }
@@ -124,10 +120,7 @@ function appendHeaderRows() {
 
         subHeaderRow += `
 		    <th>
-		        <div class="split-td">
-		            <div>進貨</div>
-		            <div class='darkred-text'>總庫存</div>
-		        </div>
+                <div class='darkred-text'>昨日庫存</div>
 		    </th>
 		`;
     }
@@ -146,8 +139,7 @@ function appendTableRows(targetPxMarts, targetProductName, jsonData) {
         for (const e of targetProductName) {
             row += `<td>
                     <div class="split-td">
-                        <div>${jsonData[store][e].purchaseQty}</div>
-                        <div class='darkred-text'>${jsonData[store][e].totalQty}</div>
+                        <div class='darkred-text'>${jsonData[store][e].stockQty}</div>
                     </div>
                 </td>`;
         }
@@ -163,6 +155,8 @@ function generateStockReport() {
 
             const filteredData = filterByPrdtAndPxMarts(arr);
             const jsonData = convertToJson(filteredData);
+
+            console.log(filteredData,jsonData);
 
             appendHeaderRows();
             appendTableRows(targetPxMarts, targetProductName, jsonData);
