@@ -8,9 +8,12 @@ const targetProductName = [
 
 const targetPxMarts = [
     "豐原成功",
+    "神岡五權",
+    "后里文明",
     "豐原田心",
     "豐原豐東",
     "豐原向陽",
+    "豐原北陽",
     "東勢豐勢",
     "新社中和",
     "大雅學府",
@@ -22,20 +25,32 @@ const targetPxMarts = [
     "霧峰民生",
     "太平樹德",
     "太平宜昌",
+    "台中忠孝",
     "逢甲",
     "台中忠義",
+    "台中大鵬",
+    "台中福科",
+    "台中陜西",
     "台中崇德",
+    "五權",
     "台中松竹",
     "台中四平",
-    "台中大鵬",
     "北屯",
-    "台中大昌",
+    "台中大坑",
+    "台中軍太",
+    // "中清",
     "精誠",
+    "天津",
     "旅順",
     "台中大進",
     "台中博館",
+    "台中大昌",
+    "台中市政",
     "忠明",
     "台中嶺東",
+    "台中黎明",
+    "台中豐樂",
+    "台中向上",
     "台中忠明南",
     "台中復興",
     "台中林森",
@@ -139,7 +154,7 @@ function appendTableRows(targetPxMarts, targetProductName, jsonData) {
         for (const e of targetProductName) {
             row += `<td>
                     <div class="split-td">
-                        <div class='darkred-text'>${jsonData[store][e].stockQty}</div>
+                        <div class='darkred-text'>${jsonData[store][e]?.stockQty}</div>
                     </div>
                 </td>`;
         }
@@ -155,8 +170,6 @@ function generateStockReport() {
 
             const filteredData = filterByPrdtAndPxMarts(arr);
             const jsonData = convertToJson(filteredData);
-
-            console.log(filteredData,jsonData);
 
             appendHeaderRows();
             appendTableRows(targetPxMarts, targetProductName, jsonData);
