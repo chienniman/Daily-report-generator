@@ -38,7 +38,6 @@ const targetPxMarts = [
     "北屯",
     "台中大坑",
     "台中軍太",
-    // "中清",
     "精誠",
     "天津",
     "旅順",
@@ -117,7 +116,7 @@ function convertToJson(array) {
         }
         if (!jsonData[store][product]) {
             jsonData[store][product] = {
-                totalQty: 0,
+                stockQty: 0,
             };
         }
         jsonData[store][product].stockQty = stockQty;
