@@ -1,16 +1,31 @@
-[A 店,商品 1,10,10]
-[A 店,商品 2,10,10]
-[A 店,商品 3,10,10]
-[B 店,商品 1,20,20]
-[B 店,商品 2,20,20]
-[B 店,商品 3,20,20]
-[C 店,商品 1,30,30]
-[C 店,商品 2,30,30]
-[C 店,商品 3,30,30]
+## Daily-report-generator
+Converting a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) with **23,000+** records (**300,000+** values) of PX Mart inventory data into daily reports within 5 seconds is achievable, although times may vary based on device computational capabilities. What used to take 2 hours of manual work can now yield results within a few seconds.
 
-    商品1 	商品2 	商品3
+## Algorithm
+Here's a brief explanation of how to convert CSV records into a table
+### Input
+```
+[A 店,商品 1,10] 
+[A 店,商品 2,10] 
+[A 店,商品 3,10] 
+[B 店,商品 1,20] 
+[B 店,商品 2,20] 
+[B 店,商品 3,20] 
+[C 店,商品 1,30] 
+[C 店,商品 2,30]
+[C 店,商品 3,30]
+```
+### Output
+|  | 商品 1 | 商品 2 | 商品 3 |
+| -------- | -------- | -------- | -------- |
+| A  店    | 10     | 10     | 10     |
+| B  店    | 20     | 20     | 20     |
+| C  店    | 30     | 30     | 30     |
 
-A 店 10,20 10,20 10,20
-B 店 20,40 20,40 20,40
-C 店 30,60 30,60 30,60
+## Usage
 
+1.Download the [mock data](https://drive.google.com/file/d/1ySFTcuM3ZS92sDCSwDlfeXwH0Dyh9nXS/view?usp=sharing) by [data_masker](https://github.com/chienniman/Daily-report-generator/tree/feat/data-obfuscation) where each field value will display as NaN.
+
+2.Click UPLOAD.
+
+3.Click the Generate.
