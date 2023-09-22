@@ -27,8 +27,6 @@ Here's a brief explanation of how to convert CSV records into a table
 ## Usage
 [Daily-report-generator](https://www.boris.idv.tw/Daily-report-generator/)
 
-1.Download the [mock data](https://drive.google.com/file/d/1ySFTcuM3ZS92sDCSwDlfeXwH0Dyh9nXS/view?usp=sharing) by [data_masker](https://github.com/chienniman/Daily-report-generator/tree/feat/data-obfuscation) where each field value will display as NaN.
+1.Click UPLOAD.
 
-2.Click UPLOAD.
-
-3.Click the Generate.
+2.Click the Generate.
