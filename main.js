@@ -153,10 +153,12 @@ function appendTableRows(targetPxMarts, targetProductName, jsonData) {
         var row = "<tr class='table-row'><td class='yellow'>" + store + "</td>";
         for (const e of targetProductName) {
             row += `<td>
-                    <div class="split-td">
-                        <div class='darkred-text'>${jsonData[store][e]?.stockQty}</div>
-                    </div>
-                </td>`;
+                <div class="split-td">
+                    <div class='darkred-text'>${
+                        (jsonData && jsonData[store] && jsonData[store][e] )? jsonData[store][e]?.stockQty: "N/A"
+                    }</div>
+                </div>
+            </td>`;
         }
         row += "</tr>";
         $("#resultTable").append(row);
