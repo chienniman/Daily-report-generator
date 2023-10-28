@@ -549,13 +549,16 @@ function convertToJson(array, type) {
 function appendHeaderRows() {
     var headerRow = `
     <tr class='gray'>
-        <th rowspan="2">處</th>
-        <th rowspan="2">區</th>
-        <th rowspan="2">店名</th>
+        <th>處</th>
+        <th>區</th>
+        <th>店名</th>
     `;
 
     var subHeaderRow = `
     <tr class='white'>
+        <th></th>
+        <th></th>
+        <th></th>
     `;
 
     for (const i in targetProductName) {
