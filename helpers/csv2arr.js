@@ -1,17 +1,17 @@
 $.fn.csv2arr = function (callback) {
     if (typeof FileReader == "undefined") {
-        alert("Browser is too old,please use Chrome or Firefox");
+        alert("瀏覽器不支援");
         return false;
     }
     if (!$(this)[0].files[0]) {
-        alert("Please select a file");
+        alert("必須選擇檔案");
         return false;
     }
     var allowedExtensions = ["csv"];
     var fileName = $(this)[0].files[0].name;
     var fileExtension = fileName.split(".").pop().toLowerCase();
     if (!allowedExtensions.includes(fileExtension)) {
-        alert("Invalid file type. Please select a CSV file.");
+        alert("不支援的檔案類型，必須是 CSV 檔");
         return false;
     }
     var fReader = new FileReader();
@@ -33,7 +33,7 @@ $.fn.csv2arr = function (callback) {
         });
     };
     fReader.onerror = function (evt) {
-        alert("The file has changed,please select again");
+        alert("無法預期的錯誤，請重新嘗試");
     };
 
     function checkEncoding(base64Str) {

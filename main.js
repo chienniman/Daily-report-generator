@@ -171,6 +171,8 @@ function generateStockReport() {
             clearTableAndInput();
 
             const filteredData = filterByPrdtAndPxMarts(arr);
+
+            console.log(filteredData);
             const jsonData = convertToJson(filteredData);
 
             appendHeaderRows();
