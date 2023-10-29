@@ -61,224 +61,198 @@ const targetProductName = [
     "華強　水晶肥皂洗衣用粉体 / １．７９ｋｇ",
 ];
 
-const targetAreaPxMarts = [
-    {
-        大甲區: [
-            "大甲民生",
-            "大甲甲后",
-            "大甲光明",
-            "大甲復興",
-            "大甲經國",
-            "大甲黎明",
-            "台中豐后",
-            "后里",
-            "后里文明",
-            "神岡五權",
-            "豐原大豐",
-            "豐原成功",
-        ],
-    },
-    {
-        北中區: [
-            "五權",
-            "台中二中",
-            "台中三民",
-            "台中太原",
-            "台中永興",
-            "台中明新",
-            "台中東光",
-            "台中陜西",
-            "台中健行",
-            "台中崇德",
-            "台中進化",
-            "台中新民",
-            "台中學士",
-        ],
-    },
-    {
-        北屯區: [
-            "大連",
-            "中清",
-            "台中大坑",
-            "台中大鵬",
-            "台中四平",
-            "台中北屯二",
-            "台中東山",
-            "台中松五",
-            "台中松竹",
-            "台中南興",
-            "台中軍太",
-            "台中崇德八",
-            "台中敦化",
-            "台中敦富",
-            "北屯",
-            "軍功",
-        ],
-    },
-    {
-        西屯區: [
-            "中工",
-            "文心",
-            "台中文華",
-            "台中水湳",
-            "台中西屯",
-            "台中忠義",
-            "台中青海",
-            "台中國安",
-            "台中福星",
-            "台中福科",
-            "台中環中",
-            "台中寶慶",
-            "逢甲",
-        ],
-    },
-    {
-        沙鹿區: [
-            "沙鹿",
-            "沙鹿中山",
-            "沙鹿北勢東",
-            "沙鹿屏西",
-            "清水中山",
-            "清水中興",
-            "清水五權",
-            "清水鰲峰",
-        ],
-    },
-    {
-        南西區: [
-            "台中工學",
-            "台中仁和",
-            "台中民權",
-            "台中建國南",
-            "台中忠明南",
-            "台中林森",
-            "台中南門",
-            "台中復興",
-            "台中樂群",
-            "台中學府",
-            "美村綠",
-        ],
-    },
-    {
-        雅潭區: [
-            "大雅民生",
-            "大雅雅環",
-            "大雅學府",
-            "神岡中山",
-            "神岡中正",
-            "神岡昌平",
-            "潭子",
-            "潭子中山",
-            "潭子得天",
-            "潭子福潭",
-            "潭子潭陽",
-            "潭子潭豐",
-            "潭子豐興",
-        ],
-    },
-    {
-        新屯區: [
-            "天津",
-            "台中大昌",
-            "台中大進",
-            "台中山西",
-            "台中市政",
-            "台中河北東",
-            "台中河南",
-            "台中博二",
-            "台中博館",
-            "台中龍門",
-            "旅順",
-            "精誠",
-        ],
-    },
-    {
-        龍井區: [
-            "大肚",
-            "大肚中蔗",
-            "大肚遊園",
-            "大肚榮華",
-            "台中東海",
-            "烏日中山",
-            "烏日長春",
-            "梧棲中華",
-            "梧棲文化",
-            "梧棲文昌",
-            "龍井中央",
-            "龍井沙田",
-            "龍井龍津",
-            "龍井藝術",
-        ],
-    },
-    {
-        豐原區: [
-            "台中石岡",
-            "卓蘭昭永",
-            "卓蘭經國",
-            "東勢東蘭",
-            "東勢豐勢",
-            "新社中和",
-            "豐原大順",
-            "豐原田心",
-            "豐原北陽",
-            "豐原向陽",
-            "豐原忠孝",
-            "豐原豐東",
-        ],
-    },
-    {
-        大里區: [
-            "大里",
-            "大里仁化",
-            "大里立中",
-            "大里成功",
-            "大里益民",
-            "大里爽文",
-            "大里新芳",
-            "大里新芳小時",
-            "大里新興",
-            "大里練武",
-            "國光",
-            "塗城金德",
-            "霧峰中正",
-            "霧峰民生",
-        ],
-    },
-    {
-        太平區: [
-            "十甲",
-            "大智",
-            "太平中平",
-            "太平中和",
-            "太平光興",
-            "太平宜昌",
-            "太平東平",
-            "太平勤益",
-            "太平新興",
-            "太平樹孝",
-            "太平樹德",
-            "台中忠孝",
-            "台中振興",
-            "台中樂業",
-        ],
-    },
-    {
-        南屯區: [
-            "台中三和",
-            "台中大忠",
-            "台中永春東",
-            "台中向上",
-            "台中向上三厝",
-            "台中惠文",
-            "台中萬和",
-            "台中楓樹",
-            "台中黎明",
-            "台中嶺東",
-            "台中豐樂",
-            "忠明",
-        ],
-    },
-];
+const targetAreaPxMarts = {
+    大甲區: [
+        "大甲民生",
+        "大甲甲后",
+        "大甲光明",
+        "大甲復興",
+        "大甲經國",
+        "大甲黎明",
+        "台中豐后",
+        "后里",
+        "后里文明",
+        "神岡五權",
+        "豐原大豐",
+        "豐原成功",
+    ],
+    北中區: [
+        "五權",
+        "台中二中",
+        "台中三民",
+        "台中太原",
+        "台中永興",
+        "台中明新",
+        "台中東光",
+        "台中陜西",
+        "台中健行",
+        "台中崇德",
+        "台中進化",
+        "台中新民",
+        "台中學士",
+    ],
+    北屯區: [
+        "大連",
+        "中清",
+        "台中大坑",
+        "台中大鵬",
+        "台中四平",
+        "台中北屯二",
+        "台中東山",
+        "台中松五",
+        "台中松竹",
+        "台中南興",
+        "台中軍太",
+        "台中崇德八",
+        "台中敦化",
+        "台中敦富",
+        "北屯",
+        "軍功",
+    ],
+    西屯區: [
+        "中工",
+        "文心",
+        "台中文華",
+        "台中水湳",
+        "台中西屯",
+        "台中忠義",
+        "台中青海",
+        "台中國安",
+        "台中福星",
+        "台中福科",
+        "台中環中",
+        "台中寶慶",
+        "逢甲",
+    ],
+    沙鹿區: [
+        "沙鹿",
+        "沙鹿中山",
+        "沙鹿北勢東",
+        "沙鹿屏西",
+        "清水中山",
+        "清水中興",
+        "清水五權",
+        "清水鰲峰",
+    ],
+    南西區: [
+        "台中工學",
+        "台中仁和",
+        "台中民權",
+        "台中建國南",
+        "台中忠明南",
+        "台中林森",
+        "台中南門",
+        "台中復興",
+        "台中樂群",
+        "台中學府",
+        "美村綠",
+    ],
+    雅潭區: [
+        "大雅民生",
+        "大雅雅環",
+        "大雅學府",
+        "神岡中山",
+        "神岡中正",
+        "神岡昌平",
+        "潭子",
+        "潭子中山",
+        "潭子得天",
+        "潭子福潭",
+        "潭子潭陽",
+        "潭子潭豐",
+        "潭子豐興",
+    ],
+    新屯區: [
+        "天津",
+        "台中大昌",
+        "台中大進",
+        "台中山西",
+        "台中市政",
+        "台中河北東",
+        "台中河南",
+        "台中博二",
+        "台中博館",
+        "台中龍門",
+        "旅順",
+        "精誠",
+    ],
+    龍井區: [
+        "大肚",
+        "大肚中蔗",
+        "大肚遊園",
+        "大肚榮華",
+        "台中東海",
+        "烏日中山",
+        "烏日長春",
+        "梧棲中華",
+        "梧棲文化",
+        "梧棲文昌",
+        "龍井中央",
+        "龍井沙田",
+        "龍井龍津",
+        "龍井藝術",
+    ],
+    豐原區: [
+        "台中石岡",
+        "卓蘭昭永",
+        "卓蘭經國",
+        "東勢東蘭",
+        "東勢豐勢",
+        "新社中和",
+        "豐原大順",
+        "豐原田心",
+        "豐原北陽",
+        "豐原向陽",
+        "豐原忠孝",
+        "豐原豐東",
+    ],
+    大里區: [
+        "大里",
+        "大里仁化",
+        "大里立中",
+        "大里成功",
+        "大里益民",
+        "大里爽文",
+        "大里新芳",
+        "大里新芳小時",
+        "大里新興",
+        "大里練武",
+        "國光",
+        "塗城金德",
+        "霧峰中正",
+        "霧峰民生",
+    ],
+    太平區: [
+        "十甲",
+        "大智",
+        "太平中平",
+        "太平中和",
+        "太平光興",
+        "太平宜昌",
+        "太平東平",
+        "太平勤益",
+        "太平新興",
+        "太平樹孝",
+        "太平樹德",
+        "台中忠孝",
+        "台中振興",
+        "台中樂業",
+    ],
+    南屯區: [
+        "台中三和",
+        "台中大忠",
+        "台中永春東",
+        "台中向上",
+        "台中向上三厝",
+        "台中惠文",
+        "台中萬和",
+        "台中楓樹",
+        "台中黎明",
+        "台中嶺東",
+        "台中豐樂",
+        "忠明",
+    ],
+};
 
 const targetPxMarts = [
     "大甲民生",
@@ -632,48 +606,46 @@ function appendHeaderRows() {
 function appendTableRows(monthStocksData, todaySellsData) {
     const table = $("#resultTable");
 
-    for (const areaObj of targetAreaPxMarts) {
-        for (const area in areaObj) {
-            const stores = areaObj[area];
-            for (const store of stores) {
-                const storeRow = $("<tr>").addClass("table-row");
-                storeRow.append($("<td>").text(" ")); // 處
-                storeRow.append($("<td>").text(area)); // 區
-                storeRow.append($("<td>").text(store)); // 店家
-                for (const e of targetProductName) {
-                    const stockQty =
-                        monthStocksData &&
-                        monthStocksData[store] &&
-                        monthStocksData[store][e]
-                            ? monthStocksData[store][e].stockQty
-                            : "N/A";
+    for (const area in targetAreaPxMarts) {
+        const stores = targetAreaPxMarts[area];
+        for (const store of stores) {
+            const storeRow = $("<tr>").addClass("table-row");
+            storeRow.append($("<td>").text(" ")); 
+            storeRow.append($("<td>").text(area)); 
+            storeRow.append($("<td>").text(store));
+            for (const e of targetProductName) {
+                const stockQty =
+                    monthStocksData &&
+                    monthStocksData[store] &&
+                    monthStocksData[store][e]
+                        ? monthStocksData[store][e].stockQty
+                        : "N/A";
 
-                    if (inventoryAlert.hasOwnProperty(e)) {
-                        if (
-                            Number(stockQty) === stockQty &&
-                            stockQty < inventoryAlert[e]
-                        ) {
-                            const restockItem = `${area}_${store}_${e}_庫存_${monthStocksData[store][e].stockQty}`;
-                            restockMarts.push(restockItem);
-                        }
+                if (inventoryAlert.hasOwnProperty(e)) {
+                    if (
+                        Number(stockQty) === stockQty &&
+                        stockQty < inventoryAlert[e]
+                    ) {
+                        const restockItem = `${area}_${store}_${e}_庫存_${monthStocksData[store][e].stockQty}`;
+                        restockMarts.push(restockItem);
                     }
-
-                    const sellQty =
-                        todaySellsData &&
-                        todaySellsData[store] &&
-                        todaySellsData[store][e]
-                            ? todaySellsData[store][e].sellQty
-                            : "0";
-                    const cell1 = $("<td>").html(
-                        `<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
-                    );
-                    const cell2 = $("<td>").html(
-                        `<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
-                    );
-                    storeRow.append(cell1, cell2);
                 }
-                table.append(storeRow);
+
+                const sellQty =
+                    todaySellsData &&
+                    todaySellsData[store] &&
+                    todaySellsData[store][e]
+                        ? todaySellsData[store][e].sellQty
+                        : "0";
+                const cell1 = $("<td>").html(
+                    `<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
+                );
+                const cell2 = $("<td>").html(
+                    `<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
+                );
+                storeRow.append(cell1, cell2);
             }
+            table.append(storeRow);
         }
     }
 }
