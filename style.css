@@ -105,6 +105,9 @@ body {
 #resultTable tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.05);
 }
+.inventoryAlert {
+    color: darkred;
+}
 .darkred-text {
     color: darkred;
 }
@@ -165,11 +168,57 @@ body {
     color: #fff;
     font-size: 14px;
     padding: 10px 12px;
-    background-color: rgb(32,178,170);
+    background-color: rgb(32, 178, 170);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 }
 .file-input-label svg {
     width: 30%;
     height: 16px;
     margin-right: 4px;
+}
+#modal {
+    background-color: #ededed;
+    color: white;
+    padding: 20px;
+    border-radius: 4px;
+    width: 40%;
+    position: fixed;
+    top: 15%;
+    left: 30%;
+    display: none;
+    box-sizing: border-box;
+    z-index: 100000;
+    background-color: #2c3e50;
+}
+
+#modal p {
+    overflow: auto;
+}
+
+#modal .close {
+    background-color: #30cc9d;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+    padding: 4px;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 50%;
+}
+.search{
+    margin: 10px 0;
+}
+.items {
+    overflow-y: scroll;
+    max-height: 600px;
+}
+.items > * {
+    padding: 15px;
+    background-color: #ccc;
+    border: 1px solid #fff;
+    color: #000;
 }

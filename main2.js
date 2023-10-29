@@ -447,7 +447,50 @@ const targetPxMarts = [
     "忠明",
 ];
 
+const inventoryAlert = {
+    "華強　南僑水晶肥皂 / ２００ｇ＊３塊": 12,
+    "華強　南僑水晶肥皂－檸檬清香 / １５０ｇ＊３入": 12,
+    "華強　南僑水晶肥皂－檸檬１５０ / ｇ＊６贈食器洗滌液體２５０ｍｌ": 7,
+    "華強　水晶肥皂液體補充包－輕柔型 / １６００ｇ": 4,
+    "華強　水晶肥皂食器洗滌液體 / １０００ｍｌ": 6,
+    "華強　水晶肥皂食器洗滌液体 / －速淨＆清新８００ｍｌ": 6,
+};
+
+const restockMarts = [];
+
 $(document).ready(function () {
+    $("[data-search]").on("keyup", function () {
+        var searchVal = $(this).val();
+        var filterItems = $("[data-filter-item]");
+
+        if (searchVal != "") {
+            filterItems.addClass("hidden");
+            $(
+                '[data-filter-item][data-filter-name*="' +
+                    searchVal.toLowerCase() +
+                    '"]'
+            ).removeClass("hidden");
+        } else {
+            filterItems.removeClass("hidden");
+        }
+    });
+    $("#inventoryAlertBtn").click(function () {
+        $("#modal").show("slow");
+
+        $(".close").click(function () {
+            $("#modal").fadeOut("slow");
+        });
+
+        if ($("#resultTable").children().length > 0) {
+            restockMarts.forEach((item) => {
+                const itemElement = $("<div>")
+                    .attr("data-filter-item", item)
+                    .attr("data-filter-name", item)
+                    .text(item);
+                $(".items").append(itemElement);
+            });
+        }
+    });
     $("#resetBtn").click(() => {
         clearTableAndInput();
     });
@@ -604,6 +647,17 @@ function appendTableRows(monthStocksData, todaySellsData) {
                         monthStocksData[store][e]
                             ? monthStocksData[store][e].stockQty
                             : "N/A";
+
+                    if (inventoryAlert.hasOwnProperty(e)) {
+                        if (
+                            Number(stockQty) === stockQty &&
+                            stockQty < inventoryAlert[e]
+                        ) {
+                            const restockItem = `${area}_${store}_${e}_庫存_${monthStocksData[store][e].stockQty}`;
+                            restockMarts.push(restockItem);
+                        }
+                    }
+
                     const sellQty =
                         todaySellsData &&
                         todaySellsData[store] &&
@@ -628,6 +682,8 @@ async function generateReport() {
     try {
         const monthStocksData = await processCSV("monthStocks");
         const todaySellsData = await processCSV("todaySells");
+
+        console.log(monthStocksData);
 
         appendHeaderRows();
         appendTableRows(monthStocksData, todaySellsData);
