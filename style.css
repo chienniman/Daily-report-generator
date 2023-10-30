@@ -217,6 +217,7 @@ body {
     max-height: 600px;
 }
 .items > * {
+    text-align: left;
     padding: 15px;
     background-color: #ccc;
     border: 1px solid #fff;
