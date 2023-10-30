@@ -1,3 +1,9 @@
+import {
+    exportToExcel,
+    clearTableAndInput,
+    appendHeaderRows,
+} from "./helpers/table.js";
+
 const inventoryAlert = {
     "華強　南僑水晶肥皂 / ２００ｇ＊３塊": 12,
     "華強　南僑水晶肥皂－檸檬清香 / １５０ｇ＊３入": 12,
@@ -87,32 +93,6 @@ $(document).ready(function () {
     });
 });
 
-function exportToExcel() {
-    const table2excel = new Table2Excel();
-    const htmlTable = $("#resultTable");
-
-    if (htmlTable.children().length === 0) {
-        alert("無法導出空表格");
-        return;
-    }
-
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    const formattedDate = `${month}月_${day}日`;
-
-    table2excel.export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
-}
-
-function clearTableAndInput() {
-    $("#fileNameDisplay").empty();
-    $("#resultTable").empty();
-    $("input[name=monthStocks]").val("");
-    $("#monthStocksFileNameDisplay").text("");
-    $("input[name=todaySells]").val("");
-    $("#todaySellsFileNameDisplay").text("");
-}
-
 function filterByPrdtAndPxMarts(array) {
     return array.filter(
         (e) => targetPrdtCodes.includes(e[5]) && targetPxMarts.includes(e[4])
@@ -140,46 +120,6 @@ function convertToJson(array, type) {
     return jsonData;
 }
 
-function appendHeaderRows() {
-    var headerRow = `
-    <tr class='gray'>
-        <th>處</th>
-        <th>區</th>
-        <th>店名</th>
-    `;
-
-    var subHeaderRow = `
-    <tr class='white'>
-        <th></th>
-        <th></th>
-        <th></th>
-    `;
-
-    for (const i in targetProductName) {
-        const product = targetProductName[i];
-        headerRow += `<th colspan="2">${product}</th>`;
-
-        subHeaderRow += `
-            <th>
-                <div class='darkred-text'>
-                    庫存
-                </div>
-            </th>
-            <th>
-                <div class='darkred-text'>
-                    日銷
-                </div>
-            </th>
-        `;
-    }
-
-    headerRow += "</tr>";
-    $("#resultTable").append(headerRow);
-
-    subHeaderRow += "</tr>";
-    $("#resultTable").append(subHeaderRow);
-}
-
 function appendTableRows(monthStocksData, todaySellsData) {
     const table = $("#resultTable");
 
@@ -187,8 +127,8 @@ function appendTableRows(monthStocksData, todaySellsData) {
         const stores = targetAreaPxMarts[area];
         for (const store of stores) {
             const storeRow = $("<tr>").addClass("table-row");
-            storeRow.append($("<td>").text(" ")); 
-            storeRow.append($("<td>").text(area)); 
+            storeRow.append($("<td>").text(" "));
+            storeRow.append($("<td>").text(area));
             storeRow.append($("<td>").text(store));
             for (const e of targetProductName) {
                 const stockQty =
@@ -235,7 +175,7 @@ async function generateReport() {
         appendHeaderRows();
         appendTableRows(monthStocksData, todaySellsData);
     } catch (error) {
-        console.error("Error generating stock report:", error);
+        console.error("報表生成錯誤", error);
     }
 }
 
