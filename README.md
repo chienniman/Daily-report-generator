@@ -1,5 +1,5 @@
 ## Daily-report-generator
-Converting a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) with **25,000+** records (**300,000+** values) of PX Mart inventory data into daily reports within 3 seconds. What used to take 2 hours of manual work can now yield results within a few seconds.
+Converting a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) with **25,000+** records (**300,000+** values) of PX Mart inventory data into daily reports within 3 seconds. What used to take 2 hours of manual work.
 
 ![preview](https://github.com/chienniman/Daily-report-generator/assets/97031067/04738835-7670-4d1b-a090-16875b5d67ec)
 
