@@ -44,12 +44,12 @@ function appendHeaderRows() {
         headerRow += `<th colspan="2">${product}</th>`;
 
         subHeaderRow += `
-            <th>
+            <th id="stock">
                 <div class='darkred-text'>
                     庫存
                 </div>
             </th>
-            <th>
+            <th id="sell">
                 <div class='darkred-text'>
                     日銷
                 </div>

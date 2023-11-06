@@ -154,13 +154,13 @@ function appendTableRows(monthStocksData, todaySellsData) {
                     todaySellsData[store][e]
                         ? todaySellsData[store][e].sellQty
                         : "0";
-                const cell1 = $("<td>").html(
+                const stockQtyCell = $("<td id='stock'>").html(
                     `<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
                 );
-                const cell2 = $("<td>").html(
+                const sellQtyCell = $("<td id='sell'>").html(
                     `<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
                 );
-                storeRow.append(cell1, cell2);
+                storeRow.append(stockQtyCell, sellQtyCell);
             }
             table.append(storeRow);
         }
