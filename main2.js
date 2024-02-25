@@ -64,6 +64,7 @@ $(document).ready(function () {
 	}
 
 	$('#inventoryAlertBtn').click(function () {
+        $('.items').empty();
 		$('#modal').show('slow');
 
 		$('.close').click(function () {
