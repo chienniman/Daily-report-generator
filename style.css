@@ -209,9 +209,6 @@ body {
     line-height: 16px;
     border-radius: 50%;
 }
-.search{
-    margin: 10px 0;
-}
 .items {
     overflow-y: scroll;
     max-height: 600px;
@@ -222,4 +219,15 @@ body {
     background-color: #ccc;
     border: 1px solid #fff;
     color: #000;
+}
+.accordion-header{
+    cursor: pointer;
+}
+.accordion-sub-header{
+    cursor: pointer;
+    text-align: center;
+    background: #227093;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5%;
 }
