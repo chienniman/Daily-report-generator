@@ -173,51 +173,114 @@ function convertToJson(array, type) {
 }
 
 function appendTableRows(monthStocksData, todaySellsData) {
-	const table = $('#resultTable');
-
+	const table = $("#resultTable");
+  
 	for (const area in targetAreaPxMarts) {
-		const stores = targetAreaPxMarts[area];
-		for (const store of stores) {
-			const storeRow = $('<tr>').addClass('table-row');
-			storeRow.append($('<td>').text(' '));
-			storeRow.append($('<td>').text(area));
-			storeRow.append($('<td>').text(store));
+	  const stores = targetAreaPxMarts[area];
+	  for (const store of stores) {
+		const storeRow = $("<tr>").addClass("table-row");
+		storeRow.append($("<td>").text(" "));
+		storeRow.append($("<td>").text(area));
+  
+		const storeButton = $("<button>")
+		  .text(store)
+		  .css("cursor", "pointer")
+		  .on("click", () => {
+			const storeInfo = [];
+			let index = 1;
 			for (const e of targetProductName) {
-				const stockQty =
-					monthStocksData && monthStocksData[store] && monthStocksData[store][e]
-						? monthStocksData[store][e].stockQty
-						: 'N/A';
-
-				if (inventoryAlert.hasOwnProperty(e)) {
-					if (Number(stockQty) === stockQty && stockQty < inventoryAlert[e]) {
-						const restockItem = `${e}_缺_${Math.abs(stockQty - inventoryAlert[e])}`;
-
-						if (!groupedByAreaAndStore.hasOwnProperty(area)) {
-							groupedByAreaAndStore[area] = {};
-						}
-
-						if (!groupedByAreaAndStore[area].hasOwnProperty(store)) {
-							groupedByAreaAndStore[area][store] = [];
-						}
-						groupedByAreaAndStore[area][store].push(restockItem);
-					}
-				}
-				const sellQty =
-					todaySellsData && todaySellsData[store] && todaySellsData[store][e]
-						? todaySellsData[store][e].sellQty
-						: '0';
-				const stockQtyCell = $("<td id='stock'>").html(
-					`<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
-				);
-				const sellQtyCell = $("<td id='sell'>").html(
-					`<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
-				);
-				storeRow.append(stockQtyCell, sellQtyCell);
+			  const stockQty =
+				monthStocksData &&
+				monthStocksData[store] &&
+				monthStocksData[store][e]
+				  ? monthStocksData[store][e].stockQty
+				  : "N/A";
+  
+			  const sellQty =
+				todaySellsData &&
+				todaySellsData[store] &&
+				todaySellsData[store][e]
+				  ? todaySellsData[store][e].sellQty
+				  : "0";
+  
+			  	storeInfo.push(
+					`${index}. ${e}: 庫存 ${stockQty}, 日銷 ${sellQty}`
+				  );
+				index++;
 			}
-			table.append(storeRow);
+
+			const storeName = `店名: ${store}`;
+			const stockList = storeInfo.map((item) => `${item}`).join('\n');
+
+			const infoText = `${storeName}\n\n庫存情況：\n${stockList}目前已持續爭取二位陳列、確認各品項庫存足夠，會再持續回訪，並觀察二位陳列的銷轉狀況`;
+
+			const tempTextArea = $('<textarea>').val(infoText);
+
+			$('body').append(tempTextArea);
+			tempTextArea.select();
+			document.execCommand('copy');
+			tempTextArea.remove();
+
+			alert(infoText);
+
+			// const infoText = `店名: ${store}\n${storeInfo.join('\n')}`;
+
+			// const tempTextArea = $('<textarea>').val(infoText).css({
+			// 	position: 'absolute',
+			// 	left: '-9999px',
+			// });
+
+			// $('body').append(tempTextArea);
+			// tempTextArea.select();
+			// document.execCommand('copy');
+			// tempTextArea.remove();
+
+			// alert(`店名: ${store}\n${storeInfo.join('\n')}`);
+		  });
+  
+		storeRow.append($("<td>").append(storeButton));
+  
+		for (const e of targetProductName) {
+		  const stockQty =
+			monthStocksData && monthStocksData[store] && monthStocksData[store][e]
+			  ? monthStocksData[store][e].stockQty
+			  : "N/A";
+  
+		  if (inventoryAlert.hasOwnProperty(e)) {
+			if (Number(stockQty) === stockQty && stockQty < inventoryAlert[e]) {
+			  const restockItem = `${e}_缺_${Math.abs(
+				stockQty - inventoryAlert[e]
+			  )}`;
+  
+			  if (!groupedByAreaAndStore.hasOwnProperty(area)) {
+				groupedByAreaAndStore[area] = {};
+			  }
+  
+			  if (!groupedByAreaAndStore[area].hasOwnProperty(store)) {
+				groupedByAreaAndStore[area][store] = [];
+			  }
+			  groupedByAreaAndStore[area][store].push(restockItem);
+			}
+		  }
+  
+		  const sellQty =
+			todaySellsData && todaySellsData[store] && todaySellsData[store][e]
+			  ? todaySellsData[store][e].sellQty
+			  : "0";
+  
+		  const stockQtyCell = $("<td id='stock'>").html(
+			`<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
+		  );
+		  const sellQtyCell = $("<td id='sell'>").html(
+			`<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
+		  );
+		  storeRow.append(stockQtyCell, sellQtyCell);
 		}
+		table.append(storeRow);
+	  }
 	}
 }
+  
 
 async function generateReport() {
 	try {
