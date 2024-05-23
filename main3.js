@@ -12,105 +12,57 @@ const inventoryAlert = {
 const groupedByAreaAndStore = {};
 
 $(document).ready(function () {
-	function sortStores() {
-		const stores = $('.store');
+	$('#dailyReviewBtn').click(function () {
+        const htmlTable = $("#resultTable");
 
-		stores.each(function () {
-			const store = $(this);
-			const headers = store.find('.accordion-sub-header');
-			const contents = store.find('.accordion-sub-content');
+        if (htmlTable.children().length === 0) {
+            alert("無法生成空資料");
+            return;
+        }
 
-			const items = [];
-			headers.each(function (index) {
-				const header = $(this);
-				const content = contents.eq(index);
-				const value = parseInt(header.attr('data-sort-value'));
-				items.push({ header, content, value });
-			});
+        const areaInfo = {};
+    
+        for (const areaKey in groupedByAreaAndStore) {
+            const area = groupedByAreaAndStore[areaKey];
+    
+            const storeCount = Object.keys(area).length;
+    
+            areaInfo[areaKey] = {
+                storeCount: storeCount,
+                stores: Object.keys(area),
+                itemLists: {}
+            };
+    
+            for (const storeKey in area) {
+                const storeItems = area[storeKey];
+                areaInfo[areaKey].itemLists[storeKey] = storeItems;
+            }
+        }
+    
+        const sortedAreaInfo = Object.entries(areaInfo).sort((a, b) => a[1].storeCount - b[1].storeCount);
+    
+        let output = "台中缺貨較少區域：\n";
 
-			items.sort(function (a, b) {
-				return b.value - a.value;
-			});
+        output += "\n";
+        output += "名稱：" + sortedAreaInfo[0][0] + "\n";
+        output += "列表：" + sortedAreaInfo[0][1].stores.join(", ") + "\n";
+        output += "\n";
+        output += "台中缺貨較多區域：\n";
+        output += "\n";
+        output += "名稱：" + sortedAreaInfo[sortedAreaInfo.length - 1][0] + "\n";
+        output += "列表：" + sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ") + "\n";
+        output += "\n";
+        output += "會持續追蹤台中各區庫存狀況，持續與各店代表溝通，提高庫存、業績達成率，為公司創造更大的利益\n";
 
-			items.forEach(function (item) {
-				store.append(item.header);
-				store.append(item.content);
-			});
-		});
-	}
+        const tempTextArea = $('<textarea>').val(output);
 
-	function handleAccordion() {
-		$('.accordion-content,.accordion-sub-content').hide();
+        $('body').append(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        tempTextArea.remove();
 
-		$('.accordion-header').click(function () {
-			const content = $(this).next('.accordion-content');
-
-			$('.accordion-content').not(content).slideUp();
-
-			content.slideToggle();
-		});
-
-		$('.accordion-sub-header').click(function () {
-			const content = $(this).next('.accordion-sub-content');
-
-			$('.accordion-sub-content').not(content).slideUp();
-
-			content.slideToggle();
-		});
-
-		$('.accordion-content').click(function (event) {
-			event.stopPropagation();
-		});
-	}
-
-	$('#inventoryAlertBtn').click(function () {
-        $('.items').empty();
-		$('#modal').show('slow');
-
-		$('.close').click(function () {
-			$('#modal').fadeOut('slow');
-		});
-
-		for (const areaKey in groupedByAreaAndStore) {
-			const area = groupedByAreaAndStore[areaKey];
-			const areaKeyLength = Object.keys(area).length;
-			const storeDiv = $("<div class='store'></div>");
-			const areaHeader = $(`<div class='accordion-header'>` + areaKey + `(${areaKeyLength})` + '</div>');
-			const areaContent = $("<div class='accordion-content'></div>");
-
-			for (const storeKey in area) {
-				const storeItems = area[storeKey];
-				let totalSum = 0;
-				const storeHeader = $("<div class='accordion-sub-header'>" + storeKey + '</div>');
-				const storeContent = $("<div class='accordion-sub-content'></div>");
-
-				storeItems.forEach((item) => {
-					const itemParts = item.split('_');
-					const value = parseInt(itemParts[itemParts.length - 1]);
-					totalSum += value;
-					const itemElement = $("<div class='item'></div>")
-						.attr('data-filter-item', item)
-						.attr('data-filter-name', item)
-						.text(item);
-					storeContent.append(itemElement);
-				});
-
-				storeHeader.attr('data-sort-value', totalSum);
-				storeContent.attr('data-sort-value', totalSum);
-
-				const totalSumElement = $("<span class='total-sum'></span>").text(`(${totalSum})`);
-				storeHeader.append(totalSumElement);
-				storeDiv.append(storeHeader);
-				storeDiv.append(storeContent);
-				areaContent.append(storeDiv);
-			}
-
-			$('.items').append(areaHeader);
-			$('.items').append(areaContent);
-		}
-		handleAccordion();
-		sortStores();
-	});
+        alert(output);
+    });
 	$('#resetBtn').click(() => {
 		clearTableAndInput();
 	});
@@ -212,7 +164,7 @@ function appendTableRows(monthStocksData, todaySellsData) {
 			const storeName = `店名: ${store}`;
 			const stockList = storeInfo.map((item) => `${item}`).join('\n');
 
-			const infoText = `${storeName}\n\n庫存情況：\n${stockList}目前已持續爭取二位陳列、確認各品項庫存足夠，會再持續回訪，並觀察二位陳列的銷轉狀況`;
+			const infoText = `${storeName}\n\n庫存情況:\n${stockList}目前已持續爭取二位陳列、確認各品項庫存足夠，會再持續回訪，並觀察二位陳列的銷轉狀況`;
 
 			const tempTextArea = $('<textarea>').val(infoText);
 
@@ -222,20 +174,6 @@ function appendTableRows(monthStocksData, todaySellsData) {
 			tempTextArea.remove();
 
 			alert(infoText);
-
-			// const infoText = `店名: ${store}\n${storeInfo.join('\n')}`;
-
-			// const tempTextArea = $('<textarea>').val(infoText).css({
-			// 	position: 'absolute',
-			// 	left: '-9999px',
-			// });
-
-			// $('body').append(tempTextArea);
-			// tempTextArea.select();
-			// document.execCommand('copy');
-			// tempTextArea.remove();
-
-			// alert(`店名: ${store}\n${storeInfo.join('\n')}`);
 		  });
   
 		storeRow.append($("<td>").append(storeButton));
@@ -280,7 +218,6 @@ function appendTableRows(monthStocksData, todaySellsData) {
 	  }
 	}
 }
-  
 
 async function generateReport() {
 	try {
