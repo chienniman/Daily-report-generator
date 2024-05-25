@@ -10,6 +10,7 @@ const inventoryAlert = {
 };
 
 const groupedByAreaAndStore = {};
+let storeSales = [];
 
 $(document).ready(function () {
 	$('#dailyReviewBtn').click(function () {
@@ -128,10 +129,14 @@ function appendTableRows(monthStocksData, todaySellsData) {
 		storeRow.append($("<td>").text(" "));
 		storeRow.append($("<td>").text(area));
   
+        let storeDailySales =0 ;
+
 		const storeButton = $("<button>")
+          .addClass(store)
 		  .text(store)
 		  .css("cursor", "pointer")
 		  .on("click", () => {
+            $(`.${store}`).prop('disabled', true); 
 			const storeInfo = [];
 			for (const e of targetProductName) {
 			  const sellQty =
@@ -142,6 +147,7 @@ function appendTableRows(monthStocksData, todaySellsData) {
 				  : "0";
   
                 if(sellQty>0){
+                    storeDailySales += sellQty;
                     storeInfo.push(
                         `${e}:日銷 ${sellQty}`
                       );
@@ -157,6 +163,14 @@ function appendTableRows(monthStocksData, todaySellsData) {
 			tempTextArea.select();
 			document.execCommand('copy');
 			tempTextArea.remove();
+
+            const storeSale = `${store}總計售出${storeDailySales}組`;
+
+            if (!storeSales.includes(storeSale)) {
+                storeSales.push(storeSale);
+              }
+
+            console.log(storeSales);
 
 			alert(infoText);
 		  });
