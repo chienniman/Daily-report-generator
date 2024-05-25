@@ -21,12 +21,15 @@ $(document).ready(function () {
     const htmlTable = $("#resultTable");
 
     if (htmlTable.children().length === 0) {
-      alert("無法生成空資料");
+      Swal.fire({
+        title: "無法生成空資料",
+        icon: "error"
+      });
       return;
     }
 
     const areaInfo = {};
-    console.log(groupedByAreaAndStore);
+
     for (const areaKey in groupedByAreaAndStore) {
       const area = groupedByAreaAndStore[areaKey];
 
@@ -75,7 +78,11 @@ $(document).ready(function () {
     document.execCommand("copy");
     tempTextArea.remove();
 
-    alert(output);
+    Swal.fire({
+        title: "每日心得",
+        text: output,
+        icon: "success"
+    });
   });
   $("#resetBtn").click(() => {
     clearTableAndInput();
@@ -104,7 +111,10 @@ $(document).ready(function () {
         .toLowerCase();
 
       if (monthStocksExtension !== "csv" || todaySellsExtension !== "csv") {
-        alert("輸入必須是 CSV 檔!");
+        Swal.fire({
+            title: "輸入必須是 CSV 檔!",
+            icon: "error"
+        });
         return;
       }
 
@@ -114,7 +124,10 @@ $(document).ready(function () {
         $("#loading").addClass("hidden");
       });
     } else {
-      alert("必須同時上傳單月進銷存跟當日銷售");
+      Swal.fire({
+        title: "必須同時上傳單月進銷存跟當日銷售!",
+        icon: "error"
+    });
     }
   });
 });
@@ -199,9 +212,11 @@ function appendTableRows(monthStocksData, todaySellsData) {
             storeSales.push(storeSale);
           }
 
-          console.log(storeSales);
-
-          alert(infoText);
+        Swal.fire({
+            title: "後續追蹤事項",
+            text: infoText,
+            icon: "success"
+        });
         });
 
       storeRow.append($("<td>").append(storeButton));
