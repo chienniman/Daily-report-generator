@@ -3,7 +3,10 @@ function exportToExcel() {
     const htmlTable = $("#resultTable");
 
     if (htmlTable.children().length === 0) {
-        alert("無法導出空表格");
+        Swal.fire({
+            title: "無法導出空表格!",
+            icon: "error"
+        });
         return;
     }
 

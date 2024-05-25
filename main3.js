@@ -1,244 +1,287 @@
-import { exportToExcel, clearTableAndInput, appendHeaderRows } from './helpers/table.js';
+import {
+  exportToExcel,
+  clearTableAndInput,
+  appendHeaderRows,
+} from "./helpers/table.js";
 
 const inventoryAlert = {
-	'華強　南僑水晶肥皂 / ２００ｇ＊３塊': 12,
-	'華強　南僑水晶肥皂－檸檬清香 / １５０ｇ＊３入': 12,
-	'華強　南僑水晶肥皂－檸檬１５０ / ｇ＊６贈食器洗滌液體２５０ｍｌ': 7,
-	'華強　水晶肥皂液體補充包－輕柔型 / １６００ｇ': 4,
-	'華強　水晶肥皂食器洗滌液體 / １０００ｍｌ': 6,
-	'華強　水晶肥皂食器洗滌液体 / －速淨＆清新８００ｍｌ': 6,
+  "華強　南僑水晶肥皂 / ２００ｇ＊３塊": 12,
+  "華強　南僑水晶肥皂－檸檬清香 / １５０ｇ＊３入": 12,
+  "華強　南僑水晶肥皂－檸檬１５０ / ｇ＊６贈食器洗滌液體２５０ｍｌ": 7,
+  "華強　水晶肥皂液體補充包－輕柔型 / １６００ｇ": 4,
+  "華強　水晶肥皂食器洗滌液體 / １０００ｍｌ": 6,
+  "華強　水晶肥皂食器洗滌液体 / －速淨＆清新８００ｍｌ": 6,
 };
 
 const groupedByAreaAndStore = {};
+let storeSales = [];
 
 $(document).ready(function () {
-	$('#dailyReviewBtn').click(function () {
-        const htmlTable = $("#resultTable");
+  $("#dailyReviewBtn").click(function () {
+    const htmlTable = $("#resultTable");
 
-        if (htmlTable.children().length === 0) {
-            alert("無法生成空資料");
-            return;
-        }
+    if (htmlTable.children().length === 0) {
+      Swal.fire({
+        title: "無法生成空資料",
+        icon: "error"
+      });
+      return;
+    }
 
-        const areaInfo = {};
-    
-        for (const areaKey in groupedByAreaAndStore) {
-            const area = groupedByAreaAndStore[areaKey];
-    
-            const storeCount = Object.keys(area).length;
-    
-            areaInfo[areaKey] = {
-                storeCount: storeCount,
-                stores: Object.keys(area),
-                itemLists: {}
-            };
-    
-            for (const storeKey in area) {
-                const storeItems = area[storeKey];
-                areaInfo[areaKey].itemLists[storeKey] = storeItems;
-            }
-        }
-    
-        const sortedAreaInfo = Object.entries(areaInfo).sort((a, b) => a[1].storeCount - b[1].storeCount);
-    
-        let output = "台中缺貨較少區域：\n";
+    const areaInfo = {};
 
-        output += "\n";
-        output += "名稱：" + sortedAreaInfo[0][0] + "\n";
-        output += "列表：" + sortedAreaInfo[0][1].stores.join(", ") + "\n";
-        output += "\n";
-        output += "台中缺貨較多區域：\n";
-        output += "\n";
-        output += "名稱：" + sortedAreaInfo[sortedAreaInfo.length - 1][0] + "\n";
-        output += "列表：" + sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ") + "\n";
-        output += "\n";
-        output += "會持續追蹤台中各區庫存狀況，持續與各店代表溝通，提高庫存、業績達成率，為公司創造更大的利益\n";
+    for (const areaKey in groupedByAreaAndStore) {
+      const area = groupedByAreaAndStore[areaKey];
 
-        const tempTextArea = $('<textarea>').val(output);
+      const storeCount = Object.keys(area).length;
 
-        $('body').append(tempTextArea);
-        tempTextArea.select();
-        document.execCommand('copy');
-        tempTextArea.remove();
+      areaInfo[areaKey] = {
+        storeCount: storeCount,
+        stores: Object.keys(area),
+        itemLists: {},
+      };
 
-        alert(output);
+      for (const storeKey in area) {
+        const storeItems = area[storeKey];
+        areaInfo[areaKey].itemLists[storeKey] = storeItems;
+      }
+    }
+
+    const sortedAreaInfo = Object.entries(areaInfo).sort(
+      (a, b) => a[1].storeCount - b[1].storeCount
+    );
+
+    const randomHeader = getRandomElement(headers);
+    const randomBottom = getRandomElement(bottoms);
+    const randomReview = getRandomElement(reviews);
+
+    let output = "";
+    output += storeSales.join(', ');
+    output += "\n\n";
+    output += randomHeader;
+    output += "。";
+    output += randomBottom;
+    output += "。";
+    output += "\n\n";
+    output += sortedAreaInfo[sortedAreaInfo.length - 1][0] + "的以下店家，包含";
+    output +=
+      sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ");
+    output +=
+    "，熱門品項銷售較佳，之後也會與各店代表溝通回訪，確保有足夠的庫存，";
+    output += randomReview;
+    output += "，也會繼續努力為公司帶來更好的業績。";
+
+    const tempTextArea = $("<textarea>").val(output);
+
+    $("body").append(tempTextArea);
+    tempTextArea.select();
+    document.execCommand("copy");
+    tempTextArea.remove();
+
+    Swal.fire({
+        title: "每日心得",
+        text: output,
+        icon: "success"
     });
-	$('#resetBtn').click(() => {
-		clearTableAndInput();
-	});
-	$('#exportToExcelBtn').click(() => {
-		exportToExcel();
-	});
-	$('#monthStocks').on('change', function () {
-		var fileName = $(this).val().split('\\').pop();
-		$('#monthStocksFileNameDisplay').text('單月進銷存 : ' + fileName);
-	});
-	$('#todaySells').on('change', function () {
-		var fileName = $(this).val().split('\\').pop();
-		$('#todaySellsFileNameDisplay').text('單日銷貨 : ' + fileName);
-	});
-	$('#generateBtn').on('click', function () {
-		if ($('#monthStocks').val() && $('#todaySells').val()) {
-			var monthStocksExtension = $('#monthStocks')[0].files[0].name.split('.').pop().toLowerCase();
+  });
+  $("#resetBtn").click(() => {
+    clearTableAndInput();
+  });
+  $("#exportToExcelBtn").click(() => {
+    exportToExcel();
+  });
+  $("#monthStocks").on("change", function () {
+    var fileName = $(this).val().split("\\").pop();
+    $("#monthStocksFileNameDisplay").text("單月進銷存 : " + fileName);
+  });
+  $("#todaySells").on("change", function () {
+    var fileName = $(this).val().split("\\").pop();
+    $("#todaySellsFileNameDisplay").text("單日銷貨 : " + fileName);
+  });
+  $("#generateBtn").on("click", function () {
+    if ($("#monthStocks").val() && $("#todaySells").val()) {
+      var monthStocksExtension = $("#monthStocks")[0]
+        .files[0].name.split(".")
+        .pop()
+        .toLowerCase();
 
-			var todaySellsExtension = $('#todaySells')[0].files[0].name.split('.').pop().toLowerCase();
+      var todaySellsExtension = $("#todaySells")[0]
+        .files[0].name.split(".")
+        .pop()
+        .toLowerCase();
 
-			if (monthStocksExtension !== 'csv' || todaySellsExtension !== 'csv') {
-				alert('輸入必須是 CSV 檔!');
-				return;
-			}
+      if (monthStocksExtension !== "csv" || todaySellsExtension !== "csv") {
+        Swal.fire({
+            title: "輸入必須是 CSV 檔!",
+            icon: "error"
+        });
+        return;
+      }
 
-			$('#loading').removeClass('hidden');
+      $("#loading").removeClass("hidden");
 
-			generateReport().then(() => {
-				$('#loading').addClass('hidden');
-			});
-		} else {
-			alert('必須同時上傳單月進銷存跟當日銷售');
-		}
-	});
+      generateReport().then(() => {
+        $("#loading").addClass("hidden");
+      });
+    } else {
+      Swal.fire({
+        title: "必須同時上傳單月進銷存跟當日銷售!",
+        icon: "error"
+    });
+    }
+  });
 });
 
+function getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
 function filterByPrdtAndPxMarts(array) {
-	return array.filter((e) => targetPrdtCodes.includes(e[5]) && targetPxMarts.includes(e[4]));
+  return array.filter(
+    (e) => targetPrdtCodes.includes(e[5]) && targetPxMarts.includes(e[4])
+  );
 }
 
 function convertToJson(array, type) {
-	const jsonData = {};
+  const jsonData = {};
 
-	array.forEach((e) => {
-		const store = e[4];
-		const product = e[7];
-		const quantityKey = type === 'monthStocks' ? 'stockQty' : 'sellQty';
-		const quantity = Number(e[type === 'monthStocks' ? 12 : 8]);
+  array.forEach((e) => {
+    const store = e[4];
+    const product = e[7];
+    const quantityKey = type === "monthStocks" ? "stockQty" : "sellQty";
+    const quantity = Number(e[type === "monthStocks" ? 12 : 8]);
 
-		if (!jsonData[store]) {
-			jsonData[store] = {};
-		}
-		if (!jsonData[store][product]) {
-			jsonData[store][product] = {};
-		}
-		jsonData[store][product][quantityKey] = quantity;
-	});
+    if (!jsonData[store]) {
+      jsonData[store] = {};
+    }
+    if (!jsonData[store][product]) {
+      jsonData[store][product] = {};
+    }
+    jsonData[store][product][quantityKey] = quantity;
+  });
 
-	return jsonData;
+  return jsonData;
 }
 
 function appendTableRows(monthStocksData, todaySellsData) {
-	const table = $("#resultTable");
-  
-	for (const area in targetAreaPxMarts) {
-	  const stores = targetAreaPxMarts[area];
-	  for (const store of stores) {
-		const storeRow = $("<tr>").addClass("table-row");
-		storeRow.append($("<td>").text(" "));
-		storeRow.append($("<td>").text(area));
-  
-		const storeButton = $("<button>")
-		  .text(store)
-		  .css("cursor", "pointer")
-		  .on("click", () => {
-			const storeInfo = [];
-			let index = 1;
-			for (const e of targetProductName) {
-			  const stockQty =
-				monthStocksData &&
-				monthStocksData[store] &&
-				monthStocksData[store][e]
-				  ? monthStocksData[store][e].stockQty
-				  : "N/A";
-  
-			  const sellQty =
-				todaySellsData &&
-				todaySellsData[store] &&
-				todaySellsData[store][e]
-				  ? todaySellsData[store][e].sellQty
-				  : "0";
-  
-			  	storeInfo.push(
-					`${index}. ${e}: 庫存 ${stockQty}, 日銷 ${sellQty}`
-				  );
-				index++;
-			}
+  const table = $("#resultTable");
 
-			const storeName = `店名: ${store}`;
-			const stockList = storeInfo.map((item) => `${item}`).join('\n');
+  for (const area in targetAreaPxMarts) {
+    const stores = targetAreaPxMarts[area];
+    for (const store of stores) {
+      const storeRow = $("<tr>").addClass("table-row");
+      storeRow.append($("<td>").text(" "));
+      storeRow.append($("<td>").text(area));
 
-			const infoText = `${storeName}\n\n庫存情況:\n${stockList}目前已持續爭取二位陳列、確認各品項庫存足夠，會再持續回訪，並觀察二位陳列的銷轉狀況`;
+      let storeDailySales = 0;
 
-			const tempTextArea = $('<textarea>').val(infoText);
+      const storeButton = $("<button>")
+        .addClass(store)
+        .text(store)
+        .css("cursor", "pointer")
+        .on("click", () => {
+          $(`.${store}`).prop("disabled", true);
+          const storeInfo = [];
+          for (const e of targetProductName) {
+            const sellQty =
+              todaySellsData &&
+              todaySellsData[store] &&
+              todaySellsData[store][e]
+                ? todaySellsData[store][e].sellQty
+                : "0";
 
-			$('body').append(tempTextArea);
-			tempTextArea.select();
-			document.execCommand('copy');
-			tempTextArea.remove();
+            if (sellQty > 0) {
+              storeDailySales += sellQty;
+              storeInfo.push(`${e}:日銷 ${sellQty}`);
+            }
+          }
 
-			alert(infoText);
-		  });
-  
-		storeRow.append($("<td>").append(storeButton));
-  
-		for (const e of targetProductName) {
-		  const stockQty =
-			monthStocksData && monthStocksData[store] && monthStocksData[store][e]
-			  ? monthStocksData[store][e].stockQty
-			  : "N/A";
-  
-		  if (inventoryAlert.hasOwnProperty(e)) {
-			if (Number(stockQty) === stockQty && stockQty < inventoryAlert[e]) {
-			  const restockItem = `${e}_缺_${Math.abs(
-				stockQty - inventoryAlert[e]
-			  )}`;
-  
-			  if (!groupedByAreaAndStore.hasOwnProperty(area)) {
-				groupedByAreaAndStore[area] = {};
-			  }
-  
-			  if (!groupedByAreaAndStore[area].hasOwnProperty(store)) {
-				groupedByAreaAndStore[area][store] = [];
-			  }
-			  groupedByAreaAndStore[area][store].push(restockItem);
-			}
-		  }
-  
-		  const sellQty =
-			todaySellsData && todaySellsData[store] && todaySellsData[store][e]
-			  ? todaySellsData[store][e].sellQty
-			  : "0";
-  
-		  const stockQtyCell = $("<td id='stock'>").html(
-			`<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
-		  );
-		  const sellQtyCell = $("<td id='sell'>").html(
-			`<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
-		  );
-		  storeRow.append(stockQtyCell, sellQtyCell);
-		}
-		table.append(storeRow);
-	  }
-	}
+          const storeName = `店名: ${store}`;
+          const stockList = storeInfo.map((item) => `${item}`).join("\n");
+          const infoText = `${storeName}\n\n每日銷售:\n${stockList}\n\n爭取二位陳列，並確保庫存足夠`;
+          const tempTextArea = $("<textarea>").val(infoText);
+
+          $("body").append(tempTextArea);
+          tempTextArea.select();
+          document.execCommand("copy");
+          tempTextArea.remove();
+
+          const storeSale = `${store}日銷總計售出${storeDailySales}組`;
+
+          if (!storeSales.includes(storeSale)) {
+            storeSales.push(storeSale);
+          }
+
+        Swal.fire({
+            title: "後續追蹤事項",
+            text: infoText,
+            icon: "success"
+        });
+        });
+
+      storeRow.append($("<td>").append(storeButton));
+
+      for (const e of targetProductName) {
+        const stockQty =
+          monthStocksData && monthStocksData[store] && monthStocksData[store][e]
+            ? monthStocksData[store][e].stockQty
+            : "N/A";
+
+        if (inventoryAlert.hasOwnProperty(e)) {
+          if (Number(stockQty) === stockQty && stockQty < inventoryAlert[e]) {
+            const restockItem = `${e}_缺_${Math.abs(
+              stockQty - inventoryAlert[e]
+            )}`;
+
+            if (!groupedByAreaAndStore.hasOwnProperty(area)) {
+              groupedByAreaAndStore[area] = {};
+            }
+
+            if (!groupedByAreaAndStore[area].hasOwnProperty(store)) {
+              groupedByAreaAndStore[area][store] = [];
+            }
+            groupedByAreaAndStore[area][store].push(restockItem);
+          }
+        }
+
+        const sellQty =
+          todaySellsData && todaySellsData[store] && todaySellsData[store][e]
+            ? todaySellsData[store][e].sellQty
+            : "0";
+
+        const stockQtyCell = $("<td id='stock'>").html(
+          `<div class="split-td"><div class="darkred-text">${stockQty}</div></div>`
+        );
+        const sellQtyCell = $("<td id='sell'>").html(
+          `<div class="split-td"><div class="darkred-text">${sellQty}</div></div>`
+        );
+        storeRow.append(stockQtyCell, sellQtyCell);
+      }
+      table.append(storeRow);
+    }
+  }
 }
 
 async function generateReport() {
-	try {
-		const monthStocksData = await processCSV('monthStocks');
-		const todaySellsData = await processCSV('todaySells');
+  try {
+    const monthStocksData = await processCSV("monthStocks");
+    const todaySellsData = await processCSV("todaySells");
 
-		appendHeaderRows();
-		appendTableRows(monthStocksData, todaySellsData);
-	} catch (error) {
-		console.error('報表生成錯誤', error);
-	}
+    appendHeaderRows();
+    appendTableRows(monthStocksData, todaySellsData);
+  } catch (error) {
+    console.error("報表生成錯誤", error);
+  }
 }
 
 async function processCSV(inputName) {
-	return new Promise(function (resolve, reject) {
-		$(`input[name=${inputName}]`).csv2arr(function (array) {
-			const filteredData = filterByPrdtAndPxMarts(array);
-			const jsonData = convertToJson(filteredData, inputName);
+  return new Promise(function (resolve, reject) {
+    $(`input[name=${inputName}]`).csv2arr(function (array) {
+      const filteredData = filterByPrdtAndPxMarts(array);
+      const jsonData = convertToJson(filteredData, inputName);
 
-			$(`input[name=${inputName}]`).val('');
-			resolve(jsonData);
-		});
-	});
+      $(`input[name=${inputName}]`).val("");
+      resolve(jsonData);
+    });
+  });
 }
