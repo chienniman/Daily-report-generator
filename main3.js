@@ -48,14 +48,25 @@ $(document).ready(function () {
       (a, b) => a[1].storeCount - b[1].storeCount
     );
 
+    const randomHeader = getRandomElement(headers);
+    const randomBottom = getRandomElement(bottoms);
+    const randomReview = getRandomElement(reviews);
+
     let output = "";
+    output += storeSales.join(', ');
+    output += "\n\n";
+    output += randomHeader;
+    output += "。";
+    output += randomBottom;
+    output += "。";
+    output += "\n\n";
+    output += sortedAreaInfo[sortedAreaInfo.length - 1][0] + "的以下店家，包含";
     output +=
-      "以下區域店家的熱門品項銷售較佳，之後會持續與各店代表溝通，積極調貨以提高庫存：\n";
-    output += "\n";
-    output += sortedAreaInfo[sortedAreaInfo.length - 1][0] + "\n";
+      sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ");
     output +=
-      sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ") + "\n";
-    output += "\n";
+    "，熱門品項銷售較佳，之後也會與各店代表溝通回訪，確保有足夠的庫存，";
+    output += randomReview;
+    output += "，也會繼續努力為公司帶來更好的業績。";
 
     const tempTextArea = $("<textarea>").val(output);
 
@@ -107,6 +118,10 @@ $(document).ready(function () {
     }
   });
 });
+
+function getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
 
 function filterByPrdtAndPxMarts(array) {
   return array.filter(
@@ -178,7 +193,7 @@ function appendTableRows(monthStocksData, todaySellsData) {
           document.execCommand("copy");
           tempTextArea.remove();
 
-          const storeSale = `${store}總計售出${storeDailySales}組`;
+          const storeSale = `${store}日銷總計售出${storeDailySales}組`;
 
           if (!storeSales.includes(storeSale)) {
             storeSales.push(storeSale);
