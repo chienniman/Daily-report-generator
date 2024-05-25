@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
 
         const areaInfo = {};
-    
+        console.log(groupedByAreaAndStore);
         for (const areaKey in groupedByAreaAndStore) {
             const area = groupedByAreaAndStore[areaKey];
     
@@ -41,18 +41,12 @@ $(document).ready(function () {
     
         const sortedAreaInfo = Object.entries(areaInfo).sort((a, b) => a[1].storeCount - b[1].storeCount);
     
-        let output = "台中缺貨較少區域：\n";
-
+        let output = "";
+        output += "以下區域店家的熱門品項銷售較佳，之後會持續與各店代表溝通，積極調貨以提高庫存：\n";
         output += "\n";
-        output += "名稱：" + sortedAreaInfo[0][0] + "\n";
-        output += "列表：" + sortedAreaInfo[0][1].stores.join(", ") + "\n";
+        output += sortedAreaInfo[sortedAreaInfo.length - 1][0] + "\n";
+        output += sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ") + "\n";
         output += "\n";
-        output += "台中缺貨較多區域：\n";
-        output += "\n";
-        output += "名稱：" + sortedAreaInfo[sortedAreaInfo.length - 1][0] + "\n";
-        output += "列表：" + sortedAreaInfo[sortedAreaInfo.length - 1][1].stores.join(", ") + "\n";
-        output += "\n";
-        output += "會持續追蹤台中各區庫存狀況，持續與各店代表溝通，提高庫存、業績達成率，為公司創造更大的利益\n";
 
         const tempTextArea = $('<textarea>').val(output);
 
@@ -139,15 +133,7 @@ function appendTableRows(monthStocksData, todaySellsData) {
 		  .css("cursor", "pointer")
 		  .on("click", () => {
 			const storeInfo = [];
-			let index = 1;
 			for (const e of targetProductName) {
-			  const stockQty =
-				monthStocksData &&
-				monthStocksData[store] &&
-				monthStocksData[store][e]
-				  ? monthStocksData[store][e].stockQty
-				  : "N/A";
-  
 			  const sellQty =
 				todaySellsData &&
 				todaySellsData[store] &&
@@ -155,17 +141,16 @@ function appendTableRows(monthStocksData, todaySellsData) {
 				  ? todaySellsData[store][e].sellQty
 				  : "0";
   
-			  	storeInfo.push(
-					`${index}. ${e}: 庫存 ${stockQty}, 日銷 ${sellQty}`
-				  );
-				index++;
+                if(sellQty>0){
+                    storeInfo.push(
+                        `${e}:日銷 ${sellQty}`
+                      );
+                }
 			}
 
 			const storeName = `店名: ${store}`;
 			const stockList = storeInfo.map((item) => `${item}`).join('\n');
-
-			const infoText = `${storeName}\n\n庫存情況:\n${stockList}目前已持續爭取二位陳列、確認各品項庫存足夠，會再持續回訪，並觀察二位陳列的銷轉狀況`;
-
+			const infoText = `${storeName}\n\n每日銷售:\n${stockList}\n\n爭取二位陳列，並確保庫存足夠`;
 			const tempTextArea = $('<textarea>').val(infoText);
 
 			$('body').append(tempTextArea);
