@@ -123,7 +123,7 @@ function appendTableRows(monthStocksData, todaySellsData) {
               result["差異金額"] = "多" + result["差異金額"];
             }
             
-            const text = `達成率${result["達成%"]}，銷額佔比${result["銷額佔比"]}，差異金額${result["差異金額"]}`
+            const text = `達成率${result["達成%"]}，差異金額${result["差異金額"]}`
             console.log(text);
 
             Swal.fire({
