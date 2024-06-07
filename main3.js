@@ -28,11 +28,13 @@ $(document).ready(function () {
   $("#dailyKpi").on("change", function () {
     dailyKpi = this;
     var fileName = $(this).val().split("\\").pop();
-    $("#dailyKpiDisplay").text("每日業績 : " + fileName);
+    $("#dailyKpiFileNameDisplay").text("每日業績 : " + fileName);
   });
   
   $("#generateBtn").on("click", function () {
-    filePicked(dailyKpi);
+	if(dailyKpi){
+		filePicked(dailyKpi);
+	}
 
     if ($("#monthStocks").val() && $("#todaySells").val()) {
       var monthStocksExtension = $("#monthStocks")[0]
@@ -66,7 +68,6 @@ $(document).ready(function () {
     }
   });
 });
-
 
 function filterByPrdtAndPxMarts(array) {
   return array.filter(
@@ -114,6 +115,15 @@ function appendTableRows(monthStocksData, todaySellsData) {
           console.log(getOjs());
 
           const dailyKpiArray = getOjs();
+
+		  if(!dailyKpiArray){
+			Swal.fire({
+				title: "請先上傳當月績效總表",
+				icon: "error"
+			});
+			return;
+		  }
+
           const result = dailyKpiArray.find(e => e.店名 === store);
 
           if (result) {

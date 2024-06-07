@@ -25,6 +25,8 @@ function clearTableAndInput() {
     $("#monthStocksFileNameDisplay").text("");
     $("input[name=todaySells]").val("");
     $("#todaySellsFileNameDisplay").text("");
+    $("input[name=dailyKpi]").val("");
+    $("#dailyKpiFileNameDisplay").text("");
 }
 
 function appendHeaderRows() {

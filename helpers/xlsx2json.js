@@ -1,10 +1,10 @@
-function setOjs(){
-    localStorage.setItem('ojs', JSON.stringify(oJS));
+function setOjs(data){
+    sessionStorage.setItem('ojs', JSON.stringify(data));
 }
 
 function getOjs() {
-    var storedData = localStorage.getItem('ojs');
-    
+    var storedData = sessionStorage.getItem('ojs');
+
     return storedData ? JSON.parse(storedData) : null;
 }
 
@@ -20,8 +20,8 @@ function filePicked(oEvent) {
     
     if (cfb.SheetNames.includes(targetSheetName)) {
         oJS = XLSX.utils.sheet_to_json(cfb.Sheets[targetSheetName]);
-        console.log("converted data - ", oJS);
-        localStorage.setItem('ojs', JSON.stringify(oJS));
+        console.log(oJS);
+        setOjs(oJS);
     } else {
         Swal.fire({
             title: "表名錯誤，請聯絡開發者!",
