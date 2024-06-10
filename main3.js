@@ -4,7 +4,48 @@ import {
   appendHeaderRows,
 } from "./helpers/table.js";
 
-let dailyKpi = null;
+let dailyKpi = null, visitedAreas = [];
+
+async function processDailyKpi() {
+  if (!dailyKpi) {
+    console.log('上傳每日績效表為空');
+  }
+
+  try {
+    await filePicked(dailyKpi); 
+
+    console.log(getData('summaryData'));
+  } catch (error) {
+    console.error('錯誤', error);
+  }
+}
+
+function generateSummary(){
+  let base = `今日拜訪了${visitedAreas.join("，")},回顧今日業績達成，`;
+  let summaryData = getData('summaryData');
+  let areaSummaries = [];
+  // C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
+  summaryData.forEach((e)=>{
+    if (visitedAreas.includes(e["C"])) {
+      let F = Math.ceil(e["F"]);
+      let G = Math.ceil(e["G"]); 
+      let E = (e["E"] * 100).toFixed(2) + "%"; 
+      let H = (e["H"] * 100).toFixed(2) + "%"; 
+  
+      let areaText = `${e["C"]}的業績目標是 ${F}，業績達成是 ${G}，業績占比是 ${E}，達成百分比是 ${H}`;
+      areaSummaries.push(areaText);
+    }
+  })
+  if (areaSummaries.length > 0) {
+    base += areaSummaries.join(";");
+  }
+
+  Swal.fire({
+    title: "每日總結",
+    text: base,
+    icon: "success"
+});
+}
 
 $(document).ready(function () {
   $("#resetBtn").click(() => {
@@ -13,6 +54,10 @@ $(document).ready(function () {
 
   $("#exportToExcelBtn").click(() => {
     exportToExcel();
+  });
+
+  $("#dailySummary").click(() => {
+    generateSummary();
   });
 
   $("#monthStocks").on("change", function () {
@@ -32,9 +77,8 @@ $(document).ready(function () {
   });
   
   $("#generateBtn").on("click", function () {
-	if(dailyKpi){
-		filePicked(dailyKpi);
-	}
+  
+  processDailyKpi();
 
     if ($("#monthStocks").val() && $("#todaySells").val()) {
       var monthStocksExtension = $("#monthStocks")[0]
@@ -112,9 +156,12 @@ function appendTableRows(monthStocksData, todaySellsData) {
         .css("cursor", "pointer")
         .on("click", () => {
           $(`.${store}`).prop("disabled", true);
-          console.log(getOjs());
 
-          const dailyKpiArray = getOjs();
+          if (!visitedAreas.includes(area)) {
+            visitedAreas.push(area);
+          } 
+
+          const dailyKpiArray = getData('ojs');
 
 		  if(!dailyKpiArray){
 			Swal.fire({
@@ -134,7 +181,6 @@ function appendTableRows(monthStocksData, todaySellsData) {
             }
             
             const text = `達成率${result["達成%"]}，差異金額${result["差異金額"]}`
-            console.log(text);
 
             Swal.fire({
               title: "後續追蹤事項",
