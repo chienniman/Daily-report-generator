@@ -1,4 +1,9 @@
-import { processDailyKpi, generateSummary, generateReport } from "./main3.js";
+import {
+  processDailyKpi,
+  generateSummary,
+  generateReport,
+  validateInputs,
+} from "./main3.js";
 import { exportToExcel, clearTableAndInput } from "./helpers/table.js";
 
 let dailyKpi = null;
@@ -43,7 +48,7 @@ $(document).ready(function () {
     processDailyKpi();
 
     if (!validateInputs()) return;
-    
+
     $("#loading").removeClass("hidden");
     await generateReport();
     $("#loading").addClass("hidden");

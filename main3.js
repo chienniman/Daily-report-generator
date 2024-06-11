@@ -204,5 +204,4 @@ export {
   generateSummary,
   generateReport,
   validateInputs,
-  isCSV,
 };
