@@ -9,7 +9,7 @@ $(document).ready(function () {
     clearTableAndInput();
   });
 
-  // 導出數據 
+  // 導出數據
   $("#exportToExcelBtn").click(() => {
     exportToExcel();
   });
@@ -39,38 +39,13 @@ $(document).ready(function () {
   });
 
   // 生成
-  $("#generateBtn").on("click", function () {
+  $("#generateBtn").on("click", async function () {
     processDailyKpi();
 
-    if ($("#monthStocks").val() && $("#todaySells").val()) {
-      var monthStocksExtension = $("#monthStocks")[0]
-        .files[0].name.split(".")
-        .pop()
-        .toLowerCase();
-
-      var todaySellsExtension = $("#todaySells")[0]
-        .files[0].name.split(".")
-        .pop()
-        .toLowerCase();
-
-      if (monthStocksExtension !== "csv" || todaySellsExtension !== "csv") {
-        Swal.fire({
-          title: "輸入必須是 CSV 檔!",
-          icon: "error",
-        });
-        return;
-      }
-
-      $("#loading").removeClass("hidden");
-
-      generateReport().then(() => {
-        $("#loading").addClass("hidden");
-      });
-    } else {
-      Swal.fire({
-        title: "必須同時上傳單月進銷存跟當日銷售!",
-        icon: "error",
-      });
-    }
+    if (!validateInputs()) return;
+    
+    $("#loading").removeClass("hidden");
+    await generateReport();
+    $("#loading").addClass("hidden");
   });
 });
