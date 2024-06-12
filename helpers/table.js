@@ -1,21 +1,25 @@
-function exportToExcel() {
-    const table2excel = new Table2Excel();
-    const htmlTable = $("#resultTable");
+function isTableEmpty(table) {
+    return table.children().length === 0;
+}
 
-    if (htmlTable.children().length === 0) {
-        Swal.fire({
-            title: "無法導出空表格!",
-            icon: "error"
-        });
-        return;
-    }
+function showError(message) {
+    Swal.fire({ title: message, icon: "error" });
+}
 
+function getFormattedDate() {
     const today = new Date();
     const month = today.getMonth() + 1;
     const day = today.getDate();
-    const formattedDate = `${month}月_${day}日`;
+    
+    return `${month}月_${day}日`;
+}
 
-    table2excel.export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
+function exportToExcel() {
+    const htmlTable = $("#resultTable");
+    if (isTableEmpty(htmlTable)) return showError("無法導出空表格!");
+
+    const formattedDate = getFormattedDate();
+    new Table2Excel().export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
 }
 
 function clearTableAndInput() {
