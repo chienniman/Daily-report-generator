@@ -23,6 +23,7 @@ function generateSummary() {
       const G = Math.ceil(e["G"]);
       const E = (e["E"] * 100).toFixed(2) + "%";
       const H = (e["H"] * 100).toFixed(2) + "%";
+
       return `${e["C"]}的業績目標是 ${F}，業績達成是 ${G}，業績占比是 ${E}，達成百分比是 ${H}`;
     });
 
@@ -115,6 +116,7 @@ function handleStoreButtonClick(area, store) {
 
   if (!dailyKpiArray) {
     Swal.fire({ title: "請先上傳當月績效總表", icon: "error" });
+
     return;
   }
 
@@ -181,18 +183,22 @@ function validateInputs() {
       title: "必須同時上傳單月進銷存跟當日銷售!",
       icon: "error",
     });
+
     return false;
   }
 
   if (!isCSV("#monthStocks") || !isCSV("#todaySells")) {
     Swal.fire({ title: "輸入必須是 CSV 檔!", icon: "error" });
+
     return false;
   }
+
   return true;
 }
 
 function isCSV(input) {
   const ext = $(input)[0].files[0].name.split(".").pop().toLowerCase();
+  
   return ext === "csv";
 }
 
