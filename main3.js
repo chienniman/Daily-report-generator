@@ -2,18 +2,14 @@ import { appendHeaderRows } from "./helpers/table.js";
 
 let visitedAreas = [];
 
-async function processDailyKpi() {
+async function processDailyKpi(dailyKpi) {
   if (!dailyKpi) {
     console.log("上傳每日績效表為空");
+
+    return;
   }
 
-  try {
-    await filePicked(dailyKpi);
-
-    console.log(getData("summaryData"));
-  } catch (error) {
-    console.error("錯誤", error);
-  }
+  await filePicked(dailyKpi);
 }
 
 function generateSummary() {

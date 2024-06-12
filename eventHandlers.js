@@ -45,7 +45,7 @@ $(document).ready(function () {
 
   // 生成
   $("#generateBtn").on("click", async function () {
-    processDailyKpi();
+    processDailyKpi(dailyKpi);
 
     if (!validateInputs()) return;
 
