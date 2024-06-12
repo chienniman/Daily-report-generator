@@ -17,6 +17,9 @@ let visitedAreas = [];
 // 11 PRDTMLQY 銷貨量
 // 12 PRDTMIQY 庫存量
 
+// 績效總表代號
+// C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
+
 function reset() {
   sessionStorage.clear();
 
@@ -36,7 +39,6 @@ async function processDailyKpi(dailyKpi) {
 function generateSummary() {
   const visitedAreasText = visitedAreas.join("，");
   const summaryData = getData("summaryData");
-  // C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
   const areaSummaries = summaryData
     .filter((e) => visitedAreas.includes(e["C"]))
     .map((e) => {
