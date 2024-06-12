@@ -1,3 +1,9 @@
+import {
+  targetAreaPxMarts,
+  targetPxMarts,
+  targetPrdtCodes,
+  targetProductName,
+} from "./dataSets/pxMarts.js";
 import { appendHeaderRows, clearTableAndInput } from "./helpers/table.js";
 
 let visitedAreas = [];
@@ -27,7 +33,6 @@ let visitedAreas = [];
 // 6 CVCIT 條碼
 // 7 PUPRNA 品名 / 規格
 // 8 PRDTMLQY 銷貨量
-
 
 // 績效總表代號
 // C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
