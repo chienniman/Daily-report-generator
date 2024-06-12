@@ -17,21 +17,21 @@ async function processDailyKpi() {
 }
 
 function generateSummary() {
-  let base = `今日拜訪了${visitedAreas.join("，")},回顧今日業績達成，`;
-  let summaryData = getData("summaryData");
-  let areaSummaries = [];
+  const visitedAreasText = visitedAreas.join("，");
+  const summaryData = getData("summaryData");
   // C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
-  summaryData.forEach((e) => {
-    if (visitedAreas.includes(e["C"])) {
-      let F = Math.ceil(e["F"]);
-      let G = Math.ceil(e["G"]);
-      let E = (e["E"] * 100).toFixed(2) + "%";
-      let H = (e["H"] * 100).toFixed(2) + "%";
+  const areaSummaries = summaryData
+    .filter((e) => visitedAreas.includes(e["C"]))
+    .map((e) => {
+      const F = Math.ceil(e["F"]);
+      const G = Math.ceil(e["G"]);
+      const E = (e["E"] * 100).toFixed(2) + "%";
+      const H = (e["H"] * 100).toFixed(2) + "%";
+      return `${e["C"]}的業績目標是 ${F}，業績達成是 ${G}，業績占比是 ${E}，達成百分比是 ${H}`;
+    });
 
-      let areaText = `${e["C"]}的業績目標是 ${F}，業績達成是 ${G}，業績占比是 ${E}，達成百分比是 ${H}`;
-      areaSummaries.push(areaText);
-    }
-  });
+  let base = `今日拜訪了${visitedAreasText},回顧今日業績達成，`;
+
   if (areaSummaries.length > 0) {
     base += areaSummaries.join(";");
   }
@@ -65,13 +65,11 @@ function convertToJson(array, type) {
     return json;
   }, {});
 }
-
 function appendTableRows(monthStocksData, todaySellsData) {
   const table = $("#resultTable");
 
-  for (const area in targetAreaPxMarts) {
-    const stores = targetAreaPxMarts[area];
-    for (const store of stores) {
+  Object.entries(targetAreaPxMarts).forEach(([area, stores]) => {
+    stores.forEach((store) => {
       const storeRow = createStoreRow(
         area,
         store,
@@ -79,24 +77,27 @@ function appendTableRows(monthStocksData, todaySellsData) {
         todaySellsData
       );
       table.append(storeRow);
-    }
-  }
+    });
+  });
 }
 
 function createStoreRow(area, store, monthStocksData, todaySellsData) {
-  const storeRow = $("<tr>").addClass("table-row");
-  storeRow.append($("<td>").text(" "));
-  storeRow.append($("<td>").text(area));
-  storeRow.append($("<td>").append(createStoreButton(area, store)));
+  const storeRow = $("<tr>")
+    .addClass("table-row")
+    .append(
+      $("<td>").text(" "),
+      $("<td>").text(area),
+      $("<td>").append(createStoreButton(area, store))
+    );
 
-  for (const product of targetProductName) {
+  targetProductName.forEach((product) => {
     const stockQty = getStockQty(monthStocksData, store, product);
     const sellQty = getSellQty(todaySellsData, store, product);
     storeRow.append(
       createQtyCell("stock", stockQty),
       createQtyCell("sell", sellQty)
     );
-  }
+  });
 
   return storeRow;
 }
@@ -199,9 +200,4 @@ function isCSV(input) {
   return ext === "csv";
 }
 
-export {
-  processDailyKpi,
-  generateSummary,
-  generateReport,
-  validateInputs,
-};
+export { processDailyKpi, generateSummary, generateReport, validateInputs };
