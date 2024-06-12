@@ -3,15 +3,16 @@ import {
   generateSummary,
   generateReport,
   validateInputs,
+  reset,
 } from "./main3.js";
-import { exportToExcel, clearTableAndInput } from "./helpers/table.js";
+import { exportToExcel } from "./helpers/table.js";
 
 let dailyKpi = null;
 
 $(document).ready(function () {
   // 清空
   $("#resetBtn").click(() => {
-    clearTableAndInput();
+    reset();
   });
 
   // 導出數據

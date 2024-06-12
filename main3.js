@@ -1,6 +1,12 @@
-import { appendHeaderRows } from "./helpers/table.js";
+import { appendHeaderRows, clearTableAndInput } from "./helpers/table.js";
 
 let visitedAreas = [];
+
+function reset() {
+  sessionStorage.clear();
+
+  clearTableAndInput();
+}
 
 async function processDailyKpi(dailyKpi) {
   if (!dailyKpi) {
@@ -206,8 +212,14 @@ function validateInputs() {
 
 function isCSV(input) {
   const ext = $(input)[0].files[0].name.split(".").pop().toLowerCase();
-  
+
   return ext === "csv";
 }
 
-export { processDailyKpi, generateSummary, generateReport, validateInputs };
+export {
+  processDailyKpi,
+  generateSummary,
+  generateReport,
+  validateInputs,
+  reset,
+};
