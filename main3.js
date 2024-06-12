@@ -122,14 +122,22 @@ function handleStoreButtonClick(area, store) {
 
   const result = dailyKpiArray.find((e) => e.店名 === store);
 
-  if (result) {
-    result["差異金額"] = formatDifference(result["差異金額"]);
+  if (!result) {
     Swal.fire({
-      title: "後續追蹤事項",
-      text: `達成率${result["達成%"]}，差異金額${result["差異金額"]}`,
-      icon: "success",
+      title: "無店家資料",
+      icon: "error",
     });
+
+    return;
   }
+
+  result["差異金額"] = formatDifference(result["差異金額"]);
+
+  Swal.fire({
+    title: "後續追蹤事項",
+    text: `達成率${result["達成%"]}，差異金額${result["差異金額"]}`,
+    icon: "success",
+  });
 }
 
 function formatDifference(diff) {
