@@ -1,54 +1,62 @@
+function isTableEmpty(table) {
+  return table.children().length === 0;
+}
+
+function showError(message) {
+  Swal.fire({ title: message, icon: "error" });
+}
+
+function getFormattedDate() {
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  return `${month}月_${day}日`;
+}
+
 function exportToExcel() {
-    const table2excel = new Table2Excel();
-    const htmlTable = $("#resultTable");
+  const htmlTable = $("#resultTable");
 
-    if (htmlTable.children().length === 0) {
-        Swal.fire({
-            title: "無法導出空表格!",
-            icon: "error"
-        });
-        return;
-    }
+  if (isTableEmpty(htmlTable)) return showError("無法導出空表格!");
 
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    const formattedDate = `${month}月_${day}日`;
-
-    table2excel.export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
+  const formattedDate = getFormattedDate();
+  
+  new Table2Excel().export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
 }
 
 function clearTableAndInput() {
-    $("#fileNameDisplay").empty();
-    $("#resultTable").empty();
-    $("input[name=monthStocks]").val("");
-    $("#monthStocksFileNameDisplay").text("");
-    $("input[name=todaySells]").val("");
-    $("#todaySellsFileNameDisplay").text("");
-    $("input[name=dailyKpi]").val("");
-    $("#dailyKpiFileNameDisplay").text("");
+  $("#fileNameDisplay, #resultTable").empty();
+  $(
+    "input[name=monthStocks], input[name=todaySells], input[name=dailyKpi]"
+  ).val("");
+  $(
+    "#monthStocksFileNameDisplay, #todaySellsFileNameDisplay, #dailyKpiFileNameDisplay"
+  ).text("");
 }
 
 function appendHeaderRows() {
-    var headerRow = `
-    <tr class='gray'>
-        <th>處</th>
-        <th>區</th>
-        <th>店名</th>
-    `;
+  let headerRow = createHeaderRow();
+  let subHeaderRow = createSubHeaderRow();
 
-    var subHeaderRow = `
-    <tr class='white'>
-        <th></th>
-        <th></th>
-        <th></th>
-    `;
+  $("#resultTable").append(headerRow);
+  $("#resultTable").append(subHeaderRow);
+}
 
-    for (const i in targetProductName) {
-        const product = targetProductName[i];
-        headerRow += `<th colspan="2">${product}</th>`;
+function createHeaderRow() {
+  let headerRow = "<tr class='gray'><th>處</th><th>區</th><th>店名</th>";
 
-        subHeaderRow += `
+  targetProductName.forEach((product) => {
+    headerRow += `<th colspan="2">${product}</th>`;
+  });
+
+  return headerRow + "</tr>";
+}
+
+function createSubHeaderRow() {
+  let subHeaderRow = "<tr class='white'><th></th><th></th><th></th>";
+
+  targetProductName.forEach(() => {
+    subHeaderRow += `
             <th id="stock">
                 <div class='darkred-text'>
                     庫存
@@ -60,13 +68,9 @@ function appendHeaderRows() {
                 </div>
             </th>
         `;
-    }
+  });
 
-    headerRow += "</tr>";
-    $("#resultTable").append(headerRow);
-
-    subHeaderRow += "</tr>";
-    $("#resultTable").append(subHeaderRow);
+  return subHeaderRow + "</tr>";
 }
 
 export { exportToExcel, clearTableAndInput, appendHeaderRows };
