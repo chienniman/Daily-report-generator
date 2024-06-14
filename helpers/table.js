@@ -1,3 +1,5 @@
+import { targetProductName } from "../dataSets/pxMarts.js";
+
 function isTableEmpty(table) {
   return table.children().length === 0;
 }
@@ -20,7 +22,7 @@ function exportToExcel() {
   if (isTableEmpty(htmlTable)) return showError("無法導出空表格!");
 
   const formattedDate = getFormattedDate();
-  
+
   new Table2Excel().export(htmlTable, `PX台中日銷庫存表_${formattedDate}`);
 }
 

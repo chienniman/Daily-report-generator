@@ -1,32 +1,37 @@
 ## Daily-report-generator
-Converting a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) with **25,000+** records (**300,000+** values) of PX Mart inventory data into daily reports within 3 seconds. What used to take 2 hours of manual work.
 
-![preview](https://github.com/chienniman/Daily-report-generator/assets/97031067/04738835-7670-4d1b-a090-16875b5d67ec)
+## 代號
 
-## Algorithm
-Here's a brief explanation of how to convert CSV records into a table
-### Input
-```
-[A 店,商品 1,10] 
-[A 店,商品 2,10] 
-[A 店,商品 3,10] 
-[B 店,商品 1,20] 
-[B 店,商品 2,20] 
-[B 店,商品 3,20] 
-[C 店,商品 1,30] 
-[C 店,商品 2,30]
-[C 店,商品 3,30]
-```
-### Output
-|  | 商品 1 | 商品 2 | 商品 3 |
-| -------- | -------- | -------- | -------- |
-| A  店    | 10     | 10     | 10     |
-| B  店    | 20     | 20     | 20     |
-| C  店    | 30     | 30     | 30     |
+### 進銷存
+* 0 DATYM 資料年月
+* 1 PTVCOD 供應商代號
+* 2 PTVCNA 供應商簡稱
+* 3 PTDPNO 門市代號
+* 4 PTDPNA 門市名稱
+* 5 PRDTCODE 貨號
+* 6 CVCIT 條碼
+* 7 PUPRNA 品名 / 規格
+* 8 PRDTMSQY 上存量
+* 9 PRDTMPQY 進貨量
+* 10 PRDTMBQY 退貨量
+* 11 PRDTMLQY 銷貨量
+* 12 PRDTMIQY 庫存量
 
-## Usage
-[Daily-report-generator](https://www.boris.idv.tw/Daily-report-generator/)
+### 當日銷售代號
+* 0 DATYM 資料年月
+* 1 PTVCOD 供應商代號
+* 2 PTVCNA 供應商簡稱
+* 3 PTDPNO 門市代號
+* 4 PTDPNA 門市名稱
+* 5 PRDTCODE 貨號
+* 6 CVCIT 條碼
+* 7 PUPRNA 品名 / 規格
+* 8 PRDTMLQY 銷貨量
 
-1.Click UPLOAD.
-
-2.Click the Generate.
+### 績效總表代號
+* C 區
+* D 店數
+* E 業績占比
+* F 業績目標
+* G 業績達成
+* H 達成 % 數

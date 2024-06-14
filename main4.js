@@ -1,3 +1,8 @@
+import {
+  groupedStores,
+  targetPrdtCodes,
+  targetProductName,
+} from "./dataSets/pxMarts.js";
 import { appendHeaderRows, clearTableAndInput } from "./helpers/table.js";
 
 let visitedAreas = [];
@@ -21,7 +26,6 @@ async function processDailyKpi(dailyKpi) {
 function generateSummary() {
   const visitedAreasText = visitedAreas.join("，");
   const summaryData = getData("summaryData");
-  // C 區，D 店數，E 業績占比，F 業績目標，G 業績達成，H 達成 % 數
   const areaSummaries = summaryData
     .filter((e) => visitedAreas.includes(e["C"]))
     .map((e) => {
@@ -46,36 +50,49 @@ function generateSummary() {
   });
 }
 
-function filterByPrdtAndPxMarts(array) {
-  return array.filter(
-    (e) => targetPrdtCodes.includes(e[5]) && targetPxMarts.includes(e[4])
+function generateFilter(PTDPNO, PRDTCODE) {
+  const storeIds = Array.from(groupedStores.values()).flatMap((storeMap) =>
+    Array.from(storeMap.keys())
   );
+
+  return storeIds.includes(PTDPNO) && targetPrdtCodes.includes(PRDTCODE);
 }
 
-function convertToJson(array, type) {
+function getfilteredData(array) {
+  return array.filter((item) => {
+    return generateFilter(Number(item[3]), item[5]);
+  });
+}
+
+function arrayToNestedJson(array, type) {
   return array.reduce((json, e) => {
-    const [store, product, quantityKey] = [
-      e[4],
-      e[7],
-      type === "monthStocks" ? "stockQty" : "sellQty",
-    ];
-    json[store] = json[store] || {};
-    json[store][product] = json[store][product] || {};
-    json[store][product][quantityKey] = Number(
-      e[type === "monthStocks" ? 12 : 8]
-    );
+    const PTDPNO = Number(e[3]);
+    const key = type === "monthStocks" ? "stockQtys" : "sellQtys";
+    const value = Number(e[type === "monthStocks" ? 12 : 8]);
+    const dynamicKey = e[7];
+
+    if (!json[PTDPNO]) {
+      json[PTDPNO] = {
+        PTDPNA: e[4],
+        stockQtys: [],
+        sellQtys: [],
+      };
+    }
+
+    json[PTDPNO][key].push({ [dynamicKey]: value });
 
     return json;
   }, {});
 }
+
 function appendTableRows(monthStocksData, todaySellsData) {
   const table = $("#resultTable");
 
-  Object.entries(targetAreaPxMarts).forEach(([area, stores]) => {
-    stores.forEach((store) => {
+  groupedStores.forEach((stores, area) => {
+    stores.forEach((storeName, storeId) => {
       const storeRow = createStoreRow(
         area,
-        store,
+        { id: storeId, name: storeName },
         monthStocksData,
         todaySellsData
       );
@@ -96,6 +113,7 @@ function createStoreRow(area, store, monthStocksData, todaySellsData) {
   targetProductName.forEach((product) => {
     const stockQty = getStockQty(monthStocksData, store, product);
     const sellQty = getSellQty(todaySellsData, store, product);
+
     storeRow.append(
       createQtyCell("stock", stockQty),
       createQtyCell("sell", sellQty)
@@ -107,14 +125,14 @@ function createStoreRow(area, store, monthStocksData, todaySellsData) {
 
 function createStoreButton(area, store) {
   return $("<button>")
-    .addClass(store)
-    .text(store)
+    .addClass(store.name)
+    .text(store.name)
     .css("cursor", "pointer")
     .on("click", () => handleStoreButtonClick(area, store));
 }
 
 function handleStoreButtonClick(area, store) {
-  $(`.${store}`).prop("disabled", true);
+  $(`.${store.name}`).prop("disabled", true);
 
   if (!visitedAreas.includes(area)) visitedAreas.push(area);
 
@@ -126,7 +144,7 @@ function handleStoreButtonClick(area, store) {
     return;
   }
 
-  const result = dailyKpiArray.find((e) => e.店名 === store);
+  const result = dailyKpiArray.find((e) => e.店號 === store.id.toString());
 
   if (!result) {
     Swal.fire({
@@ -151,11 +169,18 @@ function formatDifference(diff) {
 }
 
 function getStockQty(monthStocksData, store, product) {
-  return monthStocksData?.[store]?.[product]?.stockQty ?? "N/A";
+  const stockQtys = monthStocksData?.[store.id]?.stockQtys || [];
+  const foundItem = stockQtys.find((item) => item.hasOwnProperty(product));
+
+  return foundItem ? foundItem[product] : "N/A";
 }
 
 function getSellQty(todaySellsData, store, product) {
-  return todaySellsData?.[store]?.[product]?.sellQty ?? "0";
+  return (
+    todaySellsData?.[store.id]?.sellQtys?.find(
+      (item) => item[product] !== undefined
+    )?.[product] || "0"
+  );
 }
 
 function createQtyCell(id, qty) {
@@ -179,11 +204,11 @@ async function generateReport() {
 async function processCSV(inputName) {
   return new Promise(function (resolve, reject) {
     $(`input[name=${inputName}]`).csv2arr(function (array) {
-      const filteredData = filterByPrdtAndPxMarts(array);
-      const jsonData = convertToJson(filteredData, inputName);
+      const data = getfilteredData(array);
+      const json = arrayToNestedJson(data, inputName);
 
       $(`input[name=${inputName}]`).val("");
-      resolve(jsonData);
+      resolve(json);
     });
   });
 }
