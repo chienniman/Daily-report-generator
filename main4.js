@@ -64,7 +64,7 @@ function getfilteredData(array) {
   });
 }
 
-function convertToJson(array, type) {
+function arrayToNestedJson(array, type) {
   return array.reduce((json, e) => {
     const PTDPNO = Number(e[3]);
     const key = type === "monthStocks" ? "stockQtys" : "sellQtys";
@@ -205,10 +205,10 @@ async function processCSV(inputName) {
   return new Promise(function (resolve, reject) {
     $(`input[name=${inputName}]`).csv2arr(function (array) {
       const data = getfilteredData(array);
-      const jsonData = convertToJson(data, inputName);
+      const json = arrayToNestedJson(data, inputName);
 
       $(`input[name=${inputName}]`).val("");
-      resolve(jsonData);
+      resolve(json);
     });
   });
 }
