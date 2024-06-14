@@ -1,6 +1,5 @@
 import {
   groupedStores,
-  storeCodes,
   targetPrdtCodes,
   targetProductName,
 } from "./dataSets/pxMarts.js";
@@ -51,12 +50,17 @@ function generateSummary() {
   });
 }
 
+function generateFilter(PTDPNO, PRDTCODE) {
+  const storeIds = Array.from(groupedStores.values()).flatMap((storeMap) =>
+    Array.from(storeMap.keys())
+  );
+
+  return storeIds.includes(PTDPNO) && targetPrdtCodes.includes(PRDTCODE);
+}
+
 function getfilteredData(array) {
   return array.filter((item) => {
-    const PTDPNO = Number(item[3]);
-    const PRDTCODE = item[5];
-
-    return storeCodes.includes(PTDPNO) && targetPrdtCodes.includes(PRDTCODE);
+    return generateFilter(Number(item[3]), item[5]);
   });
 }
 
