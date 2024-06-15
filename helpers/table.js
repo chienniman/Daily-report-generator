@@ -1,4 +1,4 @@
-import { targetProductName } from "../dataSets/pxMarts.js";
+import { productMap } from "../dataSets/pxMarts.js";
 
 function isTableEmpty(table) {
   return table.children().length === 0;
@@ -47,7 +47,7 @@ function appendHeaderRows() {
 function createHeaderRow() {
   let headerRow = "<tr class='gray'><th>處</th><th>區</th><th>店名</th>";
 
-  targetProductName.forEach((product) => {
+  Array.from(productMap.values()).forEach((product) => {
     headerRow += `<th colspan="2">${product}</th>`;
   });
 
@@ -57,7 +57,7 @@ function createHeaderRow() {
 function createSubHeaderRow() {
   let subHeaderRow = "<tr class='white'><th></th><th></th><th></th>";
 
-  targetProductName.forEach(() => {
+  Array.from(productMap.values()).forEach(() => {
     subHeaderRow += `
             <th id="stock">
                 <div class='darkred-text'>
