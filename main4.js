@@ -1,6 +1,6 @@
 import {
   groupedStores,
-  targetPrdtCodes,
+  productMap,
   targetProductName,
 } from "./dataSets/pxMarts.js";
 import { appendHeaderRows, clearTableAndInput } from "./helpers/table.js";
@@ -55,7 +55,9 @@ function generateFilter(PTDPNO, PRDTCODE) {
     Array.from(storeMap.keys())
   );
 
-  return storeIds.includes(PTDPNO) && targetPrdtCodes.includes(PRDTCODE);
+  const productIds = Object.keys(productMap);
+
+  return storeIds.includes(PTDPNO) && productIds.includes(PRDTCODE);
 }
 
 function getfilteredData(array) {
