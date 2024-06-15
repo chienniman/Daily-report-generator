@@ -1,7 +1,6 @@
 import {
   groupedStores,
-  targetPrdtCodes,
-  targetProductName,
+  productMap,
 } from "./dataSets/pxMarts.js";
 import { appendHeaderRows, clearTableAndInput } from "./helpers/table.js";
 
@@ -54,8 +53,9 @@ function generateFilter(PTDPNO, PRDTCODE) {
   const storeIds = Array.from(groupedStores.values()).flatMap((storeMap) =>
     Array.from(storeMap.keys())
   );
+  const productIds = Array.from(productMap.keys());
 
-  return storeIds.includes(PTDPNO) && targetPrdtCodes.includes(PRDTCODE);
+  return storeIds.includes(PTDPNO) && productIds.includes(PRDTCODE);
 }
 
 function getfilteredData(array) {
@@ -110,7 +110,7 @@ function createStoreRow(area, store, monthStocksData, todaySellsData) {
       $("<td>").append(createStoreButton(area, store))
     );
 
-  targetProductName.forEach((product) => {
+    Array.from(productMap.values()).forEach((product) => {
     const stockQty = getStockQty(monthStocksData, store, product);
     const sellQty = getSellQty(todaySellsData, store, product);
 
