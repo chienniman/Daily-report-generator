@@ -231,3 +231,8 @@ body {
     border: 1px solid white;
     border-radius: 5%;
 }
+#tableContainer>table>tbody{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
