@@ -236,3 +236,25 @@ body {
     justify-content: center;
     flex-wrap: wrap;
 }
+#tableContainer>table>tbody>tr{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+#tableContainer>table>tbody>tr>td{
+    border: 1px solid;
+    width: 4cm;
+}
+#tableContainer{
+    position: absolute;
+    z-index: 10;
+    background-color: whitesmoke;
+}
+.store-td{
+    background-color: #99cdff;
+}
+.empty-td,.description-td{
+    width: 1cm!important;
+    writing-mode: vertical-lr;
+    background-color: #99cdff;
+}

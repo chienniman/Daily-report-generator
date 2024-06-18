@@ -1,12 +1,3 @@
-function getColumnLetter(colIndex) {
-  let letter = "";
-  while (colIndex >= 0) {
-    letter = String.fromCharCode((colIndex % 26) + 65) + letter;
-    colIndex = Math.floor(colIndex / 26) - 1;
-  }
-  return letter;
-}
-
 function splitArrayByMaxSize(arr, maxSize) {
   const header = arr[0];
 
@@ -41,60 +32,91 @@ function createTableIfNotExists() {
   let table = $("#tableContainer table");
 
   if (!table.length) {
-    table = $("<table>").appendTo("#tableContainer");
+    table = $("<table>", { id: "photosTable" }).appendTo("#tableContainer");
   }
 
   return table;
 }
 
-function createRowIfNotExists(table, row) {
-  return table.find(`tr[data-row="${row}"]`).length
-    ? table.find(`tr[data-row="${row}"]`)
-    : $("<tr>").attr("data-row", row).appendTo(table);
+function createRow(table) {
+  return $("<tr>").appendTo(table);
 }
 
-function createCellIfNotExists(rowElement, col) {
-  return rowElement.find(`td[data-col="${col}"]`).length
-    ? rowElement.find(`td[data-col="${col}"]`)
-    : $("<td>").attr("data-col", col).appendTo(rowElement);
+function createCell(rowElement, className, id) {
+  var cell = $("<td>", {
+    class: className,
+    id: id,
+  });
+  cell.appendTo(rowElement);
+
+  return cell;
 }
 
 function addImageToCell(cellElement, base64data) {
   const imgElement = $("<img>")
     .attr("src", "data:image/png;base64," + base64data)
-    .css({ width: "4cm", height: "auto" });
+    .css({ width: "4cm", height: "100%" });
 
   cellElement.empty().append(imgElement);
 }
 
 function collectImagesData(workbook, worksheet) {
   const imagesData = new Map();
+  const processedRows = new Set();
 
   worksheet.getImages().forEach((image) => {
     const img = workbook.model.media.find((m) => m.index === image.imageId);
-    const row = image.range.tl.nativeRow + 1;
+    const rowId = image.range.tl.nativeRow + 1;
 
-    if (!imagesData.has(row)) {
-      imagesData.set(row, img.buffer.toString("base64"));
+    if (!processedRows.has(rowId)) {
+      processedRows.add(rowId);
+      imagesData.set(rowId, img.buffer.toString("base64"));
     }
   });
 
   return imagesData;
 }
 
-function createPhotos(workbook, worksheet) {
+function generatePptFromTable(tableId) {
+  html2canvas(document.getElementById(tableId)).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png");
+    const pptx = new PptxGenJS();
+    const slide = pptx.addSlide();
+    slide.addImage({ data: imgData, x: 0.5, y: 0.5, w: 8, h: 6 });
+    pptx.writeFile({ fileName: "TableDemo.pptx" });
+  });
+}
+
+function createPhotosTable(workbook, worksheet, storesData, imagesPerRow = 6) {
+  storesData.shift();
+
   const imagesData = collectImagesData(workbook, worksheet);
   const table = createTableIfNotExists();
 
-  imagesData.forEach((base64data, row) => {
-    const rowElement = createRowIfNotExists(table, row);
-    const cellElement = createCellIfNotExists(rowElement, 1);
-    addImageToCell(cellElement, base64data);
+  storesData.forEach((_, index) => {
+    if (index % imagesPerRow === 0) {
+      const currentStoreRow = createRow(table);
+      const currentImageRow = createRow(table);
+      createCell(currentStoreRow, "empty-td", null);
+      createCell(currentImageRow, "description-td", null).text("陳列位");
+
+      storesData.slice(index, index + imagesPerRow).forEach((store) => {
+        const base64data = imagesData.get(store.rowId) || null;
+        const storeId = `store-${store.rowId}`;
+        const imageId = `photo-${store.rowId}`;
+        createCell(currentStoreRow, "store-td", storeId).text(store.store);
+
+        if (base64data) {
+          addImageToCell(
+            createCell(currentImageRow, "photo-td", imageId),
+            base64data
+          );
+        }
+      });
+    }
   });
 
-  console.log(imagesData);
-
-  return imagesData;
+  // return imagesData;
 }
 
 $("#xlsxFileInput").on("change", function (e) {
@@ -107,28 +129,31 @@ $("#xlsxFileInput").on("change", function (e) {
     await workbook.xlsx.load(reader.result);
 
     workbook.eachSheet((worksheet) => {
-      const displayTable = [];
-      const photosTable = [];
+      const displayData = [];
+      const storeData = [];
 
       worksheet.eachRow({ includeEmpty: true }, (row, rowId) => {
         const rowData = [4, 7, 8].map((col) => row.getCell(col).value || null);
         if (rowData.every((cell) => cell)) {
-          displayTable.push(
+          displayData.push(
             rowData.map((text, i) => ({
               text,
               options: { fill: i === 0 ? "99cdff" : "b5c7dd" },
             }))
           );
-          photosTable.push({ rowId, store: rowData[0] });
+          storeData.push({ rowId, store: rowData[0] });
         }
       });
 
-      //   if (displayTable.length > 1) console.log(displayTable);
+      if (storeData.length > 1) {
+        createPhotosTable(workbook, worksheet, storeData);
 
-      createPhotos(workbook, worksheet);
-      //   createPPT(displayTable);
+        generatePptFromTable("photosTable");
+      }
 
-      if (displayTable.length > 1) console.log(photosTable);
+      if (displayData.length > 1) {
+        createPPT(displayData);
+      }
     });
   };
   reader.readAsArrayBuffer(file);
