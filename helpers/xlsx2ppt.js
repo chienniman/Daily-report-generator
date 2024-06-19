@@ -115,8 +115,6 @@ function createPhotosTable(workbook, worksheet, storesData, imagesPerRow = 6) {
       });
     }
   });
-
-  // return imagesData;
 }
 
 $("#xlsxFileInput").on("change", function (e) {
