@@ -6,9 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="./image/me.png">
         <link rel="stylesheet" href="./style.css" />
-        <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <div class="bg"></div>
@@ -108,15 +105,19 @@
             <button id="dailySummary" class="button">每日總結</button>
             <button id="resetBtn" class="button">清空</button>
         </div>
-        <!-- xlsx2ppt -->
         <div id="tableContainer"></div>
         <table id="resultTable" border="1"></table>
 
+        <script src="./lib/excel/excel.js"></script>
+        <script src="./lib/excel/table2excel.js"></script>
         <script src="./lib/excel/xlsx.js"></script>
+        <script src="./lib/ppt/pptxgen.js"></script>
+        <script src="./lib/html2canvas.js"></script>
+
         <script src="./lib/jquery.js"></script>
         <script src="./lib/papaparse.js"></script>
         <script src="./lib/jschardet.js"></script>
-        <script src="./lib/table2excel.js"></script>
+        
         <script src="./lib/sweetalert2.js"></script>
 
         <script src="./helpers/csv2arr.js"></script>
