@@ -25,7 +25,7 @@ function createPPT(data) {
     });
   });
 
-  pptx.writeFile({ fileName: "TableDemo.pptx" });
+  pptx.writeFile({ fileName: "陳列.pptx" });
 }
 
 function createTableIfNotExists() {
@@ -78,13 +78,18 @@ function collectImagesData(workbook, worksheet) {
 }
 
 function generatePptFromTable(tableId) {
-  html2canvas(document.getElementById(tableId)).then((canvas) => {
-    const imgData = canvas.toDataURL("image/png");
-    const pptx = new PptxGenJS();
-    const slide = pptx.addSlide();
-    slide.addImage({ data: imgData, x: 0.5, y: 0.5, w: 8, h: 6 });
-    pptx.writeFile({ fileName: "TableDemo.pptx" });
-  });
+  const tableElement = document.getElementById(tableId);
+
+  domtoimage.toPng(tableElement)
+    .then((imgDataUrl) => {
+      const pptx = new PptxGenJS();
+      const slide = pptx.addSlide();
+      slide.addImage({ data: imgDataUrl, x: 0.5, y: 0.5, w: 8, h: 6 });
+      pptx.writeFile({ fileName: "照片.pptx" });
+    })
+    .catch((error) => {
+      console.error("Error generating PPT from table:", error);
+    });
 }
 
 function createPhotosTable(workbook, worksheet, storesData, imagesPerRow = 6) {
