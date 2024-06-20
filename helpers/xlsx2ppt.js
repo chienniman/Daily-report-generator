@@ -117,12 +117,12 @@ function addPhotoAlbum(data) {
 }
 
 function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
-  storesData.shift(); 
+  storesData.shift();
 
   const imagesData = collectImagesData(workbook, worksheet);
   const tableContainer = $("#tableContainer");
   let tableCount = 0;
-  const tableInfo = []; 
+  const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
     const tableId = `photo-table-${tableCount}`;
@@ -159,7 +159,7 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
             addImageToCell(imageCell, base64data);
             imageCells.push(imageCell);
           } else {
-            imageCells.push(null); 
+            imageCells.push(null);
           }
         });
 
@@ -189,6 +189,37 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   };
 }
 
+function createPPT(storeData, displayData, workbook, worksheet) {
+  storeData.length > 1
+    ? addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
+    : console.log("無陳列照片");
+
+  displayData.length > 1 ? addDisplayTable(displayData) : "無陳列店家資料";
+}
+
+function prepareData(worksheet) {
+  const displayData = [];
+  const storeData = [];
+
+  worksheet.eachRow({ includeEmpty: true }, (row, rowId) => {
+    const rowData = [4, 7, 8].map((col) => row.getCell(col).value || null);
+    if (rowData.every((cell) => cell)) {
+      displayData.push(
+        rowData.map((text, i) => ({
+          text,
+          options: { fill: i === 0 ? "99cdff" : "b5c7dd" },
+        }))
+      );
+      storeData.push({ rowId, store: rowData[0] });
+    }
+  });
+
+  return {
+    displayData,
+    storeData,
+  };
+}
+
 $("#xlsxFileInput").on("change", function (e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -199,29 +230,9 @@ $("#xlsxFileInput").on("change", function (e) {
     await workbook.xlsx.load(reader.result);
 
     workbook.eachSheet((worksheet) => {
-      const displayData = [];
-      const storeData = [];
+      const data = prepareData(worksheet);
 
-      worksheet.eachRow({ includeEmpty: true }, (row, rowId) => {
-        const rowData = [4, 7, 8].map((col) => row.getCell(col).value || null);
-        if (rowData.every((cell) => cell)) {
-          displayData.push(
-            rowData.map((text, i) => ({
-              text,
-              options: { fill: i === 0 ? "99cdff" : "b5c7dd" },
-            }))
-          );
-          storeData.push({ rowId, store: rowData[0] });
-        }
-      });
-
-      if (storeData.length > 1) {
-        addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData));
-      }
-
-      if (displayData.length > 1) {
-        addDisplayTable(displayData);
-      }
+      createPPT(data.storeData, data.displayData, workbook, worksheet);
     });
   };
   reader.readAsArrayBuffer(file);
