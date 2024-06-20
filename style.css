@@ -242,6 +242,7 @@ body {
     width: 100%;
 }
 #tableContainer>table>tbody>tr>td{
+    padding: 0;
     border: 1px solid;
     width: 4cm;
 }
@@ -257,4 +258,7 @@ body {
     width: 1cm!important;
     writing-mode: vertical-lr;
     background-color: #99cdff;
+}
+.photo-table{
+    border-collapse: collapse;
 }
