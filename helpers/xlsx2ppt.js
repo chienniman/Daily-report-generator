@@ -1,3 +1,5 @@
+const pptx = new PptxGenJS();
+
 function splitArrayByMaxSize(arr, maxSize) {
   const header = arr[0];
 
@@ -7,8 +9,7 @@ function splitArrayByMaxSize(arr, maxSize) {
   );
 }
 
-function createPPT(data) {
-  const pptx = new PptxGenJS();
+function addDisplayTable(data) {
   const maxRowsPerSlide = 10;
   const dataChunks = splitArrayByMaxSize(data, maxRowsPerSlide);
 
@@ -24,8 +25,6 @@ function createPPT(data) {
       border: { pt: "1", color: "FFFFFF" },
     });
   });
-
-  pptx.writeFile({ fileName: "陳列.pptx" });
 }
 
 function createTableIfNotExists() {
@@ -81,7 +80,6 @@ function collectImagesData(workbook, worksheet) {
 }
 
 function addPhotoAlbum(data) {
-  const pptx = new PptxGenJS();
   const promises = [];
 
   data.tables.forEach((tableInfo, index) => {
@@ -222,7 +220,7 @@ $("#xlsxFileInput").on("change", function (e) {
       }
 
       if (displayData.length > 1) {
-        createPPT(displayData);
+        addDisplayTable(displayData);
       }
     });
   };
