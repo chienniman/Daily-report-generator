@@ -32,7 +32,10 @@ function createTableIfNotExists() {
   let table = $("#tableContainer table");
 
   if (!table.length) {
-    table = $("<table>", { id: "photosTable" }).appendTo("#tableContainer");
+    table = $("<table>", {
+      id: "photosTable",
+      class: "photo-table",
+    }).appendTo("#tableContainer");
   }
 
   return table;
@@ -55,7 +58,7 @@ function createCell(rowElement, className, id) {
 function addImageToCell(cellElement, base64data) {
   const imgElement = $("<img>")
     .attr("src", "data:image/png;base64," + base64data)
-    .css({ width: "4cm", height: "100%" });
+    .css({ width: "100%", height: "100%" });
 
   cellElement.empty().append(imgElement);
 }
@@ -77,49 +80,115 @@ function collectImagesData(workbook, worksheet) {
   return imagesData;
 }
 
-function generatePptFromTable(tableId) {
-  const tableElement = document.getElementById(tableId);
+function addPhotoAlbum(data) {
+  const pptx = new PptxGenJS();
+  const promises = [];
 
-  domtoimage.toPng(tableElement)
-    .then((imgDataUrl) => {
-      const pptx = new PptxGenJS();
-      const slide = pptx.addSlide();
-      slide.addImage({ data: imgDataUrl, x: 0.5, y: 0.5, w: 8, h: 6 });
-      pptx.writeFile({ fileName: "照片.pptx" });
-    })
-    .catch((error) => {
-      console.error("Error generating PPT from table:", error);
-    });
+  data.tables.forEach((tableInfo, index) => {
+    const tableElement = document.getElementById(tableInfo.id);
+
+    if (!tableElement) {
+      console.error(`Table element with id ${tableInfo.id} not found.`);
+      return;
+    }
+
+    const height = tableInfo.rows.length < 2 ? "50%" : "100%";
+    const promise = domtoimage
+      .toPng(tableElement)
+      .then((imgDataUrl) => {
+        const slide = pptx.addSlide();
+        slide.addImage({
+          data: imgDataUrl,
+          w: "100%",
+          h: height,
+        });
+      })
+      .catch((error) => {
+        console.error(
+          `Error generating image for table ${tableInfo.id}:`,
+          error
+        );
+      });
+
+    promises.push(promise);
+  });
+
+  Promise.all(promises).then(() => {
+    pptx.writeFile({ fileName: "照片.pptx" });
+  });
 }
 
-function createPhotosTable(workbook, worksheet, storesData, imagesPerRow = 6) {
-  storesData.shift();
+function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
+  storesData.shift(); 
 
   const imagesData = collectImagesData(workbook, worksheet);
-  const table = createTableIfNotExists();
+  const tableContainer = $("#tableContainer");
+  let tableCount = 0;
+  const tableInfo = []; 
 
-  storesData.forEach((_, index) => {
-    if (index % imagesPerRow === 0) {
+  for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
+    const tableId = `photo-table-${tableCount}`;
+    const table = $("<table>", { class: "photo-table", id: tableId }).appendTo(
+      tableContainer
+    );
+    const tableRows = [];
+
+    for (let j = 0; j < 2; j++) {
       const currentStoreRow = createRow(table);
       const currentImageRow = createRow(table);
+      const storeCells = [];
+      const imageCells = [];
+
       createCell(currentStoreRow, "empty-td", null);
       createCell(currentImageRow, "description-td", null).text("陳列位");
 
-      storesData.slice(index, index + imagesPerRow).forEach((store) => {
-        const base64data = imagesData.get(store.rowId) || null;
-        const storeId = `store-${store.rowId}`;
-        const imageId = `photo-${store.rowId}`;
-        createCell(currentStoreRow, "store-td", storeId).text(store.store);
+      storesData
+        .slice(i + j * imagesPerRow, i + (j + 1) * imagesPerRow)
+        .forEach((store) => {
+          const base64data = imagesData.get(store.rowId) || null;
+          const storeId = `store-${store.rowId}`;
+          const imageId = `photo-${store.rowId}`;
 
-        if (base64data) {
-          addImageToCell(
-            createCell(currentImageRow, "photo-td", imageId),
-            base64data
-          );
-        }
+          const storeCell = createCell(
+            currentStoreRow,
+            "store-td",
+            storeId
+          ).text(store.store);
+          storeCells.push(storeCell);
+
+          if (base64data) {
+            const imageCell = createCell(currentImageRow, "photo-td", imageId);
+            addImageToCell(imageCell, base64data);
+            imageCells.push(imageCell);
+          } else {
+            imageCells.push(null); 
+          }
+        });
+
+      tableRows.push({
+        storeCells: storeCells,
+        imageCells: imageCells.filter((cell) => cell !== null),
       });
+
+      if (storesData.length <= i + (j + 1) * imagesPerRow) break;
     }
-  });
+
+    tableInfo.push({
+      id: tableId,
+      rows: tableRows,
+      rowCount: tableRows.length,
+      columnCount: imagesPerRow,
+    });
+
+    tableCount++;
+
+    if (tableCount === 2) break;
+  }
+
+  return {
+    tableCount: tableCount,
+    tables: tableInfo,
+  };
 }
 
 $("#xlsxFileInput").on("change", function (e) {
@@ -149,9 +218,7 @@ $("#xlsxFileInput").on("change", function (e) {
       });
 
       if (storeData.length > 1) {
-        createPhotosTable(workbook, worksheet, storeData);
-
-        generatePptFromTable("photosTable");
+        addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData));
       }
 
       if (displayData.length > 1) {
