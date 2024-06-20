@@ -16,7 +16,7 @@ function createPPT(data) {
     const slide = pptx.addSlide();
 
     slide.addTable(chunk, {
-      align: "center",
+      align: "left",
       valign: "middle",
       fontSize: 18,
       colW: [2.2, 5.2, 1.7],
