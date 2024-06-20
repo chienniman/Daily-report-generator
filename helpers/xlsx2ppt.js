@@ -197,7 +197,7 @@ function addCover() {
       {
         text: "南僑水晶",
         options: {
-          fontFace:"標楷體",
+          fontFace: "標楷體",
           fontSize: 54,
           color: "000000",
           breakLine: true,
@@ -206,7 +206,7 @@ function addCover() {
         },
       },
       {
-        fontFace:"標楷體",
+        fontFace: "標楷體",
         text: "PX11304",
         options: {
           fontSize: 60,
@@ -217,7 +217,7 @@ function addCover() {
         },
       },
       {
-        fontFace:"標楷體",
+        fontFace: "標楷體",
         text: "DM商品第二陳列",
         options: {
           fontSize: 60,
@@ -227,7 +227,7 @@ function addCover() {
         },
       },
     ],
-    {h: "100%", w: "100%"}
+    { h: "100%", w: "100%" }
   );
 }
 
