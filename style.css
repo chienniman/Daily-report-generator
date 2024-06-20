@@ -231,22 +231,22 @@ body {
     border: 1px solid white;
     border-radius: 5%;
 }
-#tableContainer>table>tbody{
+#pptTableContainer>table>tbody{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
-#tableContainer>table>tbody>tr{
+#pptTableContainer>table>tbody>tr{
     display: flex;
     justify-content: center;
     width: 100%;
 }
-#tableContainer>table>tbody>tr>td{
+#pptTableContainer>table>tbody>tr>td{
     padding: 0;
     border: 1px solid;
     width: 4cm;
 }
-#tableContainer{
+#pptTableContainer{
     position: absolute;
     z-index: 10;
     background-color: whitesmoke;

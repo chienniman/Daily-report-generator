@@ -28,13 +28,13 @@ function addDisplayTable(data) {
 }
 
 function createTableIfNotExists() {
-  let table = $("#tableContainer table");
+  let table = $("#pptTableContainer table");
 
   if (!table.length) {
     table = $("<table>", {
       id: "photosTable",
       class: "photo-table",
-    }).appendTo("#tableContainer");
+    }).appendTo("#pptTableContainer");
   }
 
   return table;
@@ -120,14 +120,14 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
 
   const imagesData = collectImagesData(workbook, worksheet);
-  const tableContainer = $("#tableContainer");
+  const pptTableContainer = $("#pptTableContainer");
   let tableCount = 0;
   const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
     const tableId = `photo-table-${tableCount}`;
     const table = $("<table>", { class: "photo-table", id: tableId }).appendTo(
-      tableContainer
+      pptTableContainer
     );
     const tableRows = [];
 
