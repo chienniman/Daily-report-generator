@@ -189,6 +189,48 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   };
 }
 
+function addCover() {
+  const slide = pptx.addSlide();
+
+  slide.addText(
+    [
+      {
+        text: "南僑水晶",
+        options: {
+          fontFace:"標楷體",
+          fontSize: 54,
+          color: "000000",
+          breakLine: true,
+          align: "center",
+          valign: "middle",
+        },
+      },
+      {
+        fontFace:"標楷體",
+        text: "PX11304",
+        options: {
+          fontSize: 60,
+          color: "000000",
+          breakLine: true,
+          align: "center",
+          valign: "middle",
+        },
+      },
+      {
+        fontFace:"標楷體",
+        text: "DM商品第二陳列",
+        options: {
+          fontSize: 60,
+          color: "000000",
+          align: "center",
+          valign: "middle",
+        },
+      },
+    ],
+    {h: "100%", w: "100%"}
+  );
+}
+
 function createPPT(storeData, displayData, workbook, worksheet) {
   storeData.length > 1
     ? addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
@@ -229,6 +271,7 @@ $("#xlsxFileInput").on("change", function (e) {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(reader.result);
 
+    addCover();
     workbook.eachSheet((worksheet) => {
       const data = prepareData(worksheet);
 
