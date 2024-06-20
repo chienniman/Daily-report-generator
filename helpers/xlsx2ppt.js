@@ -262,7 +262,7 @@ function prepareData(worksheet) {
   };
 }
 
-$("#xlsxFileInput").on("change", function (e) {
+$("#xlsx2ppt").on("change", function (e) {
   const file = e.target.files[0];
   if (!file) return;
 
