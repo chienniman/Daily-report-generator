@@ -231,7 +231,7 @@ function addCover() {
   );
 }
 
-function createPPT(storeData, displayData, workbook, worksheet) {
+function addBody(storeData, displayData, workbook, worksheet) {
   storeData.length > 1
     ? addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
     : console.log("無陳列照片");
@@ -275,7 +275,7 @@ $("#xlsx2ppt").on("change", function (e) {
     workbook.eachSheet((worksheet) => {
       const data = prepareData(worksheet);
 
-      createPPT(data.storeData, data.displayData, workbook, worksheet);
+      addBody(data.storeData, data.displayData, workbook, worksheet);
     });
   };
   reader.readAsArrayBuffer(file);
