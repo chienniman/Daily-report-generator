@@ -262,6 +262,15 @@ function prepareData(worksheet) {
   };
 }
 
+function createPPT(workbook) {
+  addCover();
+  workbook.eachSheet((worksheet) => {
+    const data = prepareData(worksheet);
+
+    addBody(data.storeData, data.displayData, workbook, worksheet);
+  });
+}
+
 $("#xlsx2ppt").on("change", function (e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -271,12 +280,7 @@ $("#xlsx2ppt").on("change", function (e) {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(reader.result);
 
-    addCover();
-    workbook.eachSheet((worksheet) => {
-      const data = prepareData(worksheet);
-
-      addBody(data.storeData, data.displayData, workbook, worksheet);
-    });
+    createPPT(workbook);
   };
   reader.readAsArrayBuffer(file);
 });
