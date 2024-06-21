@@ -143,11 +143,13 @@ function addCover() {
 }
 
 function addBody(storeData, displayData, workbook, worksheet) {
+  displayData.length > 1
+    ? addDisplayTable(displayData)
+    : console.log("無陳列店家資料");
+
   storeData.length > 1
     ? addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
     : console.log("無陳列照片");
-
-  displayData.length > 1 ? addDisplayTable(displayData) : "無陳列店家資料";
 }
 
 function createPPT(workbook) {
