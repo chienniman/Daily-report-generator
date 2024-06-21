@@ -1,4 +1,4 @@
-import { createTable, createRow, createCell } from "./table.js";
+import { createTable, createTableWithRows } from "./table.js";
 import {
   splitArrayByMaxSize,
   collectImagesData,
@@ -23,14 +23,6 @@ function addDisplayTable(data) {
       border: { pt: "1", color: "FFFFFF" },
     });
   });
-}
-
-function addImageToCell(cellElement, base64data) {
-  const imgElement = $("<img>")
-    .attr("src", "data:image/png;base64," + base64data)
-    .css({ width: "100%", height: "100%" });
-
-  cellElement.empty().append(imgElement);
 }
 
 function addPhotoAlbum(data) {
@@ -76,7 +68,6 @@ function addPhotoAlbum(data) {
 
 function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
-
   const imagesData = collectImagesData(workbook, worksheet);
   let tableCount = 0;
   const tableInfo = [];
@@ -84,57 +75,13 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
     const tableId = `photo-table-${tableCount}`;
     const table = createTable($("#pptTableContainer"), "photo-table", tableId);
-    const tableRows = [];
-
-    for (let j = 0; j < 2; j++) {
-      const currentStoreRow = createRow(table);
-      const currentImageRow = createRow(table);
-      const storeCells = [];
-      const imageCells = [];
-
-      createCell(currentStoreRow, "empty-td", null);
-      createCell(currentImageRow, "description-td", null).text("陳列位");
-
-      const storesSlice = storesData.slice(
-        i + j * imagesPerRow,
-        i + (j + 1) * imagesPerRow
-      );
-      storesSlice.forEach((store) => {
-        const base64data = imagesData.get(store.rowId) || null;
-        const storeId = `store-${store.rowId}`;
-        const imageId = `photo-${store.rowId}`;
-        const storeCell = createCell(currentStoreRow, "store-td", storeId).text(
-          store.store
-        );
-        storeCells.push(storeCell);
-
-        if (base64data) {
-          const imageCell = createCell(currentImageRow, "photo-td", imageId);
-          addImageToCell(imageCell, base64data);
-          imageCells.push(imageCell);
-        } else {
-          const emptyImageCell = createCell(
-            currentImageRow,
-            "photo-td",
-            imageId
-          ).text("無圖像");
-          imageCells.push(emptyImageCell);
-        }
-      });
-
-      const cellsToAdd = imagesPerRow - storesSlice.length;
-      for (let k = 0; k < cellsToAdd; k++) {
-        createCell(currentStoreRow, "store-td", null).text("無資料");
-        createCell(currentImageRow, "photo-td", null).text("無圖像");
-      }
-
-      tableRows.push({
-        storeCells: storeCells,
-        imageCells: imageCells.filter((cell) => cell !== null),
-      });
-
-      if (storesData.length <= i + (j + 1) * imagesPerRow) break;
-    }
+    const tableRows = createTableWithRows(
+      table,
+      storesData,
+      imagesData,
+      i,
+      imagesPerRow
+    );
 
     tableInfo.push({
       id: tableId,
@@ -144,7 +91,6 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
     });
 
     tableCount++;
-
     if (tableCount === 2) break;
   }
 
