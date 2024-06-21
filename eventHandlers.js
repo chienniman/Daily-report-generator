@@ -50,8 +50,10 @@ $(document).ready(function () {
 
     if (!validateInputs()) return;
 
-    $("#loading").removeClass("hidden");
+    Pace.restart();
+
     await generateReport();
-    $("#loading").addClass("hidden");
+
+    Pace.stop();
   });
 });

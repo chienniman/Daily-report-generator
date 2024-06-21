@@ -19,41 +19,13 @@ html {
 .hidden {
     display: none;
 }
-
-#loading {
-    position: absolute;
-    z-index: 500;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.spinner {
-    border: 10px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #000;
-    animation: spin 1s linear infinite;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .bg2 {
     animation-direction: alternate-reverse;
     animation-duration: 4s;
 }
-
 .bg3 {
     animation-duration: 5s;
 }
-
 .content {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 0.25em;
@@ -66,11 +38,9 @@ html {
     top: 50%;
     transform: translate(-50%, -50%);
 }
-
 h1 {
     font-family: monospace;
 }
-
 @keyframes slide {
     0% {
         transform: translateX(-25%);
