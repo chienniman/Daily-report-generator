@@ -95,15 +95,12 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
 
   const imagesData = collectImagesData(workbook, worksheet);
-  const pptTableContainer = $("#pptTableContainer");
   let tableCount = 0;
   const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
     const tableId = `photo-table-${tableCount}`;
-    const table = $("<table>", { class: "photo-table", id: tableId }).appendTo(
-      pptTableContainer
-    );
+    const table = createTable($("#pptTableContainer"), "photo-table", tableId);
     const tableRows = [];
 
     for (let j = 0; j < 2; j++) {
