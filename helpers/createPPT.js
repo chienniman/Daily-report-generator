@@ -66,7 +66,11 @@ function addPhotoAlbum(data) {
   });
 
   Promise.all(promises).then(() => {
-    pptx.writeFile({ fileName: "照片.pptx" });
+    pptx.writeFile({
+      fileName: `PX${new Date().getFullYear() - 1911}${
+        new Date().getMonth() + 1
+      }月份陳列照片.pptx`,
+    });
   });
 }
 
@@ -196,6 +200,11 @@ function createPPT(workbook) {
     const data = preparePPTData(worksheet);
 
     addBody(data.storeData, data.displayData, workbook, worksheet);
+  });
+
+  Swal.fire({
+    title: "已轉換成PPT檔",
+    icon: "success",
   });
 }
 
