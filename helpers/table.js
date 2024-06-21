@@ -75,4 +75,29 @@ function createSubHeaderRow() {
   return subHeaderRow + "</tr>";
 }
 
-export { exportToExcel, clearTableAndInput, appendHeaderRows };
+function createTable(container, className, tableId) {
+  return $("<table>", { class: className, id: tableId }).appendTo(container);
+}
+
+function createRow(table) {
+  return $("<tr>").appendTo(table);
+}
+
+function createCell(rowElement, className, id) {
+  var cell = $("<td>", {
+    class: className,
+    id: id,
+  });
+  cell.appendTo(rowElement);
+
+  return cell;
+}
+
+export {
+  exportToExcel,
+  clearTableAndInput,
+  appendHeaderRows,
+  createTable,
+  createRow,
+  createCell,
+};

@@ -1,3 +1,5 @@
+import { createTable, createRow, createCell } from "./table.js";
+
 const pptx = new PptxGenJS();
 
 function splitArrayByMaxSize(arr, maxSize) {
@@ -25,33 +27,6 @@ function addDisplayTable(data) {
       border: { pt: "1", color: "FFFFFF" },
     });
   });
-}
-
-function createTableIfNotExists() {
-  let table = $("#pptTableContainer table");
-
-  if (!table.length) {
-    table = $("<table>", {
-      id: "photosTable",
-      class: "photo-table",
-    }).appendTo("#pptTableContainer");
-  }
-
-  return table;
-}
-
-function createRow(table) {
-  return $("<tr>").appendTo(table);
-}
-
-function createCell(rowElement, className, id) {
-  var cell = $("<td>", {
-    class: className,
-    id: id,
-  });
-  cell.appendTo(rowElement);
-
-  return cell;
 }
 
 function addImageToCell(cellElement, base64data) {
