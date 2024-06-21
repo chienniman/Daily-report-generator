@@ -32,7 +32,7 @@ function addPhotoAlbum(data) {
     const tableElement = document.getElementById(tableInfo.id);
 
     if (!tableElement) {
-      console.error(`Table element with id ${tableInfo.id} not found.`);
+      console.error(`Table-id ${tableInfo.id} empty.`);
       return;
     }
 
@@ -49,7 +49,7 @@ function addPhotoAlbum(data) {
       })
       .catch((error) => {
         console.error(
-          `Error generating image for table ${tableInfo.id}:`,
+          `Error table-id ${tableInfo.id}:`,
           error
         );
       });
