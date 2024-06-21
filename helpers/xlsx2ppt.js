@@ -1,15 +1,11 @@
 import { createTable, createRow, createCell } from "./table.js";
+import {
+  splitArrayByMaxSize,
+  collectImagesData,
+  preparePPTData,
+} from "./dataHandler.js";
 
 const pptx = new PptxGenJS();
-
-function splitArrayByMaxSize(arr, maxSize) {
-  const header = arr[0];
-
-  return Array.from(
-    { length: Math.ceil((arr.length - 1) / maxSize) },
-    (_, i) => [header, ...arr.slice(i * maxSize + 1, i * maxSize + 1 + maxSize)]
-  );
-}
 
 function addDisplayTable(data) {
   const maxRowsPerSlide = 10;
@@ -35,23 +31,6 @@ function addImageToCell(cellElement, base64data) {
     .css({ width: "100%", height: "100%" });
 
   cellElement.empty().append(imgElement);
-}
-
-function collectImagesData(workbook, worksheet) {
-  const imagesData = new Map();
-  const processedRows = new Set();
-
-  worksheet.getImages().forEach((image) => {
-    const img = workbook.model.media.find((m) => m.index === image.imageId);
-    const rowId = image.range.tl.nativeRow + 1;
-
-    if (!processedRows.has(rowId)) {
-      processedRows.add(rowId);
-      imagesData.set(rowId, img.buffer.toString("base64"));
-    }
-  });
-
-  return imagesData;
 }
 
 function addPhotoAlbum(data) {
@@ -211,33 +190,10 @@ function addBody(storeData, displayData, workbook, worksheet) {
   displayData.length > 1 ? addDisplayTable(displayData) : "無陳列店家資料";
 }
 
-function prepareData(worksheet) {
-  const displayData = [];
-  const storeData = [];
-
-  worksheet.eachRow({ includeEmpty: true }, (row, rowId) => {
-    const rowData = [4, 7, 8].map((col) => row.getCell(col).value || null);
-    if (rowData.every((cell) => cell)) {
-      displayData.push(
-        rowData.map((text, i) => ({
-          text,
-          options: { fill: i === 0 ? "99cdff" : "b5c7dd" },
-        }))
-      );
-      storeData.push({ rowId, store: rowData[0] });
-    }
-  });
-
-  return {
-    displayData,
-    storeData,
-  };
-}
-
 function createPPT(workbook) {
   addCover();
   workbook.eachSheet((worksheet) => {
-    const data = prepareData(worksheet);
+    const data = preparePPTData(worksheet);
 
     addBody(data.storeData, data.displayData, workbook, worksheet);
   });
@@ -251,7 +207,6 @@ $("#xlsx2ppt").on("change", function (e) {
   reader.onloadend = async function () {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(reader.result);
-
     createPPT(workbook);
   };
   reader.readAsArrayBuffer(file);
