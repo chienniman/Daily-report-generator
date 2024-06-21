@@ -95,28 +95,38 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
       createCell(currentStoreRow, "empty-td", null);
       createCell(currentImageRow, "description-td", null).text("陳列位");
 
-      storesData
-        .slice(i + j * imagesPerRow, i + (j + 1) * imagesPerRow)
-        .forEach((store) => {
-          const base64data = imagesData.get(store.rowId) || null;
-          const storeId = `store-${store.rowId}`;
-          const imageId = `photo-${store.rowId}`;
+      const storesSlice = storesData.slice(
+        i + j * imagesPerRow,
+        i + (j + 1) * imagesPerRow
+      );
+      storesSlice.forEach((store) => {
+        const base64data = imagesData.get(store.rowId) || null;
+        const storeId = `store-${store.rowId}`;
+        const imageId = `photo-${store.rowId}`;
+        const storeCell = createCell(currentStoreRow, "store-td", storeId).text(
+          store.store
+        );
+        storeCells.push(storeCell);
 
-          const storeCell = createCell(
-            currentStoreRow,
-            "store-td",
-            storeId
-          ).text(store.store);
-          storeCells.push(storeCell);
+        if (base64data) {
+          const imageCell = createCell(currentImageRow, "photo-td", imageId);
+          addImageToCell(imageCell, base64data);
+          imageCells.push(imageCell);
+        } else {
+          const emptyImageCell = createCell(
+            currentImageRow,
+            "photo-td",
+            imageId
+          ).text("無圖像");
+          imageCells.push(emptyImageCell);
+        }
+      });
 
-          if (base64data) {
-            const imageCell = createCell(currentImageRow, "photo-td", imageId);
-            addImageToCell(imageCell, base64data);
-            imageCells.push(imageCell);
-          } else {
-            imageCells.push(null);
-          }
-        });
+      const cellsToAdd = imagesPerRow - storesSlice.length;
+      for (let k = 0; k < cellsToAdd; k++) {
+        createCell(currentStoreRow, "store-td", null).text("無資料");
+        createCell(currentImageRow, "photo-td", null).text("無圖像");
+      }
 
       tableRows.push({
         storeCells: storeCells,
