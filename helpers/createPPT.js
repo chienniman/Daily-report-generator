@@ -116,7 +116,7 @@ function addCover() {
       },
       {
         fontFace: "標楷體",
-        text: "PX11304",
+        text: `PX113${(new Date().getMonth() + 1).toString().padStart(2, '0')}`,
         options: {
           fontSize: 60,
           color: "000000",
