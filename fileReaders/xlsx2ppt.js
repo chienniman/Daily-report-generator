@@ -42,10 +42,11 @@ function createStyle() {
 function createBaseElement() {
   $(".top-row").append(createFileInput("xlsx2ppt", "Excel轉PPT"));
 
-  const pptTableContainer = $("<div>", {
-    id: "pptTableContainer",
-  });
-  $("body").append(pptTableContainer);
+  $("body").append(
+    $("<div>", {
+      id: "pptTableContainer",
+    })
+  );
 }
 
 $(document).ready(function () {
