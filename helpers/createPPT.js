@@ -3,6 +3,7 @@ import {
   splitArrayByMaxSize,
   collectImagesData,
   preparePPTData,
+  countCompleteRows,
 } from "./dataHandler.js";
 
 const pptx = new PptxGenJS();
@@ -48,10 +49,7 @@ function addPhotoAlbum(data) {
         });
       })
       .catch((error) => {
-        console.error(
-          `Error table-id ${tableInfo.id}:`,
-          error
-        );
+        console.error(`Error table-id ${tableInfo.id}:`, error);
       });
 
     promises.push(promise);
@@ -142,6 +140,41 @@ function addCover() {
   );
 }
 
+function createPreview(workbook) {
+  const sheetSummary = [];
+  const options = {
+    fontFace: "標楷體",
+    fontSize: 32,
+    color: "000000",
+    breakLine: true,
+    align: "center",
+    valign: "middle",
+  };
+  let totalCounts = 0;
+
+  workbook.eachSheet((worksheet) => {
+    totalCounts += countCompleteRows(worksheet);
+
+    sheetSummary.push({
+      text: `${worksheet.name}第二陳列店家-共${countCompleteRows(worksheet)}家`,
+      options,
+    });
+  });
+
+  sheetSummary.push({
+    text: `目前陳列${totalCounts}家(持續更新中)`,
+    options,
+  });
+
+  return sheetSummary;
+}
+
+function addPreview(preview) {
+  const slide = pptx.addSlide();
+
+  slide.addText(preview, { h: "100%", w: "100%" });
+}
+
 function addBody(storeData, displayData, workbook, worksheet) {
   displayData.length > 1
     ? addDisplayTable(displayData)
@@ -152,13 +185,19 @@ function addBody(storeData, displayData, workbook, worksheet) {
     : console.log("無陳列照片");
 }
 
-function createPPT(workbook) {
-  addCover();
+function addBodys(workbook) {
   workbook.eachSheet((worksheet) => {
     const data = preparePPTData(worksheet);
-
     addBody(data.storeData, data.displayData, workbook, worksheet);
   });
+}
+
+function createPPT(workbook) {
+  addCover();
+
+  addPreview(createPreview(workbook));
+
+  addBodys(workbook);
 
   Swal.fire({
     title: "已轉換成PPT檔",

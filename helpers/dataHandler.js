@@ -23,6 +23,7 @@ function collectImagesData(workbook, worksheet) {
 
   return imagesData;
 }
+
 function preparePPTData(worksheet) {
   const displayData = [];
   const storeData = [];
@@ -46,4 +47,22 @@ function preparePPTData(worksheet) {
   };
 }
 
-export { splitArrayByMaxSize, collectImagesData, preparePPTData };
+function countCompleteRows(worksheet) {
+  let completeRowsCount = 0;
+  const headerCount = 1;
+  worksheet.eachRow({ includeEmpty: true }, (row) => {
+    const rowData = [4, 7, 8].map((col) => row.getCell(col).value || null);
+    if (rowData.every((cell) => cell)) {
+      completeRowsCount++;
+    }
+  });
+
+  return completeRowsCount - headerCount;
+}
+
+export {
+  splitArrayByMaxSize,
+  collectImagesData,
+  preparePPTData,
+  countCompleteRows,
+};
