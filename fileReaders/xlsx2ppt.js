@@ -40,7 +40,7 @@ function createStyle() {
 }
 
 function createBaseElement() {
-  $(".top-row").append(createFileInput("xlsx2ppt", "Excel轉PPT"));
+  $(".top-row").append(createFileInput("xlsx2ppt", "Excel轉PPT", "#d04424"));
 
   $("body").append(
     $("<div>", {
