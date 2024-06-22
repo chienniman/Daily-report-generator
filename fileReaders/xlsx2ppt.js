@@ -1,4 +1,5 @@
 import { createPPT } from "../helpers/createPPT.js";
+import { createFileInput } from "../components/fileInput.js";
 
 function createStyle() {
   const styles = `
@@ -39,11 +40,7 @@ function createStyle() {
 }
 
 function createBaseElement() {
-  const fileInput = $("<input>", {
-    type: "file",
-    id: "xlsx2ppt",
-  });
-  $(".top-row").append(fileInput);
+  $(".top-row").append(createFileInput("xlsx2ppt", "Excel轉PPT"));
 
   const pptTableContainer = $("<div>", {
     id: "pptTableContainer",
