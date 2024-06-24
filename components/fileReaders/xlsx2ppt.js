@@ -1,5 +1,5 @@
 import { createPPT } from "../../helpers/createPPT.js";
-import { createFileInput } from "../fileInput.js";
+import { fileInput } from "/components/shared/fileInput.js";
 
 $(document).ready(function () {
   function createStyle() {
@@ -43,7 +43,9 @@ $(document).ready(function () {
   createStyle();
 
   function createBaseElement() {
-    $(".top-row").append(createFileInput("xlsx2ppt", "Excel轉PPT", "#d04424"));
+    $(".top-row").append(
+      fileInput({ id: "xlsx2ppt", text: "Excel轉PPT", color: "#d04424" })
+    );
 
     $("body").append(
       $("<div>", {

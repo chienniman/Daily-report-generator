@@ -1,4 +1,4 @@
-function createFileInput(id, text, color = "rgb(32, 178, 170)") {
+function fileInput({ id, text, color = "rgb(32, 178, 170)" }) {
   return `
         <div class="file-input">
             <input type="file" name="${id}" id="${id}" class="file-input-input">
@@ -12,4 +12,4 @@ function createFileInput(id, text, color = "rgb(32, 178, 170)") {
     `;
 }
 
-export { createFileInput };
+export { fileInput };
