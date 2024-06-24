@@ -1,13 +1,14 @@
-import { getData } from "/utils/dataProcessing.js";
+import { setData, getData } from "/utils/dataProcessing.js";
+
+const visitedAreas = [];
 
 function storeButton(area, store) {
-  const visitedAreas = [];
-
   function handleClick(area, store) {
     $(`.${store.name}`).prop("disabled", true);
 
     if (!visitedAreas.includes(area)) {
       visitedAreas.push(area);
+      setData("visitedAreas", visitedAreas);
     }
 
     const dailyKpiArray = getData("ojs");
