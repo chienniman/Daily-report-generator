@@ -1,3 +1,5 @@
+import { getData } from "/utils/dataProcessing.js";
+
 function storeButton(area, store) {
   const visitedAreas = [];
 
