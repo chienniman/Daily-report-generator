@@ -13,7 +13,7 @@ function checkCsvInput(file) {
     return false;
   }
 
-  if (!isCSV()) {
+  if (!isCSV(file)) {
     Swal.fire({ title: "不支援的檔案類型，必須是 CSV 檔!", icon: "error" });
 
     return false;

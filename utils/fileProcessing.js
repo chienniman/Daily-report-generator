@@ -40,10 +40,11 @@ async function processDailyKpi(dailyKpi) {
 }
 
 $.fn.csv2arr = function (callback) {
-  checkCsvInput($(this)[0].files[0]);
-
+  const file = $(this)[0].files[0];
+  checkCsvInput(file);
   const reader = new FileReader();
   reader.readAsDataURL(file);
+  
   reader.onload = function (evt) {
     const data = evt.target.result;
     const encoding = jschardet.detect(atob(data.split(";base64,")[1])).encoding;

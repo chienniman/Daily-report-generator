@@ -1,7 +1,6 @@
-function isCSV(input) {
-  const ext = $(input)[0].files[0].name.split(".").pop().toLowerCase();
-
-  return ext === "csv";
+function isCSV(file) {
+  return file && file.name.split(".").pop().toLowerCase() === "csv";
 }
 
 export { isCSV };
+

@@ -13,7 +13,7 @@ function validateInputs() {
     return false;
   }
 
-  if (!isCSV("#monthStocks") || !isCSV("#todaySells")) {
+  if (!isCSV($("#monthStocks")[0].files[0]) || !isCSV($("#todaySells")[0].files[0])) {
     Swal.fire({ title: "輸入必須是 CSV 檔!", icon: "error" });
 
     return false;
