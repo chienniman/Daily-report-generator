@@ -1,7 +1,13 @@
 import { button } from "../shared/buttons/button.js";
 
 $(document).ready(function () {
-  $(".top-row").append(button({ id: "exportToExcel", text: "導出數據" }));
+  $(".top-row").append(
+    button({
+      id: "exportToExcel",
+      text: "導出數據",
+      styles: { display: 'none' }
+    })
+  );
 
   $("#exportToExcel").on("click", async function () {
     function isTableEmpty(table) {

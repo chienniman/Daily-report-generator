@@ -12,5 +12,6 @@ $(document).ready(function () {
     Pace.restart();
     await createReport();
     Pace.stop();
+    $("#exportToExcel").show();
   });
 });
