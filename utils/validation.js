@@ -1,4 +1,4 @@
-import { isCSV } from "/utils/checkers/checkFileType.js";
+import { isCSV } from "./checkers/checkFileType.js";
 
 function validateInputs() {
   const monthStocks = $("#monthStocks").val();

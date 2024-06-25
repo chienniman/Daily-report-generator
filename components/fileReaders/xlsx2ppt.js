@@ -1,5 +1,5 @@
 import { createPPT } from "../../helpers/createPPT.js";
-import { fileInput } from "/components/shared/fileInput.js";
+import { fileInput } from "../shared/fileInput.js";
 
 $(document).ready(function () {
   function createStyle() {

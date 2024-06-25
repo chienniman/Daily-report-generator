@@ -1,5 +1,5 @@
-import { button } from "/components/shared/buttons/button.js";
-import { getData } from "/utils/dataProcessing.js";
+import { button } from "../shared/buttons/button.js";
+import { getData } from "../../utils/dataProcessing.js";
 
 $(document).ready(function () {
   $(".top-row").append(

@@ -1,4 +1,4 @@
-import { mergeStyleString } from "/helpers/mergeStyleString.js";
+import { mergeStyleString } from "../../../helpers/mergeStyleString.js";
 
 function button({ id, text, styles }) {
   const fixedStyles = {

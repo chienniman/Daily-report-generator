@@ -1,5 +1,5 @@
-import { fileInput } from "/components/shared/fileInput.js";
-import { processData, setData } from "/utils/dataProcessing.js";
+import { fileInput } from "../shared/fileInput.js";
+import { processData, setData } from "../../utils/dataProcessing.js";
 
 $(document).ready(function () {
   function createBaseElement() {

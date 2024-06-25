@@ -1,5 +1,5 @@
-import { createReport } from "/utils/report.js";
-import { validateInputs } from "/utils/validation.js";
+import { createReport } from "../../utils/report.js";
+import { validateInputs } from "../../utils/validation.js";
 import { button } from "../shared/buttons/button.js";
 
 $(document).ready(function () {

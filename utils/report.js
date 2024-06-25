@@ -1,6 +1,6 @@
-import { productMap } from "/dataSets/pxMarts.js";
-import { appendHeaderRows, appendTableRows } from "/helpers/appendRows.js";
-import { processCSV } from "/utils/fileProcessing.js";
+import { productMap } from "../dataSets/pxMarts.js";
+import { appendHeaderRows, appendTableRows } from "../helpers/appendRows.js";
+import { processCSV } from "./fileProcessing.js";
 
 async function createReport() {
   try {

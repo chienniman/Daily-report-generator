@@ -1,6 +1,6 @@
-import { arrayToNestedJson } from "/helpers/dataHandler.js";
-import { getfilteredData } from "/utils/filterData.js";
-import { checkCsvInput } from "/utils/checkers/checkCsvInput.js";
+import { arrayToNestedJson } from "../helpers/dataHandler.js";
+import { getfilteredData } from "./filterData.js";
+import { checkCsvInput } from "./checkers/checkCsvInput.js";
 
 $.fn.csv2arr = function (callback) {
   const file = $(this)[0].files[0];
