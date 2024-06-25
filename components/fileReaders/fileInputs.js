@@ -10,9 +10,9 @@ $(document).ready(function () {
     `);
 
     $(".top-row").append(
-      fileInput({ id: "monthStocks", text: "進銷存", color: "#d04424" }),
-      fileInput({ id: "todaySells", text: "當日銷售", color: "#d04424" }),
-      fileInput({ id: "dailyKpi", text: "績效總表", color: "#d04424" })
+      fileInput({ id: "monthStocks", text: "進銷存", color: "#02723b" }),
+      fileInput({ id: "todaySells", text: "當日銷售", color: "#02723b" }),
+      fileInput({ id: "dailyKpi", text: "績效總表", color: "#02723b" })
     );
   }
 
