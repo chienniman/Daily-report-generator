@@ -1,10 +1,10 @@
-import { createTable, createTableWithRows } from "./table.js";
+import { createTable, createTableWithRows } from "/helpers/createTable.js";
 import {
   splitArrayByMaxSize,
   collectImagesData,
   preparePPTData,
   countCompleteRows,
-} from "./dataHandler.js";
+} from "/helpers/dataHandler.js";
 
 const pptx = new PptxGenJS();
 
@@ -116,7 +116,7 @@ function addCover() {
       },
       {
         fontFace: "標楷體",
-        text: `PX113${(new Date().getMonth() + 1).toString().padStart(2, '0')}`,
+        text: `PX113${(new Date().getMonth() + 1).toString().padStart(2, "0")}`,
         options: {
           fontSize: 60,
           color: "000000",
