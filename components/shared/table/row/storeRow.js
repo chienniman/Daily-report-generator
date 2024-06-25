@@ -1,6 +1,6 @@
-import { storeButton } from "/components/shared/buttons/storeButton.js";
-import { qtyCell } from "/components/shared/table/cell/qtyCell.js";
-import { productMap } from "/dataSets/pxMarts.js";
+import { storeButton } from "../../buttons/storeButton.js";
+import { qtyCell } from "../cell/qtyCell.js";
+import { productMap } from "../../../dataSets/pxMarts.js";
 
 function storeRow(area, store, monthStocksData, todaySellsData) {
   function getStockQty(monthStocksData, store, product) {

@@ -4,7 +4,7 @@ import {
   collectImagesData,
   preparePPTData,
   countCompleteRows,
-} from "/helpers/dataHandler.js";
+} from "./dataHandler.js";
 
 const pptx = new PptxGenJS();
 
