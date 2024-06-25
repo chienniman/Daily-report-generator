@@ -44,7 +44,13 @@ $(document).ready(function () {
 
   function createBaseElement() {
     $(".top-row").append(
-      fileInput({ id: "xlsx2ppt", text: "Excel轉PPT", color: "#d04424" })
+      fileInput({
+        id: "xlsx2ppt",
+        text: "PPT",
+        styles: {
+          background: "#d04424",
+        },
+      })
     );
 
     $("body").append(

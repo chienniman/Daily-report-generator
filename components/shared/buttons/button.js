@@ -1,10 +1,8 @@
 import { mergeStyleString } from "/helpers/mergeStyleString.js";
 
-function button(buttonOptions) {
-  const { id, text, styles } = buttonOptions;
+function button({ id, text, styles }) {
   const fixedStyles = {
-    "max-width": "100px",
-    "min-height": "58px",
+    "max-width": "80px",
   };
 
   return `<button id="${id}" class="button" style="${mergeStyleString(
