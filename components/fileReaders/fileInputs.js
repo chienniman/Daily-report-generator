@@ -12,7 +12,7 @@ $(document).ready(function () {
     $(".top-row").append(
       fileInput({
         id: "monthStocks",
-        text: "進銷存",
+        text: "庫存",
         styles: {
           background: "#02723b",
         },
