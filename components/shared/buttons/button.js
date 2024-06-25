@@ -1,10 +1,16 @@
+import { mergeStyleString } from "/helpers/mergeStyleString.js";
+
 function button(buttonOptions) {
   const { id, text, styles } = buttonOptions;
-  const styleString = Object.keys(styles || {})
-    .map((key) => `${key}: ${styles[key]};`)
-    .join(" ");
+  const fixedStyles = {
+    "max-width": "100px",
+    "min-height": "58px",
+  };
 
-  return `<button id="${id}" class="button" style="${styleString}">${text}</button>`;
+  return `<button id="${id}" class="button" style="${mergeStyleString(
+    fixedStyles,
+    styles
+  )}">${text}</button>`;
 }
 
 export { button };

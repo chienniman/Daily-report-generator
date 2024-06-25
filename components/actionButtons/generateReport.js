@@ -3,9 +3,14 @@ import { validateInputs } from "/utils/validation.js";
 import { button } from "../shared/buttons/button.js";
 
 $(document).ready(function () {
-  $(".top-row").append(button({ id: "generateReport", text: "生成" }));
+  $(".top-row").append(
+    button({
+      id: "generateReport",
+      text: "生成",
+    })
+  );
 
-  function showHiddenBtn(){
+  function showHiddenBtn() {
     $("#dailySummary,#exportToExcel,#reset").show();
   }
 

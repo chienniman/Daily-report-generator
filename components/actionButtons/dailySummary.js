@@ -6,7 +6,7 @@ $(document).ready(function () {
     button({
       id: "dailySummary",
       text: "每日總結",
-      styles: { display: 'none' }
+      styles: { display: "none" },
     })
   );
 
