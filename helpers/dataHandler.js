@@ -60,9 +60,31 @@ function countCompleteRows(worksheet) {
   return completeRowsCount - headerCount;
 }
 
+function arrayToNestedJson(array, type) {
+  return array.reduce((json, e) => {
+    const PTDPNO = Number(e[3]);
+    const key = type === "monthStocks" ? "stockQtys" : "sellQtys";
+    const value = Number(e[type === "monthStocks" ? 12 : 8]);
+    const dynamicKey = e[7];
+
+    if (!json[PTDPNO]) {
+      json[PTDPNO] = {
+        PTDPNA: e[4],
+        stockQtys: [],
+        sellQtys: [],
+      };
+    }
+
+    json[PTDPNO][key].push({ [dynamicKey]: value });
+
+    return json;
+  }, {});
+}
+
 export {
   splitArrayByMaxSize,
   collectImagesData,
   preparePPTData,
   countCompleteRows,
+  arrayToNestedJson
 };
