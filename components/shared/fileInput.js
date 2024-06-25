@@ -1,4 +1,4 @@
-import { mergeStyleString } from "/helpers/mergeStyleString.js";
+import { mergeStyleString } from "../../helpers/mergeStyleString.js";
 
 function fileInput({ id, text, styles }) {
   const styleString = mergeStyleString([], styles);
