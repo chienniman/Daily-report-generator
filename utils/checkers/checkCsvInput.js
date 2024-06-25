@@ -1,4 +1,4 @@
-import { isCSV } from "/utils/checkers/checkFileType.js";
+import { isCSV } from "./checkFileType.js";
 
 function checkCsvInput(file) {
   if (typeof FileReader === "undefined") {

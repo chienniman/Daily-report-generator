@@ -1,4 +1,4 @@
-import { groupedStores, productMap } from "/dataSets/pxMarts.js";
+import { groupedStores, productMap } from "../dataSets/pxMarts.js";
 
 function generateFilter(PTDPNO, PRDTCODE) {
   const storeIds = Array.from(groupedStores.values()).flatMap((storeMap) =>

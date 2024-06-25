@@ -1,4 +1,4 @@
-import { createTable, createTableWithRows } from "/helpers/createTable.js";
+import { createTable, createTableWithRows } from "./createTable.js";
 import {
   splitArrayByMaxSize,
   collectImagesData,

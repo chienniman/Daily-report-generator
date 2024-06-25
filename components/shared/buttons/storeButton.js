@@ -1,4 +1,4 @@
-import { setData, getData } from "/utils/dataProcessing.js";
+import { setData, getData } from "../../../utils/dataProcessing.js";
 
 const visitedAreas = [];
 
