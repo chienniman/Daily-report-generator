@@ -4,7 +4,7 @@ $(document).ready(function () {
   $(".top-row").append(
     button({
       id: "exportToExcel",
-      text: "導出數據",
+      text: "導出",
       styles: { display: 'none' }
     })
   );

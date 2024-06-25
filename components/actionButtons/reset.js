@@ -4,7 +4,7 @@ $(document).ready(function () {
   $(".top-row").append(
     button({
       id: "reset",
-      text: "清空",
+      text: "重置",
       styles: { display: 'none' }
     })
   );

@@ -5,7 +5,7 @@ $(document).ready(function () {
   $(".top-row").append(
     button({
       id: "dailySummary",
-      text: "每日總結",
+      text: "總結",
       styles: { display: "none" },
     })
   );

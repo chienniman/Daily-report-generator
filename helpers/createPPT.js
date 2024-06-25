@@ -57,7 +57,7 @@ function addPhotoAlbum(data) {
 
   Promise.all(promises).then(() => {
     pptx.writeFile({
-      fileName: `PX${new Date().getFullYear() - 1911}${
+      fileName: `PX${new Date().getFullYear() - 1911}年${
         new Date().getMonth() + 1
       }月份陳列照片.pptx`,
     });
