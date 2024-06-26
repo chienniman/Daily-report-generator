@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build:components":"esbuild ./components/actionButtons/dailySummary.js ./components/actionButtons/exportToExcel.js ./components/actionButtons/generateReport.js ./components/actionButtons/reset.js ./components/fileReaders/fileInputs.js ./components/fileReaders/xlsx2ppt.js --bundle --outdir=dist/components/",
+    "build:lib": "uglifyjs ./lib/excel/excel.js ./lib/excel/table2excel.js ./lib/excel/xlsx.js ./lib/ppt/pptxgen.js ./lib/dom2image.js ./lib/jquery.js ./lib/papaparse.js ./lib/jschardet.js ./lib/sweetalert2.js -o dist/lib/bundle.js -c -m"
+  },
+  "dependencies": {
+    "uglify-js": "^3.18.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.21.5"
+  }
+}
