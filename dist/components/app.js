@@ -12,6 +12,7 @@
             <div id="uploadedFiles"></div>
             <div class="top-row"></div>
             <table id="resultTable" border="1"></table>
+            <div id="pptTableContainer"></div>
         `);
     }
     createBaseElement();

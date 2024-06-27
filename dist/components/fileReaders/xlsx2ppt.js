@@ -329,11 +329,6 @@
           }
         })
       );
-      $("body").append(
-        $("<div>", {
-          id: "pptTableContainer"
-        })
-      );
     }
     createBaseElement();
     $("#xlsx2ppt").on("change", function(e) {

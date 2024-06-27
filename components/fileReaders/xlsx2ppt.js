@@ -12,12 +12,6 @@ $(document).ready(function () {
         },
       })
     );
-
-    $("body").append(
-      $("<div>", {
-        id: "pptTableContainer",
-      })
-    );
   }
 
   createBaseElement();
