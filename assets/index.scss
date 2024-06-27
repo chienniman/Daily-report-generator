@@ -218,6 +218,41 @@ h1 {
   padding-right: 16px;
   top: 4px;
 }
+// xlsx2ppt
+#pptTableContainer {
+  position: absolute;
+  z-index: 10;
+  background-color: whitesmoke;
+  table {
+    tbody {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      tr {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        td {
+          padding: 0;
+          border: 1px solid;
+          width: 4cm;
+        }
+      }
+    }
+  }
+}
+.store-td {
+  background-color: #99cdff;
+}
+.empty-td,
+.description-td {
+  width: 1cm !important;
+  writing-mode: vertical-lr;
+  background-color: #99cdff;
+}
+.photo-table {
+  border-collapse: collapse;
+}
 /* pace.js */
 .pace .pace-progress[data-progress-text="0%"]:after {
   right: -200px;
