@@ -222,33 +222,31 @@ h1 {
 #pptTableContainer {
   position: absolute;
   z-index: 10;
-  background-color: whitesmoke;
   table {
+    display: inline-block;
     tbody {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: inline-block;
       tr {
         display: flex;
         justify-content: center;
-        width: 100%;
         td {
           padding: 0;
           border: 1px solid;
           width: 4cm;
+          background: whitesmoke;
         }
       }
     }
   }
 }
 .store-td {
-  background-color: #99cdff;
+  background-color: #99cdff !important;
 }
 .empty-td,
 .description-td {
   width: 1cm !important;
   writing-mode: vertical-lr;
-  background-color: #99cdff;
+  background-color: #99cdff !important;
 }
 .photo-table {
   border-collapse: collapse;
