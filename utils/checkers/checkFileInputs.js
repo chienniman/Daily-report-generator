@@ -1,8 +1,14 @@
 import { isCSV, isXLSX } from "./checkFileType.js";
 
 function checkMonthStocks(file) {
+  if (!file) {
+    Swal.fire({ title: "每日進銷庫存不可為空!", icon: "error" });
+
+    return false;
+  }
+
   if (!isCSV(file)) {
-    Swal.fire({ title: "不支援的檔案類型，必須是 CSV 檔!", icon: "error" });
+    Swal.fire({ title: "必須是 CSV 檔!", icon: "error" });
 
     return false;
   }
@@ -17,8 +23,14 @@ function checkMonthStocks(file) {
 }
 
 function checkTodaySells(file) {
+  if (!file) {
+    Swal.fire({ title: "每日銷售不可為空!", icon: "error" });
+
+    return false;
+  }
+
   if (!isCSV(file)) {
-    Swal.fire({ title: "不支援的檔案類型，必須是 CSV 檔!", icon: "error" });
+    Swal.fire({ title: "必須是 CSV 檔!", icon: "error" });
 
     return false;
   }
@@ -33,8 +45,14 @@ function checkTodaySells(file) {
 }
 
 function checkDailyKpi(file) {
+  if (!file) {
+    Swal.fire({ title: "每日績效不可為空!", icon: "error" });
+
+    return false;
+  }
+
   if (!isXLSX(file)) {
-    Swal.fire({ title: "不支援的檔案類型，必須是 XLSX 檔!", icon: "error" });
+    Swal.fire({ title: "必須是 XLSX 檔!", icon: "error" });
 
     return false;
   }
