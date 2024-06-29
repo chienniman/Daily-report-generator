@@ -4,14 +4,14 @@ const visitedAreas = [];
 
 function storeButton(area, store) {
   function handleClick(area, store) {
-    $(`.${store.name}`).prop("disabled", true);
+    $(`.${store.name}`).addClass("clicked-btn");
 
     if (!visitedAreas.includes(area)) {
       visitedAreas.push(area);
       setData("visitedAreas", visitedAreas);
     }
 
-    const dailyKpiArray = getData("ojs");
+    const dailyKpiArray = getData("dailyKpiArray");
 
     if (!dailyKpiArray) {
       Swal.fire({ title: "請先上傳當月績效總表", icon: "error" });

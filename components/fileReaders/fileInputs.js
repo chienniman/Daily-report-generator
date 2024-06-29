@@ -62,8 +62,8 @@ $(document).ready(function () {
 
           console.log(summaryData);
           setData("summaryData", summaryData);
-          var oJS = XLSX.utils.sheet_to_json(cfb.Sheets["簡雯樺"]);
-          setData("ojs", oJS);
+          var dailyKpiArray = XLSX.utils.sheet_to_json(cfb.Sheets["簡雯樺"]);
+          setData("dailyKpiArray", dailyKpiArray);
           resolve();
         } catch (error) {
           reject(error);
