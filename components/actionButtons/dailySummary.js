@@ -12,7 +12,7 @@ $(document).ready(function () {
   );
 
   $("#dailySummary").on("click", async function () {
-    checkDailyKpi();
+    if (!checkDailyKpi()) return;
 
     function generateSummary() {
       const visitedAreas = getData("visitedAreas");
