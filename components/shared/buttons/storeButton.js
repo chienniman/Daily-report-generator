@@ -4,7 +4,7 @@ const visitedAreas = [];
 
 function storeButton(area, store) {
   function handleClick(area, store) {
-    $(`.${store.name}`).prop("disabled", true);
+    $(`.${store.name}`).addClass("clicked-btn");
 
     if (!visitedAreas.includes(area)) {
       visitedAreas.push(area);
