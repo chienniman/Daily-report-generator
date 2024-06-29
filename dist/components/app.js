@@ -1,8 +1,4 @@
-(() => {
-  // components/app.js
-  $(document).ready(function() {
-    function createBaseElement() {
-      $("body").append(`
+(()=>{$(document).ready(function(){function d(){$("body").append(`
             <div class="bg"></div>
             <div class="bg bg2"></div>
             <div class="bg bg3"></div>
@@ -13,8 +9,4 @@
             <div class="top-row"></div>
             <table id="resultTable" border="1"></table>
             <div id="pptTableContainer"></div>
-        `);
-    }
-    createBaseElement();
-  });
-})();
+        `)}d()});})();
