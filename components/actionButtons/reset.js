@@ -14,11 +14,16 @@ $(document).ready(function () {
     })
   );
 
+  function hiddenBtns() {
+    $("#dailySummary,#exportToExcel,#reset").hide();
+  }
+
   $("#reset").on("click", async function () {
     function reset() {
       resetFileInputs();
       resetTable();
       resetStorage();
+      hiddenBtns();
     }
 
     reset();
