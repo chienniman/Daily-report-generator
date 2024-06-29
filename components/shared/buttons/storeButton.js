@@ -11,7 +11,7 @@ function storeButton(area, store) {
       setData("visitedAreas", visitedAreas);
     }
 
-    const dailyKpiArray = getData("ojs");
+    const dailyKpiArray = getData("dailyKpiArray");
 
     if (!dailyKpiArray) {
       Swal.fire({ title: "請先上傳當月績效總表", icon: "error" });
