@@ -1,5 +1,6 @@
 import { createPPT } from "../../helpers/createPPT.js";
 import { fileInput } from "../shared/fileInput.js";
+import { checkXLSX2PPT } from "../../utils/checkers/checkFileInputs.js";
 
 $(document).ready(function () {
   function createBaseElement() {
@@ -16,9 +17,14 @@ $(document).ready(function () {
 
   createBaseElement();
 
-  $("#xlsx2ppt").on("change", function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
+  $("#xlsx2ppt").on("change", function () {
+    var file = this.files[0];
+
+    if (!checkXLSX2PPT(file)) {
+      $(this).val("");
+
+      return;
+    }
 
     Pace.restart();
 

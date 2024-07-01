@@ -1,5 +1,10 @@
 import { fileInput } from "../shared/fileInput.js";
 import { processData, setData } from "../../utils/dataProcessing.js";
+import {
+  checkMonthStocks,
+  checkTodaySells,
+  checkDailyKpi,
+} from "../../utils/checkers/checkFileInputs.js";
 
 $(document).ready(function () {
   function createBaseElement() {
@@ -37,18 +42,42 @@ $(document).ready(function () {
   createBaseElement();
 
   $("#monthStocks").on("change", function () {
-    var fileName = $(this).val().split("\\").pop();
-    $("#monthStocksFileNameDisplay").text("進銷存 : " + fileName);
+    var file = this.files[0];
+
+    if (!checkMonthStocks(file)) {
+      $(this).val('');
+      $("#monthStocksFileNameDisplay").text("");
+
+      return;
+    }
+
+    $("#monthStocksFileNameDisplay").text("進銷存 : " + file.name);
   });
 
   $("#todaySells").on("change", function () {
-    var fileName = $(this).val().split("\\").pop();
-    $("#todaySellsFileNameDisplay").text("單日銷貨 : " + fileName);
+    var file = this.files[0];
+
+    if (!checkTodaySells(file)) {
+      $(this).val('');
+      $("#todaySellsFileNameDisplay").text("");
+      
+      return;
+    }
+
+    $("#todaySellsFileNameDisplay").text("單日銷貨 : " + file.name);
   });
 
   $("#dailyKpi").on("change", function () {
-    var fileName = $(this).val().split("\\").pop();
-    $("#dailyKpiFileNameDisplay").text("每日業績 : " + fileName);
+    var file = this.files[0];
+
+    if (!checkDailyKpi(file)) {
+      $(this).val('');
+      $("#dailyKpiFileNameDisplay").text("");
+      
+      return;
+    }
+
+    $("#dailyKpiFileNameDisplay").text("每日業績 : " + file.name);
 
     var file = this.files[0];
     var reader = new FileReader();

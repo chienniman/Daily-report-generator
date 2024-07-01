@@ -10,7 +10,7 @@ $(document).ready(function () {
     })
   );
 
-  function showHiddenBtn() {
+  function showHiddenBtns() {
     $("#dailySummary,#exportToExcel,#reset").show();
   }
 
@@ -19,6 +19,6 @@ $(document).ready(function () {
     Pace.restart();
     await createReport();
     Pace.stop();
-    showHiddenBtn();
+    showHiddenBtns();
   });
 });

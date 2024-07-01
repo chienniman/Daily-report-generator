@@ -1,25 +1,29 @@
 import { button } from "../shared/buttons/button.js";
+import {
+  resetFileInputs,
+  resetTable,
+  resetStorage,
+} from "../../utils/resetUtilities.js";
 
 $(document).ready(function () {
   $(".top-row").append(
     button({
       id: "reset",
       text: "重置",
-      styles: { display: 'none' }
+      styles: { display: "none" },
     })
   );
 
+  function hiddenBtns() {
+    $("#dailySummary,#exportToExcel,#reset").hide();
+  }
+
   $("#reset").on("click", async function () {
     function reset() {
-      sessionStorage.clear();
-
-      $("#fileNameDisplay, #resultTable").empty();
-      $(
-        "input[name=monthStocks], input[name=todaySells], input[name=dailyKpi]"
-      ).val("");
-      $(
-        "#monthStocksFileNameDisplay, #todaySellsFileNameDisplay, #dailyKpiFileNameDisplay"
-      ).text("");
+      resetFileInputs();
+      resetTable();
+      resetStorage();
+      hiddenBtns();
     }
 
     reset();
