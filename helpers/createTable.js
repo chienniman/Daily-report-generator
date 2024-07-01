@@ -32,10 +32,8 @@ function createTableWithRows(
     createCell(currentStoreRow, "empty-td", null);
     createCell(currentImageRow, "description-td", null).text("陳列位");
 
-    const storesSlice = storesData.slice(
-      startIndex + j * imagesPerRow,
-      startIndex + (j + 1) * imagesPerRow
-    );
+    const startIdx = startIndex + j * imagesPerRow;
+    const storesSlice = storesData.slice(startIdx, startIdx + imagesPerRow);
 
     const { storeCells, imageCells } = populateRows(
       storesSlice,
@@ -50,11 +48,11 @@ function createTableWithRows(
     );
 
     tableRows.push({
-      storeCells: storeCells,
+      storeCells,
       imageCells: imageCells.filter((cell) => cell !== null),
     });
 
-    if (storesData.length <= startIndex + (j + 1) * imagesPerRow) break;
+    if (storesData.length <= startIdx + imagesPerRow) break;
   }
 
   return tableRows;
@@ -111,7 +109,4 @@ function fillEmptyCells(currentStoreRow, currentImageRow, cellsToAdd) {
   }
 }
 
-export {
-  createTable,
-  createTableWithRows,
-};
+export { createTable, createTableWithRows };
