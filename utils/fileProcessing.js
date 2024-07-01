@@ -30,7 +30,6 @@ async function processCSV(inputName) {
   return new Promise((resolve) => {
     $(`input[name=${inputName}]`).csv2arr((array) => {
       const json = arrayToNestedJson(getfilteredData(array), inputName);
-      $(`input[name=${inputName}]`).val("");
       resolve(json);
     });
   });

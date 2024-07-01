@@ -27,6 +27,7 @@ $(document).ready(function () {
 
       if (isTableEmpty(htmlTable)) {
         Swal.fire({ title: "無法導出空表格!", icon: "error" });
+        return;
       }
 
       new Table2Excel().export(htmlTable, `PX台中日銷庫存表_${downloadDate()}`);
