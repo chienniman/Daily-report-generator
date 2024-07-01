@@ -86,5 +86,5 @@ export {
   collectImagesData,
   preparePPTData,
   countCompleteRows,
-  arrayToNestedJson
+  arrayToNestedJson,
 };

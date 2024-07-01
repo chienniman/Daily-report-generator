@@ -64,6 +64,8 @@ function addPhotoAlbum(data) {
   });
 }
 
+let globalTableCounter = 0;
+
 function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
   const imagesData = collectImagesData(workbook, worksheet);
@@ -71,7 +73,9 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
-    const tableId = `photo-table-${tableCount}`;
+    const tableId = `${worksheet.name}-photo-table-${globalTableCounter}`;
+    globalTableCounter++;
+
     const table = createTable($("#pptTableContainer"), "photo-table", tableId);
     const tableRows = createTableWithRows(
       table,
