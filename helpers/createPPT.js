@@ -191,13 +191,7 @@ async function addBodys(workbook) {
   await Promise.all(addBodyPromises);
 }
 
-async function createPPT(workbook) {
-  addCover();
-
-  addPreview(createPreview(workbook));
-
-  await addBodys(workbook);
-
+function download() {
   pptx.writeFile({
     fileName: `PX${new Date().getFullYear() - 1911}年${
       new Date().getMonth() + 1
@@ -205,9 +199,19 @@ async function createPPT(workbook) {
   });
 
   Swal.fire({
-    title: "已轉換成PPT檔",
+    title: "已成功轉換下載PPT",
     icon: "success",
   });
+}
+
+async function createPPT(workbook) {
+  addCover();
+
+  addPreview(createPreview(workbook));
+
+  await addBodys(workbook);
+
+  download();
 }
 
 export { createPPT };
