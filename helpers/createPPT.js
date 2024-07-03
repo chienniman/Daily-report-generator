@@ -55,13 +55,7 @@ function addPhotoAlbum(data) {
     promises.push(promise);
   });
 
-  Promise.all(promises).then(() => {
-    pptx.writeFile({
-      fileName: `PX${new Date().getFullYear() - 1911}年${
-        new Date().getMonth() + 1
-      }月份陳列照片.pptx`,
-    });
-  });
+  return Promise.all(promises);
 }
 
 let globalTableCounter = 0;
@@ -69,7 +63,6 @@ let globalTableCounter = 0;
 function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
   const imagesData = collectImagesData(workbook, worksheet);
-  let tableCount = 0;
   const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
@@ -91,13 +84,9 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
       rowCount: tableRows.length,
       columnCount: imagesPerRow,
     });
-
-    tableCount++;
-    if (tableCount === 2) break;
   }
 
   return {
-    tableCount: tableCount,
     tables: tableInfo,
   };
 }
@@ -179,34 +168,50 @@ function addPreview(preview) {
   slide.addText(preview, { h: "100%", w: "100%" });
 }
 
-function addBody(storeData, displayData, workbook, worksheet) {
+async function addBody(storeData, displayData, workbook, worksheet) {
   displayData.length > 1
     ? addDisplayTable(displayData)
     : console.log("無陳列店家資料");
 
   storeData.length > 1
-    ? addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
+    ? await addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
     : console.log("無陳列照片");
 }
 
-function addBodys(workbook) {
+async function addBodys(workbook) {
+  const addBodyPromises = [];
+
   workbook.eachSheet((worksheet) => {
     const data = preparePPTData(worksheet);
-    addBody(data.storeData, data.displayData, workbook, worksheet);
+    addBodyPromises.push(
+      addBody(data.storeData, data.displayData, workbook, worksheet)
+    );
+  });
+
+  await Promise.all(addBodyPromises);
+}
+
+function download() {
+  pptx.writeFile({
+    fileName: `PX${new Date().getFullYear() - 1911}年${
+      new Date().getMonth() + 1
+    }月份陳列照片.pptx`,
+  });
+
+  Swal.fire({
+    title: "已成功轉換下載PPT",
+    icon: "success",
   });
 }
 
-function createPPT(workbook) {
+async function createPPT(workbook) {
   addCover();
 
   addPreview(createPreview(workbook));
 
-  addBodys(workbook);
+  await addBodys(workbook);
 
-  Swal.fire({
-    title: "已轉換成PPT檔",
-    icon: "success",
-  });
+  download();
 }
 
 export { createPPT };
