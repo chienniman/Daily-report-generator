@@ -69,7 +69,6 @@ let globalTableCounter = 0;
 function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
   storesData.shift();
   const imagesData = collectImagesData(workbook, worksheet);
-  let tableCount = 0;
   const tableInfo = [];
 
   for (let i = 0; i < storesData.length; i += imagesPerRow * 2) {
@@ -91,13 +90,9 @@ function createPhotoAlbum(workbook, worksheet, storesData, imagesPerRow = 6) {
       rowCount: tableRows.length,
       columnCount: imagesPerRow,
     });
-
-    tableCount++;
-    if (tableCount === 2) break;
   }
 
   return {
-    tableCount: tableCount,
     tables: tableInfo,
   };
 }
