@@ -1,6 +1,5 @@
 import { button } from "../shared/buttons/button.js";
 import { getData } from "../../utils/dataProcessing.js";
-import { checkDailyKpi } from "../../utils/checkers/checkFileInputs.js";
 
 $(document).ready(function () {
   $(".top-row").append(
@@ -12,7 +11,7 @@ $(document).ready(function () {
   );
 
   $("#dailySummary").on("click", async function () {
-    if (!checkDailyKpi()) return;
+    if (!getData("summaryData")) return;
 
     function generateSummary() {
       const visitedAreas = getData("visitedAreas");
