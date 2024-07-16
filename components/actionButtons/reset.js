@@ -15,7 +15,7 @@ $(document).ready(function () {
   );
 
   function hiddenBtns() {
-    $("#dailySummary,#exportToExcel,#reset").hide();
+    $("#dailySummary,#exportToExcel,#reset,#searchBox").hide();
   }
 
   $("#reset").on("click", async function () {

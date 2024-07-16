@@ -16,7 +16,8 @@ function loadScript(src) {
     './dist/components/actionButtons/dailySummary.js',
     './dist/components/actionButtons/exportToExcel.js',
     './dist/components/actionButtons/generateReport.js',
-    './dist/components/actionButtons/reset.js'
+    './dist/components/actionButtons/reset.js',
+    './dist/components/searchBox.js',
   ];
   
   async function loadAllScripts(scriptArray) {
