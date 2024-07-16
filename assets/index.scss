@@ -242,7 +242,7 @@ h1 {
 .store-td {
   background-color: #99cdff !important;
 }
-.clicked-btn{
+.clicked-btn {
   background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
   color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
   border-color: light-dark(rgba(118, 118, 118, 0.3), rgba(195, 195, 195, 0.3));
@@ -255,6 +255,34 @@ h1 {
 }
 .photo-table {
   border-collapse: collapse;
+}
+.search-box {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  background-color: #22a6b3;
+  border-radius: 10px;
+}
+.input-search {
+  height: 40px;
+  width: 80px;
+  border-style: none;
+  outline: none;
+  border-radius: 10px;
+  transition: all 0.5s ease-in-out;
+  background-color: #22a6b3;
+  color: #fff;
+}
+.input-search::placeholder {
+  color: #fff;
+}
+.input-search:focus {
+  width: 300px;
+  background-color: transparent;
+  transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+}
+.input-search:focus::placeholder {
+  color: transparent;
 }
 /* pace.js */
 .pace .pace-progress[data-progress-text="0%"]:after {
