@@ -4,7 +4,7 @@
 ![preview](https://github.com/chienniman/Daily-report-generator/assets/97031067/db04b835-e552-4113-a99b-91586e7a47ff)
 
 ### 生成每日庫存、銷售報表
-![table](https://github.com/chienniman/Daily-report-generator/assets/97031067/2074cc05-5667-41fc-bb9d-78cd2c1ef9a9)
+![20240716](https://github.com/user-attachments/assets/e2eddfa0-a765-48aa-8857-92368bc58bb2)
 
 ### 生成績效、心得分析
 ![後續追蹤](https://github.com/chienniman/Daily-report-generator/assets/97031067/6473913b-1020-4974-a100-da0fb9ce499a)
