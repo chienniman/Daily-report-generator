@@ -3,6 +3,11 @@ function subHeaderRow(productMap) {
 
   Array.from(productMap.values()).forEach(() => {
     subHeaderRow += `
+              <th id="threshold">
+                  <div class='darkred-text'>
+                      水位
+                  </div>
+              </th>
               <th id="stock">
                   <div class='darkred-text'>
                       庫存

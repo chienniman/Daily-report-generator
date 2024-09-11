@@ -3,6 +3,10 @@ import { qtyCell } from "../cell/qtyCell.js";
 import { productMap } from "../../../../dataSets/pxMarts.js";
 
 function storeRow(area, store, monthStocksData, todaySellsData) {
+  function getThresholdQty() {
+    return "0";
+  }
+
   function getStockQty(monthStocksData, store, product) {
     const stockQtys = monthStocksData?.[store.id]?.stockQtys || [];
     const foundItem = stockQtys.find((item) => item.hasOwnProperty(product));
@@ -19,6 +23,7 @@ function storeRow(area, store, monthStocksData, todaySellsData) {
   }
 
   const storeRow = $("<tr>")
+    .attr("id", store.id)
     .addClass("table-row")
     .append(
       $("<td>").text(" "),
@@ -28,6 +33,7 @@ function storeRow(area, store, monthStocksData, todaySellsData) {
 
   Array.from(productMap.values()).forEach((product) => {
     storeRow.append(
+      qtyCell("threshold", getThresholdQty()),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
       qtyCell("sell", getSellQty(todaySellsData, store, product))
     );
