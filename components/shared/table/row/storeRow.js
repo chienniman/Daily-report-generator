@@ -2,7 +2,21 @@ import { storeButton } from "../../buttons/storeButton.js";
 import { qtyCell } from "../cell/qtyCell.js";
 import { productMap } from "../../../../dataSets/pxMarts.js";
 
-function storeRow(area, store, monthStocksData, todaySellsData) {
+function storeRow(
+  area,
+  store,
+  monthStocksData,
+  todaySellsData,
+  productThrehold
+) {
+  function getThresholdQty(store, index, productThrehold) {
+    const thresholdValues = productThrehold.get(store.id) || [];
+
+    return thresholdValues[index] !== undefined
+      ? thresholdValues[index]
+      : "N/A";
+  }
+
   function getStockQty(monthStocksData, store, product) {
     const stockQtys = monthStocksData?.[store.id]?.stockQtys || [];
     const foundItem = stockQtys.find((item) => item.hasOwnProperty(product));
@@ -19,6 +33,7 @@ function storeRow(area, store, monthStocksData, todaySellsData) {
   }
 
   const storeRow = $("<tr>")
+    .attr("id", store.id)
     .addClass("table-row")
     .append(
       $("<td>").text(" "),
@@ -26,8 +41,9 @@ function storeRow(area, store, monthStocksData, todaySellsData) {
       $("<td>").append(storeButton(area, store))
     );
 
-  Array.from(productMap.values()).forEach((product) => {
+  Array.from(productMap.values()).forEach((product, index) => {
     storeRow.append(
+      qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
       qtyCell("sell", getSellQty(todaySellsData, store, product))
     );
