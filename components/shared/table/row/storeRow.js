@@ -2,9 +2,19 @@ import { storeButton } from "../../buttons/storeButton.js";
 import { qtyCell } from "../cell/qtyCell.js";
 import { productMap } from "../../../../dataSets/pxMarts.js";
 
-function storeRow(area, store, monthStocksData, todaySellsData) {
-  function getThresholdQty() {
-    return "0";
+function storeRow(
+  area,
+  store,
+  monthStocksData,
+  todaySellsData,
+  productThrehold
+) {
+  function getThresholdQty(store, index, productThrehold) {
+    const thresholdValues = productThrehold.get(store.id) || [];
+
+    return thresholdValues[index] !== undefined
+      ? thresholdValues[index]
+      : "N/A";
   }
 
   function getStockQty(monthStocksData, store, product) {
@@ -31,9 +41,9 @@ function storeRow(area, store, monthStocksData, todaySellsData) {
       $("<td>").append(storeButton(area, store))
     );
 
-  Array.from(productMap.values()).forEach((product) => {
+  Array.from(productMap.values()).forEach((product, index) => {
     storeRow.append(
-      qtyCell("threshold", getThresholdQty()),
+      qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
       qtyCell("sell", getSellQty(todaySellsData, store, product))
     );
