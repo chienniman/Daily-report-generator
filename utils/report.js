@@ -9,11 +9,11 @@ async function createReport() {
 
     const monthStocksData = await processCSV("monthStocks");
     const todaySellsData = await processCSV("todaySells");
-
+    const toggleMode = sessionStorage.getItem("toggleMode");
     const productMapToUse =
-    sessionStorage.getItem("toggleMode") === "全形"
-      ? fullWidthProductMap
-      : productMap;
+      toggleMode === "全形" || toggleMode === null
+        ? fullWidthProductMap
+        : productMap;
 
     appendHeaderRows(productMapToUse);
     appendTableRows($("#resultTable"), monthStocksData, todaySellsData);

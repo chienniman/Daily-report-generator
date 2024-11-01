@@ -17,6 +17,7 @@ $(document).ready(function () {
 
     $("#toggleWidth").text(currentMode);
     sessionStorage.setItem("toggleMode", currentMode);
+    location.reload();
   }
 
   $("#toggleWidth").on("click", function () {
