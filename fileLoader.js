@@ -17,6 +17,7 @@ function loadScript(src) {
     './dist/components/actionButtons/exportToExcel.js',
     './dist/components/actionButtons/generateReport.js',
     './dist/components/actionButtons/reset.js',
+    './dist/components/actionButtons/toggleWidth.js',
     './dist/components/searchBox.js',
   ];
   

@@ -1,6 +1,9 @@
 import { storeButton } from "../../buttons/storeButton.js";
 import { qtyCell } from "../cell/qtyCell.js";
-import { productMap } from "../../../../dataSets/pxMarts.js";
+import {
+  productMap,
+  fullWidthProductMap,
+} from "../../../../dataSets/pxMarts.js";
 
 function storeRow(
   area,
@@ -41,7 +44,12 @@ function storeRow(
       $("<td>").append(storeButton(area, store))
     );
 
-  Array.from(productMap.values()).forEach((product, index) => {
+  const productMapToUse =
+    sessionStorage.getItem("toggleMode") === "全形"
+      ? fullWidthProductMap
+      : productMap;
+
+  Array.from(productMapToUse.values()).forEach((product, index) => {
     storeRow.append(
       qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
