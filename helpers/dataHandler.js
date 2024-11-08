@@ -66,16 +66,22 @@ function arrayToNestedJson(array, type) {
     const key = type === "monthStocks" ? "stockQtys" : "sellQtys";
     const value = Number(e[type === "monthStocks" ? 12 : 8]);
     const dynamicKey = e[7];
+    const accSellQtyValue = type === "monthStocks" ? Number(e[11]) : null;
 
     if (!json[PTDPNO]) {
       json[PTDPNO] = {
         PTDPNA: e[4],
         stockQtys: [],
         sellQtys: [],
+        ...(type === "monthStocks" && { accSellQtys: [] })
       };
     }
 
     json[PTDPNO][key].push({ [dynamicKey]: value });
+
+    if (type === "monthStocks" && accSellQtyValue !== null) {
+      json[PTDPNO].accSellQtys.push({ [dynamicKey]: accSellQtyValue });
+    }
 
     return json;
   }, {});
