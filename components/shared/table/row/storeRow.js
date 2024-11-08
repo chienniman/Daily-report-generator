@@ -44,12 +44,11 @@ function storeRow(
       $("<td>").append(storeButton(area, store))
     );
 
-    const toggleMode = sessionStorage.getItem("toggleMode");
-    const productMapToUse =
-      toggleMode === "全形" || toggleMode === null
-        ? fullWidthProductMap
-        : productMap;
-
+  const toggleMode = sessionStorage.getItem("toggleMode");
+  const productMapToUse =
+    toggleMode === "半形" || toggleMode === null
+      ? productMap
+      : fullWidthProductMap;
 
   Array.from(productMapToUse.values()).forEach((product, index) => {
     storeRow.append(

@@ -11,9 +11,10 @@ async function createReport() {
     const todaySellsData = await processCSV("todaySells");
     const toggleMode = sessionStorage.getItem("toggleMode");
     const productMapToUse =
-      toggleMode === "全形" || toggleMode === null
-        ? fullWidthProductMap
-        : productMap;
+    toggleMode === "半形" || toggleMode === null
+      ? productMap
+      : fullWidthProductMap;
+
 
     appendHeaderRows(productMapToUse);
     appendTableRows($("#resultTable"), monthStocksData, todaySellsData);
