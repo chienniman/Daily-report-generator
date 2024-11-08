@@ -4,12 +4,12 @@ $(document).ready(function () {
   $(".top-row").append(
     button({
       id: "toggleWidth",
-      text: "全形",
+      text: "半形",
       styles: { display: "inline" },
     })
   );
 
-  let currentMode = sessionStorage.getItem("toggleMode") || "全形";
+  let currentMode = sessionStorage.getItem("toggleMode") || "半形";
   $("#toggleWidth").text(currentMode);
 
   function toggleWidth() {

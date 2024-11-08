@@ -1,5 +1,6 @@
 import { storeButton } from "../../buttons/storeButton.js";
 import { qtyCell } from "../cell/qtyCell.js";
+import { setData, getData } from "../../../../utils/dataProcessing.js";
 import {
   productMap,
   fullWidthProductMap,
@@ -35,6 +36,13 @@ function storeRow(
     );
   }
 
+  function getAccSellQty(monthStocksData, store, product) {
+    const accSellQtys = monthStocksData?.[store.id]?.accSellQtys || [];
+    const foundItem = accSellQtys.find((item) => item.hasOwnProperty(product));
+
+    return foundItem ? foundItem[product] : "N/A";
+  }
+
   const storeRow = $("<tr>")
     .attr("id", store.id)
     .addClass("table-row")
@@ -44,14 +52,23 @@ function storeRow(
       $("<td>").append(storeButton(area, store))
     );
 
-    const toggleMode = sessionStorage.getItem("toggleMode");
-    const productMapToUse =
-      toggleMode === "全形" || toggleMode === null
-        ? fullWidthProductMap
-        : productMap;
-
+  const toggleMode = sessionStorage.getItem("toggleMode");
+  const productMapToUse =
+    toggleMode === "半形" || toggleMode === null
+      ? productMap
+      : fullWidthProductMap;
 
   Array.from(productMapToUse.values()).forEach((product, index) => {
+    const accSellQty = getAccSellQty(monthStocksData, store, product);
+    let accSellQtys = getData(store.id) || [];
+
+    const text = `${product}累積銷貨量是${accSellQty}`;
+
+    if (accSellQty !== 0 && !accSellQtys.includes(text)) {
+      accSellQtys.push(text);
+      setData(store.id, accSellQtys);
+    }
+
     storeRow.append(
       qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),

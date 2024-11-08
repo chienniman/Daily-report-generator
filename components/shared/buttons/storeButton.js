@@ -3,6 +3,10 @@ import { setData, getData } from "../../../utils/dataProcessing.js";
 const visitedAreas = [];
 
 function storeButton(area, store) {
+  function getAccSellText(id) {
+    return getData(id);
+  }
+
   function handleClick(area, store) {
     $(`.${store.name}`).addClass("clicked-btn");
 
@@ -37,7 +41,9 @@ function storeButton(area, store) {
     result["差異金額"] = formatDifference(result["差異金額"]);
     Swal.fire({
       title: "後續追蹤事項",
-      text: `達成率${result["達成%"]}，差異金額${result["差異金額"]}`,
+      text: `
+        達成率${result["達成%"]}，差異金額${result["差異金額"]}，
+        ${getAccSellText(store.id)}`,
       icon: "success",
     });
   }
