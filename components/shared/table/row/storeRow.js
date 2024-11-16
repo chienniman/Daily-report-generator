@@ -4,6 +4,7 @@ import { setData, getData } from "../../../../utils/dataProcessing.js";
 import {
   productMap,
   fullWidthProductMap,
+  abbreviationProductMap
 } from "../../../../dataSets/pxMarts.js";
 
 function storeRow(
@@ -58,17 +59,17 @@ function storeRow(
       ? productMap
       : fullWidthProductMap;
 
-  Array.from(productMapToUse.values()).forEach((product, index) => {
+  Array.from(productMapToUse.entries()).forEach(([key, value], index) => {
+    const product = value;
     const accSellQty = getAccSellQty(monthStocksData, store, product);
     let accSellQtys = getData(store.id) || [];
-
-    const text = `${product}累積銷貨量是${accSellQty}`;
-
+    const text = `${abbreviationProductMap.get(key)}累積銷貨量是${accSellQty}`;
+  
     if (accSellQty !== 0 && !accSellQtys.includes(text)) {
       accSellQtys.push(text);
       setData(store.id, accSellQtys);
     }
-
+  
     storeRow.append(
       qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
