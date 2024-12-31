@@ -38,11 +38,17 @@ function storeButton(area, store) {
       return diff.startsWith("--") ? diff.replace("--", "少") : "多" + diff;
     }
 
-    result["差異金額\r\n(目標-達成)"] = formatDifference((result["差異金額\r\n(目標-達成)"]));
+    try {
+      result["差異金額\n(目標-達成)"] = formatDifference(result["差異金額\n(目標-達成)"]);
+    } catch (error) {
+      console.error("格式化差異金額錯誤:", error);
+      result["差異金額\n(目標-達成)"] = result["差異金額\n(目標-達成)"] || "unknown";
+    }
+
     Swal.fire({
       title: "後續追蹤事項",
       text: `
-        達成率${result["達成%"]},差異金額${result["差異金額\r\n(目標-達成)"]},
+        達成率${result["達成%"]},差異金額${result["差異金額\n(目標-達成)"]},
         ${getAccSellText(store.id)}`,
       icon: "success",
     });
