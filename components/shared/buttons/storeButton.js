@@ -34,21 +34,28 @@ function storeButton(area, store) {
       return;
     }
 
+    const diffKey = Object.keys(result).find((key) => key.startsWith("差異金額"));
     function formatDifference(diff) {
       return diff.startsWith("--") ? diff.replace("--", "少") : "多" + diff;
     }
 
     try {
-      result["差異金額\n(目標-達成)"] = formatDifference(result["差異金額\n(目標-達成)"]);
+      if (diffKey) {
+        result[diffKey] = formatDifference(result[diffKey]);
+      } else {
+        console.warn("未找到以 '差異金額' 開頭的 key");
+      }
     } catch (error) {
       console.error("格式化差異金額錯誤:", error);
-      result["差異金額\n(目標-達成)"] = result["差異金額\n(目標-達成)"] || "unknown";
+      if (diffKey) {
+        result[diffKey] = result[diffKey] || "unknown";
+      }
     }
 
     Swal.fire({
       title: "後續追蹤事項",
       text: `
-        達成率${result["達成%"]},差異金額${result["差異金額\n(目標-達成)"]},
+        達成率${result["達成%"]},差異金額${result[diffKey]},
         ${getAccSellText(store.id)}`,
       icon: "success",
     });
