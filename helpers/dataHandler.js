@@ -63,9 +63,10 @@ function countCompleteRows(worksheet) {
 function arrayToNestedJson(array, type) {
   return array.reduce((json, e) => {
     const PTDPNO = Number(e[3]);
+    const PRDTCODE = Number(e[5]);
     const key = type === "monthStocks" ? "stockQtys" : "sellQtys";
     const value = Number(e[type === "monthStocks" ? 12 : 8]);
-    const dynamicKey = e[7];
+    const dynamicKey = PRDTCODE;
     const accSellQtyValue = type === "monthStocks" ? Number(e[11]) : null;
 
     if (!json[PTDPNO]) {
