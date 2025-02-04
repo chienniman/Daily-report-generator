@@ -24,6 +24,7 @@ $(document).ready(function () {
       resetTable();
       resetStorage();
       hiddenBtns();
+      sessionStorage.clear();
     }
 
     reset();
