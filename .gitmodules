@@ -1,3 +1,3 @@
-[submodule "Daily-report-generator-data"]
-	path = Daily-report-generator-data
-	url = https://github.com/chienniman/Daily-report-generator-data.git
+[submodule "Daily-report-generator-testing"]
+	path = Daily-report-generator-testing
+	url = https://github.com/chienniman/Daily-report-generator-testing.git
