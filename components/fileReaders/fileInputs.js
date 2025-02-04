@@ -68,7 +68,6 @@ $(document).ready(function () {
   });
 
   $("#dailyKpi").on("change", function () {
-    sessionStorage.clear();
     
     var file = this.files[0];
 

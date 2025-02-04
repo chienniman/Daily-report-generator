@@ -1,4 +1,4 @@
-import { productMap, fullWidthProductMap } from "../dataSets/pxMarts.js";
+import { productMap } from "../dataSets/pxMarts.js";
 import { appendHeaderRows, appendTableRows } from "../helpers/appendRows.js";
 import { processCSV } from "./fileProcessing.js";
 import { resetFileInputs, resetTable } from "./resetUtilities.js";
@@ -9,14 +9,8 @@ async function createReport() {
 
     const monthStocksData = await processCSV("monthStocks");
     const todaySellsData = await processCSV("todaySells");
-    const toggleMode = sessionStorage.getItem("toggleMode");
-    const productMapToUse =
-    toggleMode === "半形" || toggleMode === null
-      ? productMap
-      : fullWidthProductMap;
 
-
-    appendHeaderRows(productMapToUse);
+    appendHeaderRows(productMap);
     appendTableRows($("#resultTable"), monthStocksData, todaySellsData);
 
     resetFileInputs();
