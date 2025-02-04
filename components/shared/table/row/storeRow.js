@@ -12,15 +12,15 @@ function storeRow(
   store,
   monthStocksData,
   todaySellsData,
-  productThrehold
+  // productThrehold
 ) {
-  function getThresholdQty(store, index, productThrehold) {
-    const thresholdValues = productThrehold.get(store.id) || [];
+  // function getThresholdQty(store, index, productThrehold) {
+  //   const thresholdValues = productThrehold.get(store.id) || [];
 
-    return thresholdValues[index] !== undefined
-      ? thresholdValues[index]
-      : "N/A";
-  }
+  //   return thresholdValues[index] !== undefined
+  //     ? thresholdValues[index]
+  //     : "N/A";
+  // }
 
   function getStockQty(monthStocksData, store, product) {
     const stockQtys = monthStocksData?.[store.id]?.stockQtys || [];
@@ -71,7 +71,7 @@ function storeRow(
     }
   
     storeRow.append(
-      qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
+      // qtyCell("threshold", getThresholdQty(store, index, productThrehold)),
       qtyCell("stock", getStockQty(monthStocksData, store, product)),
       qtyCell("sell", getSellQty(todaySellsData, store, product))
     );

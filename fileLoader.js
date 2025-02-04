@@ -13,11 +13,11 @@ function loadScript(src) {
     './dist/components/app.js',
     './dist/components/fileReaders/fileInputs.js',
     './dist/components/fileReaders/xlsx2ppt.js',
-    './dist/components/actionButtons/dailySummary.js',
+    // './dist/components/actionButtons/dailySummary.js',
     './dist/components/actionButtons/exportToExcel.js',
     './dist/components/actionButtons/generateReport.js',
     './dist/components/actionButtons/reset.js',
-    './dist/components/actionButtons/toggleWidth.js',
+    // './dist/components/actionButtons/toggleWidth.js',
     './dist/components/searchBox.js',
   ];
   
