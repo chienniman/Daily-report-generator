@@ -3,7 +3,6 @@ import { qtyCell } from "../cell/qtyCell.js";
 import { setData, getData } from "../../../../utils/dataProcessing.js";
 import {
   productMap,
-  fullWidthProductMap,
   abbreviationProductMap
 } from "../../../../dataSets/pxMarts.js";
 
@@ -53,13 +52,7 @@ function storeRow(
       $("<td>").append(storeButton(area, store))
     );
 
-  const toggleMode = sessionStorage.getItem("toggleMode");
-  const productMapToUse =
-    toggleMode === "半形" || toggleMode === null
-      ? productMap
-      : fullWidthProductMap;
-
-  Array.from(productMapToUse.entries()).forEach(([key, __v], __index) => {
+  Array.from(productMap.entries()).forEach(([key, __v], __index) => {
     const productId = key;
     const accSellQty = getAccSellQty(monthStocksData, store, productId);
     let accSellQtys = getData(store.id) || [];
