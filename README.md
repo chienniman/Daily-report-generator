@@ -1,4 +1,10 @@
 ## Daily-report-generator
+### test
+
+* 拉取正確版本 driver 到 Daily-report-generator-testing 
+* 下載連結 https://googlechromelabs.github.io/chrome-for-testing/
+* 獲得 https://github.com/chienniman/pxmart-data.git 權限
+* `sh Daily-report-generator-testing/script/test.sh`
 
 ### app
 ![preview](https://github.com/chienniman/Daily-report-generator/assets/97031067/db04b835-e552-4113-a99b-91586e7a47ff)
