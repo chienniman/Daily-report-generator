@@ -1,6 +1,8 @@
 ## Daily-report-generator
 ### test
 
+影片DEMO:https://youtu.be/LMk8AsPekKo
+
 * 拉取正確版本 driver 到 Daily-report-generator-testing 
 * 下載連結 https://googlechromelabs.github.io/chrome-for-testing/
 * 更新測試模組 `git submodule update --remote --merge`
