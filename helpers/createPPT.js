@@ -13,6 +13,7 @@ function addDisplayTable(data) {
   const dataChunks = splitArrayByMaxSize(data, maxRowsPerSlide);
 
   dataChunks.forEach((chunk) => {
+    console.log(chunk)
     const slide = pptx.addSlide();
 
     slide.addTable(chunk, {
@@ -26,36 +27,58 @@ function addDisplayTable(data) {
   });
 }
 
-function addPhotoAlbum(data) {
-  const promises = [];
+async function addPlacePhotoTablesToSlide() {
+  const images = Array.from(document.querySelectorAll(".place-pic"));
+  let slide;
 
-  data.tables.forEach((tableInfo, index) => {
-    const tableElement = document.getElementById(tableInfo.id);
+  for (let i = 0; i < images.length; i += 5) {
+    slide = pptx.addSlide();
+    let colWidth = 9 / 5;
+    let tableData = [
+      Array(5).fill(null).map((_, j) => ({
+        text: images[i + j]?.getAttribute("store") || "",
+        options: {
+          fill: "FFFFFF",
+          border: [
+            { type: "solid", color: "000000", pt: 1 },
+            { type: "solid", color: "000000", pt: 1 },
+            { type: "solid", color: "000000", pt: 1 },
+            { type: "solid", color: "000000", pt: 1 }
+          ],
+          align: "center",
+          color: "000000",
+          fontSize: 18,
+          margin: [0.05, 0.1, 0.05, 0.1],
+          valign: "middle",
+        }
+      }))
+    ];
 
-    if (!tableElement) {
-      console.error(`Table-id ${tableInfo.id} empty.`);
-      return;
+    slide.addTable(tableData, {
+      x: 0.5,
+      y: 0.5,
+      w: 9,
+      h: 1,
+      colW: Array(5).fill(colWidth)
+    });
+
+    for (let j = 0; j < 5; j++) {
+      if (images[i + j]) {
+        try {
+          const imgDataUrl = await domtoimage.toPng(images[i + j]);
+          slide.addImage({
+            data: imgDataUrl,
+            w: colWidth,
+            h: 3,
+            x: 0.5 + j * colWidth,
+            y: 1.6,
+          });
+        } catch (error) {
+          console.error(`Error processing image:`, error);
+        }
+      }
     }
-
-    const height = tableInfo.rows.length < 2 ? "50%" : "100%";
-    const promise = domtoimage
-      .toPng(tableElement)
-      .then((imgDataUrl) => {
-        const slide = pptx.addSlide();
-        slide.addImage({
-          data: imgDataUrl,
-          w: "100%",
-          h: height,
-        });
-      })
-      .catch((error) => {
-        console.error(`Error table-id ${tableInfo.id}:`, error);
-      });
-
-    promises.push(promise);
-  });
-
-  return Promise.all(promises);
+  }
 }
 
 let globalTableCounter = 0;
@@ -173,9 +196,9 @@ async function addBody(storeData, displayData, workbook, worksheet) {
     ? addDisplayTable(displayData)
     : console.log("無陳列店家資料");
 
-  storeData.length > 1
-    ? await addPhotoAlbum(createPhotoAlbum(workbook, worksheet, storeData))
-    : console.log("無陳列照片");
+  if(storeData.length > 1){
+    createPhotoAlbum(workbook, worksheet, storeData)
+  } 
 }
 
 async function addBodys(workbook) {
@@ -193,9 +216,8 @@ async function addBodys(workbook) {
 
 function download() {
   pptx.writeFile({
-    fileName: `PX${new Date().getFullYear() - 1911}年${
-      new Date().getMonth() + 1
-    }月份陳列照片.pptx`,
+    fileName: `PX${new Date().getFullYear() - 1911}年${new Date().getMonth() + 1
+      }月份陳列照片.pptx`,
   });
 
   Swal.fire({
@@ -210,6 +232,8 @@ async function createPPT(workbook) {
   addPreview(createPreview(workbook));
 
   await addBodys(workbook);
+
+  await addPlacePhotoTablesToSlide();
 
   download();
 }
