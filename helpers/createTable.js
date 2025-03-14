@@ -58,8 +58,10 @@ function createTableWithRows(
   return tableRows;
 }
 
-function addImageToCell(cellElement, base64data) {
+function addImageToCell(cellElement, base64data, store) {
   const imgElement = $("<img>")
+    .addClass("place-pic")
+    .attr("store", store)
     .attr("src", "data:image/png;base64," + base64data)
     .css({ width: "100%", height: "100%" });
 
@@ -87,7 +89,7 @@ function populateRows(
 
     if (base64data) {
       const imageCell = createCell(currentImageRow, "photo-td", imageId);
-      addImageToCell(imageCell, base64data);
+      addImageToCell(imageCell, base64data, store.store);
       imageCells.push(imageCell);
     } else {
       const emptyImageCell = createCell(
