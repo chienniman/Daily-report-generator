@@ -52,11 +52,24 @@ function storeButton(area, store) {
       }
     }
 
+    const accSellData = getAccSellText(store.id);
+    let total = 0;
+    if (Array.isArray(accSellData)) {
+      accSellData.forEach(item => {
+        const match = typeof item === 'string' ? item.match(/([\d.]+)$/) : null;
+        const val = match ? match[1] : null;
+        if (val && val !== 'N/A' && !isNaN(Number(val))) {
+          total += Number(val);
+        }
+      });
+    }
+    const today = new Date();
+    const days = today.getDate();
+    const avg = days > 0 ? Math.floor(total / days) : 0;
+
     Swal.fire({
       title: "後續追蹤事項",
-      text: `
-        達成率${result["達成%"]},差異金額${result[diffKey]},
-        ${getAccSellText(store.id)}`,
+      text: `達成率${result["達成%"]},差異金額${result[diffKey]},日均銷${avg}, ${Array.isArray(accSellData) ? accSellData.filter(item => typeof item === 'string' ? !item.endsWith('N/A') : true).join(", ") : ""}`,
       icon: "success",
     });
   }
