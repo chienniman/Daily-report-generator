@@ -1,4 +1,6 @@
 ## Daily-report-generator
+https://www.boris.idv.tw/Daily-report-generator/
+
 ### test
 
 影片DEMO:https://youtu.be/LMk8AsPekKo
